@@ -1,8 +1,8 @@
-## 7. User experience
+# User Experience
 
 PhysioFind is a tool designed to make finding the medical help you need from non-provincially regulated clinics simple through an easy-to-use and streamlined user experience. 
 
-### For patients
+### For Patients
 
 Patients who have never used the service before will be prompted to fill out a simple questionnaire so that PhysioFind supplies them with the best results. This includes questions such as what the patient's price range is, what their availability is like, and what the maximum distance they are willing to travel is. Following the questionnaire, patients will be prompted to optionally make an account so they can access their results in the future.
 
@@ -12,7 +12,7 @@ Once the patient has completed the questionnaire, a new page will be displayed s
 
 If the patient is not satisfied with the results they receive, they can go back to the questionnaire and edit it as needed.
 
-### For clinics
+### For Clinics
 
 Clinics can sign up for PhysioFind as a business account which will allow them to edit the information PhysioFind will supply to patients, such as images or descriptions. Clinics will not be able to disable or alter information such as the ratings they receive on PhysioFind or other review platforms to make sure patients are not given misinformation when attempting to decide which clinic to choose.
 
@@ -20,10 +20,12 @@ Clinics that are found in the area by PhysioFind that have not set up a business
 
 Clinics or their medical professionals can add their availability on PhysioFind so that patients whose preferences fall within that time frame are more likely to see those results. If a clinic gets a booking through PhysioFind, they will receive a confirmation notification detailing all the required information about the patient and their upcoming appointment.
 
-### User interface graphic representations:
+## User Interface Graphic Representations
 
-Patient questionnaire example:
-![An image of the questionnaire the user will fill out](UI_Images/Frame1.png)
+### Patient Questionnaire
 
-Results page example:
-![An image of the results page](UI_Images/Frame2.png)
+![Example of the questionnaire the user would fill out](images/example1.png)
+
+### Results Page
+
+![Example of what the results page could look like](images/example2.png)

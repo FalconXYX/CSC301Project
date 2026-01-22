@@ -1,3 +1,5 @@
+# Personas
+
 ## Persona A
 
 |**Name**|Daniel Kovacs|
@@ -78,7 +80,7 @@ For Maddie, PhysioFind would act as a precision referral channel, ensuring patie
 
 ### Personal Background & Personality
 
-Bill oversees scheduling and operations for a busy clinic with physiotherapists, chiropractors, and kinesiologists. He is systematic, risk-averse, and deeply concerned with efficiency. Past experiences with double bookings and insurance conflicts have made him cautious of external booking platforms. Thinks Doors is a better last name than Gates.
+Bill oversees scheduling and operations for a busy clinic with physiotherapists, chiropractors, and kinesiologists. He is systematic, risk-averse, and deeply concerned with efficiency. Past experiences with double bookings and insurance conflicts have made him cautious of external booking platforms. Insists that "Doors" is a better last name than "Gates".
 
 ### Skills & Professional Background
 
