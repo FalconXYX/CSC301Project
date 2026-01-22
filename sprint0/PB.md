@@ -4,6 +4,7 @@
 |:-|:-|
 |As a developer, I would like to be able to store and access all user/clinic data in a postgres database so that I can manage and display it to users in the future.|Time&#8209;sensitive|
 |As a developer, I would like to set up our React front-end development environment so that I can build our user interface.|Time&#8209;sensitive|
+|As a client looking for medical help, I would like to create and access an account so that I can retrieve my past results.|Regular|
 
 ### User Story Template
 
