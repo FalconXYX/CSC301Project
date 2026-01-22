@@ -2,9 +2,12 @@
 
 |User Story|Priority|
 |:-|:-|
-|As a developer, I would like to be able to store and access all user/clinic data in a postgres database so that I can manage and display it to users in the future.|Time&#8209;sensitive|
-|As a developer, I would like to set up our React front-end development environment so that I can build our user interface.|Time&#8209;sensitive|
-|As a client looking for medical help, I would like to create and access an account so that I can retrieve my past results.|Regular|
+|As a developer, I want to set up a Postgres database schema for users and clinics so that we have a foundation for storing and retrieving data later.|Time&#8209;sensitive|
+|As a developer, I want to set up our React frontend development environment so that we can begin implementing UI features.|Time&#8209;sensitive|
+|As a developer, I want to define basic API endpoints for providers and booking so that frontend and backend communication is clear.|Time&#8209;sensitive|
+|As a developer, I want to seed the system with a sample provider profile so that patient-facing features can be developed and tested.|Time&#8209;sensitive|
+|As a patient, I want to view a list of available providers so that I can see what the platform will offer.|Regular|
+|As a patient, I want to submit a booking request for a provider so that the booking flow can be demonstrated.|Regular|
 
 ### User Story Template
 
