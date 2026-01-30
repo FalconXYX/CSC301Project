@@ -5,20 +5,24 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+// Load configuration
+var serverConfig = require("./config/server");
+var constants = require("./config/constants");
+
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
 var app = express();
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+app.set("views", path.join(__dirname, serverConfig.viewsPath));
+app.set("view engine", serverConfig.viewEngine);
 
-app.use(logger("dev"));
+app.use(logger(serverConfig.logFormat));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded(serverConfig.middleware.urlEncoded));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, serverConfig.publicPath)));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
