@@ -1,17 +1,16 @@
 var express = require("express");
 var router = express.Router();
+var prisma = require("../../config/prisma");
 
 /**
- * POST /providers
- * Create a new provider
+ * POST /clinics
+ * Create a new clinic
  */
-router.post("/", function (req, res, next) {
+router.post("/", async function (req, res, next) {
   try {
-    // TODO: Add validation
-    // TODO: Add database logic
-    // TODO: Return created provider
+    const clinic = await prisma.clinics.create({ data: req.body });
 
-    res.status(201).json({ message: "Provider created" });
+    res.status(201).json({ clinic });
   } catch (error) {
     next(error);
   }

@@ -19,6 +19,9 @@ create table if not exists clinics (
   longitude numeric,
   booking_provider text,
   booking_url text,
+  offers_direct_billing boolean not null default false,
+  specialties_json jsonb,
+  services_json jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -42,17 +45,9 @@ create table if not exists practitioners (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null unique references users(id) on delete cascade,
   profession text not null,
-  license_number text,
   bio text,
-  years_experience int,
-  price_min numeric,
-  price_max numeric,
-  offers_direct_billing boolean not null default false,
+  clinic_id uuid references clinics(id),
   is_active boolean not null default true,
-  specialties_json jsonb,
-  services_json jsonb,
-  booking_provider text,
-  booking_url text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

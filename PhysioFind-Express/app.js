@@ -4,6 +4,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var mapPrismaError = require("./utils/prismaErrorMapper");
 
 // Load configuration
 var serverConfig = require("./config/server");
@@ -34,6 +35,20 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
+  var mapped = mapPrismaError(err);
+  if (mapped) {
+    err.status = mapped.status;
+    err.message = mapped.message;
+  }
+
+  var wantsJson =
+    req.xhr ||
+    (req.headers.accept &&
+      req.headers.accept.indexOf("application/json") !== -1);
+  if (wantsJson) {
+    return res.status(err.status || 500).json({ error: err.message });
+  }
+
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
