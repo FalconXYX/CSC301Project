@@ -18,8 +18,8 @@ model clinics {
   city            String
   province        String   @default("ON")
   postal_code     String
-  latitude        Decimal? @db.Numeric
-  longitude       Decimal? @db.Numeric
+  latitude        Decimal? @db.Decimal(10, 6)
+  longitude       Decimal? @db.Decimal(10, 6)
   booking_provider String?
   booking_url     String?
   created_at      DateTime @default(now())
