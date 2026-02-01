@@ -4,6 +4,7 @@ import "./assets/css/global.css";
 
 import Home from "./pages/Home";
 import NavLayout from "./layouts/NavLayout";
+import FindProvider from "./pages/patients/FindProvider";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         {/* Pages with nav layout */}
         <Route path="/" element={<NavLayout />}>
           <Route index element={<Home />} />
+          <Route path="find-provider" element={<FindProvider />} />
         </Route>
       </Routes>
     </BrowserRouter>

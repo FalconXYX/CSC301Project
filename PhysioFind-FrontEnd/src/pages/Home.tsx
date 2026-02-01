@@ -1,6 +1,7 @@
 import "./Home.css";
 
 import Section from "../components/Section";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -17,12 +18,12 @@ function Home() {
           </p>
         </div>
         <div className="cta-container">
-          <a href="#" className="cta-btn primary">
+          <Link to="/find-provider" className="cta-btn primary">
             Find a provider
-          </a>
-          <a href="#" className="cta-btn secondary">
+          </Link>
+          <Link to="#" className="cta-btn secondary">
             For clinics & practitioners
-          </a>
+          </Link>
         </div>
       </Section>
     </>

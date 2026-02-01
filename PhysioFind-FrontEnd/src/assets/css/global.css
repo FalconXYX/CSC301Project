@@ -5,7 +5,7 @@
 
   /* Colors */
   --c-bg: light-dark(oklch(96% 0% 0), oklch(17% 0% 0));
-  --c-text: light-dark(oklch(12% 0% 0), oklch(96% 0% 0));
+  --c-text: light-dark(oklch(12% 0% 0), oklch(92% 0% 0));
   --c-text-secondary: light-dark(
     oklch(25% 0% 0 / 0.83),
     oklch(83% 0% 0 / 0.83)

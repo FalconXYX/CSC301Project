@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
+
 import "./GlobalComponents.css";
+
 import PhysioFindSvg from "../../assets/physiofind.svg?react";
 
 function GlobalNav() {
@@ -7,21 +10,21 @@ function GlobalNav() {
       <div className="global-nav">
         <nav>
           <div className="stretch start">
-            <a href="#" className="home-btn">
+            <Link to="/" className="home-btn">
               <PhysioFindSvg className="icon" />
               <span className="title">PhysioFind</span>
-            </a>
+            </Link>
           </div>
           <div className="pages">
-            <a href="#" className="nav-btn">
+            <Link to="#" className="nav-btn">
               Patients
-            </a>
-            <a href="#" className="nav-btn">
+            </Link>
+            <Link to="#" className="nav-btn">
               Clinics
-            </a>
-            <a href="#" className="nav-btn">
+            </Link>
+            <Link to="#" className="nav-btn">
               About Us
-            </a>
+            </Link>
           </div>
           <div className="stretch end">
             <button className="account-btn">
