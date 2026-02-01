@@ -1,4 +1,4 @@
 # macOS
 .DS_Store
 node_modules/
-.vscode
+scripts/pull_schema.js
