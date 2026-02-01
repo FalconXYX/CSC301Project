@@ -32,6 +32,7 @@ DB_PORT=5432
 DB_NAME=physiofind
 DB_USER=physiofind
 DB_PASSWORD=physiofind
+DATABASE_URL=postgresql://physiofind:physiofind@localhost:5432/physiofind
 ```
 
 ## Start a local database (Postgres)
@@ -58,6 +59,21 @@ To stop and remove the container:
 docker stop physiofind-db
 
 docker rm physiofind-db
+```
+
+## Prisma setup
+
+Generate the Prisma client after installing dependencies and when the schema changes:
+
+```bash
+npx prisma generate
+```
+
+If you update the database schema, keep Prisma in sync:
+
+```bash
+npx prisma db pull
+npx prisma generate
 ```
 
 ## Run the server
