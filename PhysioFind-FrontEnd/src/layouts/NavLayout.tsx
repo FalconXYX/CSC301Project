@@ -1,12 +1,15 @@
+import { Outlet } from "react-router-dom";
 import GlobalFooter from "../components/global/GlobalFooter";
 import GlobalNav from "../components/global/GlobalNav";
-import "./DefaultLayout.css";
+import "./NavLayout.css";
 
-function DefaultLayout({ children }: React.PropsWithChildren) {
+function DefaultLayout() {
   return (
     <>
       <GlobalNav />
-      <main>{children}</main>
+      <main>
+        <Outlet />
+      </main>
       <GlobalFooter />
     </>
   );
