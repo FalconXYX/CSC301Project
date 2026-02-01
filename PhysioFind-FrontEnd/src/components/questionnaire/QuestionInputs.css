@@ -1,0 +1,108 @@
+.question-input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Text Input */
+.text-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  font-family: var(--f-body);
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  border: 2px solid var(--c-separator);
+  border-radius: 0.5rem;
+  transition: border-color 150ms ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--c-accent);
+  }
+
+  &:hover {
+    border-color: var(--c-text-secondary);
+  }
+
+  &.error {
+    border-color: #ef4444;
+  }
+
+  &::placeholder {
+    color: var(--c-text-secondary);
+  }
+}
+
+.validation-error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: -0.25rem;
+}
+
+/* Multi-select and Radio Containers */
+.multiselect-container,
+.radio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Checkbox Label */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--c-separator);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 150ms ease;
+
+  &:hover {
+    border-color: var(--c-text-secondary);
+    background-color: color-mix(in oklch, var(--c-accent) 5%, transparent);
+  }
+}
+
+.checkbox-input {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+  accent-color: var(--c-accent);
+}
+
+.checkbox-text {
+  font-size: 1rem;
+  color: var(--c-text);
+}
+
+/* Radio Label */
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--c-separator);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 150ms ease;
+
+  &:hover {
+    border-color: var(--c-text-secondary);
+    background-color: color-mix(in oklch, var(--c-accent) 5%, transparent);
+  }
+}
+
+.radio-input {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+  accent-color: var(--c-accent);
+}
+
+.radio-text {
+  font-size: 1rem;
+  color: var(--c-text);
+}
