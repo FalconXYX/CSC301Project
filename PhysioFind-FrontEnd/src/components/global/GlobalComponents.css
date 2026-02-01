@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle&display=block");
+
+.global-nav {
+  position: fixed;
+  top: 0;
+
+  width: 100%;
+  height: var(--g-navbar-height);
+  padding: 0 var(--g-padding);
+  align-content: center;
+
+  nav {
+    max-width: var(--g-max-width);
+    width: stretch;
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    .stretch {
+      flex: 1;
+
+      display: flex;
+
+      &.start {
+        justify-content: flex-start;
+      }
+
+      &.end {
+        justify-content: flex-end;
+      }
+    }
+
+    .pages {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    a,
+    button {
+      transition: opacity 75ms ease;
+
+      &:hover {
+        opacity: 0.67;
+      }
+    }
+
+    .home-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .title {
+        font-family: "Playfair Display", sans-serif;
+        font-weight: 700;
+        font-size: 1.0625rem;
+      }
+    }
+
+    .account-btn {
+      height: 1.75rem;
+    }
+
+    .nav-btn {
+      padding: 0.375rem 0.75rem;
+      font-weight: 500;
+    }
+
+    .icon {
+      width: 1.75rem;
+      height: 1.75rem;
+
+      font-size: 1.75rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+footer {
+  width: 100%;
+  height: var(--g-footer-height);
+
+  align-content: center;
+
+  .copyright-notice {
+    margin: 0 auto;
+    font-size: 0.875rem;
+    color: var(--c-text-secondary);
+    width: fit-content;
+  }
+}

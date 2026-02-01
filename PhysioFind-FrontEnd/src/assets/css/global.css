@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
+:root {
+  color-scheme: light dark;
+
+  /* Colors */
+  --c-bg: light-dark(oklch(96% 0% 0), oklch(17% 0% 0));
+  --c-text: light-dark(oklch(12% 0% 0), oklch(96% 0% 0));
+  --c-text-secondary: light-dark(
+    oklch(25% 0% 0 / 0.83),
+    oklch(83% 0% 0 / 0.83)
+  );
+
+  --c-accent: var(--c-text);
+  --c-separator: oklch(50% 0% 0 / 0.42);
+
+  /* Fonts */
+  --f-serif: "Playfair Display", serif;
+  --f-body: "Inter", sans-serif;
+
+  /* Globals */
+  --g-max-width: 72rem;
+  --g-padding: 3rem;
+
+  --g-navbar-height: 3rem;
+  --g-footer-height: 2.5rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--f-body);
+  background-color: var(--c-bg);
+  color: var(--c-text);
+}
+
+a,
+button {
+  all: unset;
+}
