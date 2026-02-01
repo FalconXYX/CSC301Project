@@ -1,0 +1,6 @@
+#questionnaire {
+  min-height: calc(100vh - var(--g-navbar-height) - var(--g-footer-height));
+  align-content: center;
+  padding-top: var(--g-navbar-height);
+  padding-bottom: 2rem;
+}

@@ -1,0 +1,36 @@
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  width: 100%;
+}
+
+.nav-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 16rem;
+  transition: opacity 75ms ease;
+  cursor: pointer;
+
+  &.previous {
+    border: 2px solid var(--c-accent);
+    background-color: transparent;
+    color: var(--c-text);
+  }
+
+  &.next {
+    background-color: var(--c-accent);
+    color: var(--c-bg);
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.75;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
