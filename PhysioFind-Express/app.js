@@ -14,6 +14,8 @@ var indexRouter = require("./routes/index");
 var createUsersRouter = require("./routes/users/createUser");
 var createclinicsRouter = require("./routes/providers/createProvider");
 var deleteclinicsRouter = require("./routes/providers/deleteProvider");
+var updateclinicsRouter = require("./routes/providers/updateProvider");
+var getclinicsRouter = require("./routes/providers/getProvider");
 
 var app = express();
 
@@ -31,6 +33,10 @@ app.use("/", indexRouter);
 app.use("/users", createUsersRouter);
 app.use("/createclinic", createclinicsRouter);
 app.use("/deleteclinic", deleteclinicsRouter);
+app.use("/clinics", createclinicsRouter);
+app.use("/clinics", deleteclinicsRouter);
+app.use("/clinics", updateclinicsRouter);
+app.use("/clinics", getclinicsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

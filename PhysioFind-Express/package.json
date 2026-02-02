@@ -6,7 +6,10 @@
     "start": "node ./bin/www",
     "migrate:sql": "node ./scripts/runSqlMigration.js",
     "test:create-clinic": "node ./scripts/api-testing-scripts/testCreateClinic.js",
-    "test:delete-clinic": "node ./scripts/api-testing-scripts/testDeleteClinic.js"
+    "test:delete-clinic": "node ./scripts/api-testing-scripts/testDeleteClinic.js",
+    "test:update-clinic": "node ./scripts/api-testing-scripts/testUpdateClinic.js",
+    "test:get-clinics": "node ./scripts/api-testing-scripts/testGetClinics.js",
+    "test:get-public-clinics": "node ./scripts/api-testing-scripts/testGetPublicClinics.js"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0",
