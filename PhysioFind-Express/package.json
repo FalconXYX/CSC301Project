@@ -10,7 +10,6 @@
     "test:update-clinic": "node ./scripts/api-testing-scripts/testUpdateClinic.js",
     "test:get-clinics": "node ./scripts/api-testing-scripts/testGetClinics.js",
     "test:get-public-clinics": "node ./scripts/api-testing-scripts/testGetPublicClinics.js"
-    "test:update-clinic": "node ./scripts/api-testing-scripts/testUpdateClinic.js"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0",
