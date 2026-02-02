@@ -10,11 +10,18 @@ if (!clinicId) {
   process.exit(1);
 }
 
-const endpoint = `${baseUrl.replace(/\/$/, "")}/clinic/${clinicId}`;
+const endpoint = `${baseUrl.replace(/\/$/, "")}/clinics/${clinicId}`;
+
+const payload = {
+  phone: "416-555-0199",
+  website: "https://physiofind-updated.example",
+};
 
 async function run() {
   const response = await fetch(endpoint, {
-    method: "DELETE",
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
   });
 
   let body;
@@ -30,7 +37,7 @@ async function run() {
     process.exit(1);
   }
 
-  console.log("Deleted clinic:", body);
+  console.log("Updated clinic:", body);
 }
 
 run().catch((error) => {

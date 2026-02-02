@@ -1,19 +1,20 @@
 var express = require("express");
 var router = express.Router();
+var prisma = require("../../config/prisma");
 
 /**
  * PUT /providers/:id
  * Update a provider by ID
  */
-router.put("/:id", function (req, res, next) {
+router.put("/:id", async function (req, res, next) {
   try {
-    const providerId = req.params.id;
+    const clinicId = req.params.id;
+    const clinic = await prisma.clinics.update({
+      where: { id: clinicId },
+      data: req.body,
+    });
 
-    // TODO: Add validation
-    // TODO: Add database update logic
-    // TODO: Return updated provider
-
-    res.json({ message: "Provider updated", providerId: providerId });
+    res.json({ clinic: clinic });
   } catch (error) {
     next(error);
   }
