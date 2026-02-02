@@ -11,7 +11,7 @@ var serverConfig = require("./config/server");
 var constants = require("./config/constants");
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+var createUsersRouter = require("./routes/users/createUser");
 var createclinicsRouter = require("./routes/providers/createProvider");
 
 var app = express();
@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, serverConfig.publicPath)));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/users", createUsersRouter);
 app.use("/createclinic", createclinicsRouter);
 
 // catch 404 and forward to error handler

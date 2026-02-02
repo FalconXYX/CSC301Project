@@ -27,3 +27,20 @@ model clinics {
 
   @@map("clinics")
 }
+
+model users {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email          String   @unique
+  phone          String?
+  password_hash  String
+  role           String
+  first_name     String?
+  last_name      String?
+  date_of_birth  DateTime? @db.Date
+  clinic_id      String?  @db.Uuid
+  clinic_role    String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updated_at
+
+  @@map("users")
+}
