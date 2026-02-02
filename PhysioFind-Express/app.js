@@ -13,6 +13,8 @@ var constants = require("./config/constants");
 var indexRouter = require("./routes/index");
 var createUsersRouter = require("./routes/users/createUser");
 var getUsersRouter = require("./routes/users/getUser");
+var updateUsersRouter = require("./routes/users/updateUser");
+var deleteUsersRouter = require("./routes/users/deleteUser");
 var createclinicsRouter = require("./routes/providers/createProvider");
 var deleteclinicsRouter = require("./routes/providers/deleteProvider");
 
@@ -31,6 +33,8 @@ app.use(express.static(path.join(__dirname, serverConfig.publicPath)));
 app.use("/", indexRouter);
 app.use("/users", createUsersRouter);
 app.use("/users", getUsersRouter);
+app.use("/users", updateUsersRouter);
+app.use("/users", deleteUsersRouter);
 app.use("/createclinic", createclinicsRouter);
 app.use("/deleteclinic", deleteclinicsRouter);
 
