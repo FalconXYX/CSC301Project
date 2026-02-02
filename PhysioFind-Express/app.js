@@ -36,7 +36,8 @@ app.use("/users", getUsersRouter);
 app.use("/users", updateUsersRouter);
 app.use("/users", deleteUsersRouter);
 app.use("/createclinic", createclinicsRouter);
-app.use("/deleteclinic", deleteclinicsRouter);
+app.use("/clinic", deleteclinicsRouter);
+app.use("/updateclinic", updateclinicsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
