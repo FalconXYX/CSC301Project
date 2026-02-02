@@ -13,6 +13,7 @@ var constants = require("./config/constants");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var createclinicsRouter = require("./routes/providers/createProvider");
+var deleteclinicsRouter = require("./routes/providers/deleteProvider");
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, serverConfig.publicPath)));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/createclinic", createclinicsRouter);
+app.use("/deleteclinic", deleteclinicsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
