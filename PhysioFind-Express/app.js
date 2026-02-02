@@ -17,6 +17,8 @@ var updateUsersRouter = require("./routes/users/updateUser");
 var deleteUsersRouter = require("./routes/users/deleteUser");
 var createclinicsRouter = require("./routes/providers/createProvider");
 var deleteclinicsRouter = require("./routes/providers/deleteProvider");
+var updateclinicsRouter = require("./routes/providers/updateProvider");
+var getclinicsRouter = require("./routes/providers/getProvider");
 
 var app = express();
 
@@ -36,6 +38,11 @@ app.use("/users", getUsersRouter);
 app.use("/users", updateUsersRouter);
 app.use("/users", deleteUsersRouter);
 app.use("/createclinic", createclinicsRouter);
+app.use("/deleteclinic", deleteclinicsRouter);
+app.use("/clinics", createclinicsRouter);
+app.use("/clinics", deleteclinicsRouter);
+app.use("/clinics", updateclinicsRouter);
+app.use("/clinics", getclinicsRouter);
 app.use("/clinic", deleteclinicsRouter);
 app.use("/updateclinic", updateclinicsRouter);
 
