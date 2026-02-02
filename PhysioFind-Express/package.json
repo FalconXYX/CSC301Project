@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "migrate:sql": "node ./scripts/runSqlMigration.js",
-    "test:create-clinic": "node ./scripts/api-testing-scripts/testCreateClinic.js"
+    "test:create-clinic": "node ./scripts/api-testing-scripts/testCreateClinic.js",
+    "test:delete-clinic": "node ./scripts/api-testing-scripts/testDeleteClinic.js"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0",

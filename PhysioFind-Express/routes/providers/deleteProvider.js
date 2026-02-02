@@ -1,18 +1,18 @@
 var express = require("express");
 var router = express.Router();
+var prisma = require("../../config/prisma");
 
 /**
  * DELETE /providers/:id
  * Delete a provider by ID
  */
-router.delete("/:id", function (req, res, next) {
+router.delete("/:id", async function (req, res, next) {
   try {
-    const providerId = req.params.id;
+    const clinicId = req.params.id;
 
-    // TODO: Add database delete logic
-    // TODO: Return success message
+    await prisma.clinics.delete({ where: { id: clinicId } });
 
-    res.json({ message: "Provider deleted", providerId: providerId });
+    res.json({ message: "Clinic deleted", clinicId: clinicId });
   } catch (error) {
     next(error);
   }
