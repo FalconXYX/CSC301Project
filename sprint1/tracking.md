@@ -9,7 +9,7 @@ Everything found in this document can be seen and fact checked by accessing our 
 The above two screenshots show our sprint board in its current state at the end of the sprint. Any user stories that cannot be seen in the screenshots will be found in the "Done" section (To see the sprint board, click here: https://github.com/users/FalconXYX/projects/1).
 ## Stories Started
 
-As seen in the images above, all major user stories were started during this sprint, but sub-issues 1.4.3 and 1.4.4 were no started.
+As seen in the images above, all major user stories were started during this sprint. The reason parts of user story 1.4, which included tasks 1.4.2 through 1.4.4, were not completed is that the person in charge had a family emergency. These tasks were not picked up by others team members because they were deemed a lower priority; fully integrating them would require features scheduled for implementation in future sprints.
 
 ## Pull Requests:
 
