@@ -12,4 +12,12 @@ body {
 
 main {
   flex: 1;
+
+  & > *:first-child {
+    padding-top: var(--g-navbar-height);
+  }
+
+  & > *:last-child {
+    padding-bottom: var(--g-footer-height);
+  }
 }
