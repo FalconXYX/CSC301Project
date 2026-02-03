@@ -1,0 +1,152 @@
+[
+  {
+    "id": "vc-001",
+    "type": "verified",
+    "name": "Toronto Family Health Centre",
+    "address": {
+      "line1": "123 Queen Street West",
+      "line2": "Suite 400",
+      "city": "Toronto",
+      "province": "Ontario",
+      "postalCode": "M5H 2M9"
+    },
+    "contact": {
+      "email": "info@torontofamilyhealth.ca",
+      "phone": "(416) 555-0123",
+      "website": "https://torontofamilyhealth.ca"
+    },
+    "services": [
+      "Pediatrics",
+      "Physical Exams"
+    ]
+  },
+  {
+    "id": "vc-002",
+    "type": "verified",
+    "name": "Bloor Medical Clinic",
+    "address": {
+      "line1": "789 Bloor Street East",
+      "city": "Toronto",
+      "province": "Ontario",
+      "postalCode": "M4W 1A9"
+    },
+    "contact": {
+      "email": "appointments@bloormedical.com",
+      "phone": "(416) 555-0456",
+      "website": "https://bloormedical.com"
+    },
+    "services": [
+      "Minor Procedures",
+      "Lab Services",
+      "X-Ray"
+    ]
+  },
+  {
+    "id": "vc-003",
+    "type": "verified",
+    "name": "Scarborough Women's Health Clinic",
+    "address": {
+      "line1": "2450 Lawrence Avenue East",
+      "line2": "Unit 12",
+      "city": "Scarborough",
+      "province": "Ontario",
+      "postalCode": "M1P 2R7"
+    },
+    "contact": {
+      "email": "info@scarboroughwomenshealth.ca",
+      "phone": "(416) 555-0789"
+    },
+    "services": [
+      "Family Planning",
+      "Women's Health"
+    ]
+  },
+  {
+    "id": "vc-004",
+    "type": "verified",
+    "name": "North York Urgent Care",
+    "address": {
+      "line1": "5500 Yonge Street",
+      "city": "North York",
+      "province": "Ontario",
+      "postalCode": "M2N 5S3"
+    },
+    "contact": {
+      "phone": "(416) 555-0321",
+      "website": "https://nyurgentcare.ca"
+    },
+    "services": [
+      "Urgent Care",
+      "Wound Care",
+      "IV Therapy"
+    ]
+  },
+  {
+    "id": "gm-001",
+    "type": "google-maps",
+    "name": "Rosedale Medical Centre",
+    "address": {
+      "line1": "600 Sherbourne Street",
+      "city": "Toronto",
+      "province": "Ontario",
+      "postalCode": "M4X 1W4"
+    },
+    "contact": {
+      "phone": "(416) 555-1111"
+    },
+    "distance": 1.2,
+    "mapsUrl": "https://maps.google.com/?cid=12345678901234567890"
+  },
+  {
+    "id": "gm-002",
+    "type": "google-maps",
+    "name": "St. Clair Wellness Clinic",
+    "address": {
+      "line1": "1455 St. Clair Avenue West",
+      "city": "Toronto",
+      "province": "Ontario",
+      "postalCode": "M6E 1C5"
+    },
+    "contact": {
+      "phone": "(416) 555-2222",
+      "website": "https://stclairwellness.com"
+    },
+    "distance": 3.7,
+    "mapsUrl": "https://maps.google.com/?cid=23456789012345678901"
+  },
+  {
+    "id": "gm-003",
+    "type": "google-maps",
+    "name": "The Beaches Health Clinic",
+    "address": {
+      "line1": "2150 Queen Street East",
+      "city": "Toronto",
+      "province": "Ontario",
+      "postalCode": "M4E 1E4"
+    },
+    "contact": {
+      "email": "contact@beacheshealth.ca",
+      "phone": "(416) 555-3333"
+    },
+    "distance": 5.1,
+    "mapsUrl": "https://maps.google.com/?cid=34567890123456789012"
+  },
+  {
+    "id": "gm-004",
+    "type": "google-maps",
+    "name": "Etobicoke Family Physicians",
+    "address": {
+      "line1": "3088 Bloor Street West",
+      "line2": "2nd Floor",
+      "city": "Etobicoke",
+      "province": "Ontario",
+      "postalCode": "M8X 1C4"
+    },
+    "contact": {
+      "phone": "(416) 555-4444",
+      "website": "https://etobicokefamilydocs.com"
+    },
+    "distance": 8.9,
+    "mapsUrl": "https://maps.google.com/?cid=45678901234567890123"
+  }
+]
