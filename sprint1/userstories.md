@@ -198,7 +198,7 @@ As a developer, I want to define basic API endpoints for providers and booking s
         - Implement the logic for soft deletion (e.g., updating an is_deleted flag).
         - Implement the logic for hard deletion to permanently remove the provider record.
         - Ensure the endpoint allows the caller to specify which deletion method to execute.
-     -**Estimate:** 3
+    - **Estimate:** 3
 
 - **1.3.7: Modify Provider**
     - **Description:**
