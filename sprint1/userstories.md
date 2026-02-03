@@ -62,6 +62,15 @@ As a developer, I want to set up a Postgres database schema for users and clinic
         - Establish a process to run these tests successfully before closing the sprint.
     - **Estimate:** 2
 
+**User Story 1.1 Acceptance Criteria:**
+- A PostgreSQL database is selected, provisioned, and accessible for local, testing, and hosted environments.
+- Secure environment variables are configured for all environments, and no credentials are committed to version control.
+- Database schemas for Users and Providers/Clinics are finalized, documented, and approved by the team.
+- The schemas are successfully implemented using the agreed-upon approach (ORM or raw SQL).
+- Database migrations are configured and can be run consistently across local, testing, and production environments.
+- Test scripts exist and can verify basic database connectivity and schema correctness in both local and hosted environments.
+- A developer can create, query, and migrate the database without errors using the documented setup.
+
 ## User Story 1.2: Create-Front-End
 As a developer, I want to set up our React frontend development environment so that we can begin implementing UI features.
 
@@ -114,6 +123,15 @@ As a developer, I want to set up our React frontend development environment so t
         - Populate the interface with placeholder text and images to simulate the user experience.
         - Style the visual elements to ensure the page structure is ready for real data integration.
     - **Estimate:** 2
+
+**User Story 1.2 Acceptance Criteria:**
+- A front-end framework is selected, documented, and agreed upon by the team.
+- The front-end project initializes successfully with a standardized folder structure and linting/code-quality rules.
+- The application runs locally without errors and is ready for feature development.
+- A landing page exists with navigation, hero section, and footer using placeholder content.
+- A complete user question-and-answer flow is implemented using mock data and functions correctly from start to finish.
+- A search results page layout exists that visually distinguishes verified clinics from external listings using placeholder data.
+- All implemented UI flows are navigable and testable without backend integration.
 
 ## User Story 1.3: API-Design
 As a developer, I want to define basic API endpoints for providers and booking so that frontend and backend communication is clear.
@@ -200,6 +218,13 @@ As a developer, I want to define basic API endpoints for providers and booking s
         - Apply data filtering to ensure private account data is never exposed in public queries.
     - **Estimate:** 3
 
+**User Story 1.3 Acceptance Criteria:**
+- RESTful API endpoints are defined and implemented for Users and Providers.
+- Users can be created, retrieved, updated, and deleted via the API, with support for both soft and hard deletion.
+- Providers can be created, retrieved, updated, and deleted via the API, with support for both soft and hard deletion.
+- API requests correctly persist data to the database and return predictable, documented responses.
+- Frontend developers can rely on the API contract without ambiguity or undocumented behavior.
+
 ## User Story 1.4: Create-Maps-API
 As a developer, I want to create a API that gets provider profiles based on the location given so that patient-facing features can be used and tested.
 
@@ -243,3 +268,13 @@ As a developer, I want to create a API that gets provider profiles based on the 
         - Implement logic to fetch data from both the internal database and the external Maps query.
         - Merge the datasets for display, ensuring a clear distinction or sorting between verified and external providers.
     - **Estimate:** 3
+
+**User Story 1.4 Acceptance Criteria:**
+- A documented decision exists on whether Google Maps API calls are handled client-side or server-side.
+- Google Maps/Places API integration is functional, with API keys securely stored and not exposed in source code.
+- The system can query external provider data based on a given user location.
+- External provider results are parsed into a format compatible with the application’s UI.
+- Internal verified provider data can be retrieved via the existing Provider API.
+- Internal and external provider results are merged into a single response or flow.
+- Verified providers are clearly distinguishable from unverified external listings in the results.
+- The combined provider search can be used to test patient-facing features end-to-end.

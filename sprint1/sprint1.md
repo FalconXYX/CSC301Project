@@ -1,10 +1,30 @@
 # Sprint Planning Meeting
-# TODO: Flesh this out and add spikes (spikes are mini workshop sessions to investigate predicted pitfalls due ot a lack of expertise (learning curves) that may occur in our development process.  An example is identifying that the archetype is a pattern that everyone may not be familiar with.)
-## Meetin on January 26th at 9:45pm
+## Meeting on January 26th at 9:45pm
 Lasted 40 min.
 
-**Attendees:** Drew Nerbas, Parth Jain, Martin Stric, Saahil Pandit, and Jordan Jones
+**Sprint Goals:**
+- Frontend:
+    - Set up the frontend framework (React Native).
+    - Create landing page with placeholder tabs and information to be fleshed out in later sprints.
+    - Create user flow for the question and answer section of the UI.
+    - Create the interface for the results page the user will see following the questionaire.
+- Backend:
+    - Create API endpoints to create/update/delete/get users.
+    - Create API endpoints to create/update/delete/get clinics.
+    - Utilize the API and database to return filtered results of clinics that best suit the user and utilize the Google Maps API to locate them.
+- Database:
+    - Decide what Postgres hosting option to use.
+    - Set up the account and configure the environment for the chosen database host.
+    - Create database schema and migrations.
+    - Implement the schema.
+    - Test the database.
 
-**Take Aways:**
-- Tasks were assigned for sprint 1
-- Detailed git branch structure and naming scheme
+**Spikes:**
+- Using React to implement the frontend (Martin)
+- Implementing the backend API using express js (Drew, Parth)
+- Google Maps API Integration (Jordan)
+- Supabase/Postgres Database creation (Saahil)
+
+**Team Capacity:** 5
+
+**Attendees:** Drew Nerbas, Parth Jain, Martin Stric, Saahil Pandit, and Jordan Jones

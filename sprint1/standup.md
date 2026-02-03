@@ -11,6 +11,16 @@ Lasted 14 minutes.
 - All tickets have been created.
 - Clarified ticket assignees.
 
+## Meeting on January 30, 2027 at 10:45 AM
+Lasted 10 minutes.
+
+**Attendees:** Drew Nerbas, Parth Jain, Martin Stric, Saahil Pandit, and Jordan Jones
+
+**Notes:**
+- Supabase selected as database hosting platform.
+- Database schema reviewed & completed.
+- All tickets have been created.
+- Clarified ticket assignees.
 
 ## Meeting on February 1, 2026 at 6:30 PM
 Lasted 40 minutes.
