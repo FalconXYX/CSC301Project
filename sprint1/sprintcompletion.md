@@ -44,6 +44,10 @@ As a developer, I want to set up our React frontend development environment so t
 **Description:** Develop the user interface and logic for the question-and-answer flow using placeholder data, without requiring backend API integration yet.\
 **Estimate:** 3
 
+**1.2.5: Create Search Results Flow**\
+**Description:** Build the search results page layout to display verified clinics and Google Maps entries using placeholder data to visualize the final design.\
+**Estimate:** 2
+
 ## User Story 1.3:
 **Estimate:** 8\
 As a developer, I want to define basic API endpoints for providers and booking so that frontend and backend communication is clear.
