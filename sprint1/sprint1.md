@@ -1,6 +1,6 @@
 # Sprint Planning Meeting
-## Meeting on January 26th at 9:45pm
-Lasted 40 min.
+## Meeting on January 26th at 9:45 PM
+Lasted 40 minutes.
 
 **Sprint Goals:**
 - Frontend:
