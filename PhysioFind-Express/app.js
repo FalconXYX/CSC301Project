@@ -46,6 +46,10 @@ app.use("/clinics", getclinicsRouter);
 app.use("/clinic", deleteclinicsRouter);
 app.use("/updateclinic", updateclinicsRouter);
 
+const searchProvidersRouter = require('./routes/searchProviders');
+app.use(searchProvidersRouter);
+
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
