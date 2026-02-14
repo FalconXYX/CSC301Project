@@ -5,12 +5,20 @@ import "./FindProvider.css";
 
 import Section from "../../components/Section";
 import QuestionnaireContainer from "../../components/patients/questionnaire/QuestionnaireContainer";
+import { useNavigate } from "react-router-dom";
 
 function FindProvider() {
+  const navigate = useNavigate();
+
   const handleSubmit = (data: FormData) => {
+    // postal code question id in your questionnaire JSON is "location"
     console.log("Form submitted:", data);
+
+    const raw = data.location;
+    const postalCode = (typeof raw === "string" ? raw : "").trim().toUpperCase();
+
     // TODO: Handle form submission (e.g., send to API)
-    open("/find-provider/results");
+    navigate(`/find-provider/results?postalCode=${encodeURIComponent(postalCode)}`);
   };
 
   return (

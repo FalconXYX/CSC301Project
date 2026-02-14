@@ -1,3 +1,6 @@
+import { useSearchParams } from "react-router-dom";
+import PlacesSearchMap from '../../components/PlacesSearchMap';
+
 import React, { useState } from "react";
 import type { Clinic } from "../../components/patients/types";
 import providerResults from "../../data/find-provider-results.json";
@@ -9,6 +12,9 @@ import VerifiedClinicCell from "../../components/patients/search/VerifiedClinicC
 import GoogleMapsClinicCell from "../../components/patients/search/GoogleMapsClinicCell";
 
 function SearchResults() {
+  const [params] = useSearchParams();
+  const postalCode = params.get("postalCode") ?? "";
+
   // Placeholder data - will be replaced with real data from API
   const [clinics] = useState<Clinic[]>(providerResults as Clinic[]);
 
@@ -18,35 +24,38 @@ function SearchResults() {
   };
 
   return (
-    <Section id="search-results">
-      <div className="title">
-        <h1 className="heading">Your Matches</h1>
-        <p className="subheading">
-          We tried our best to match you with healthcare providers based on your
-          responses to the questionnaire.
-        </p>
-      </div>
-      <div className="results">
-        {clinics.map((clinic) => {
-          switch (clinic.type) {
-            case "verified":
-              return (
-                <VerifiedClinicCell
-                  clinic={clinic}
-                  showDetails={() => showDetails(clinic)}
-                />
-              );
-            case "google-maps":
-              return (
-                <GoogleMapsClinicCell
-                  clinic={clinic}
-                  showDetails={() => showDetails(clinic)}
-                />
-              );
-          }
-        })}
-      </div>
-    </Section>
+    <>
+      <PlacesSearchMap initialPostalCode={postalCode} />
+      <Section id="search-results">
+        <div className="title">
+          <h1 className="heading">Your Matches</h1>
+          <p className="subheading">
+            We tried our best to match you with healthcare providers based on your
+            responses to the questionnaire.
+          </p>
+        </div>
+        <div className="results">
+          {clinics.map((clinic) => {
+            switch (clinic.type) {
+              case "verified":
+                return (
+                  <VerifiedClinicCell
+                    clinic={clinic}
+                    showDetails={() => showDetails(clinic)}
+                  />
+                );
+              case "google-maps":
+                return (
+                  <GoogleMapsClinicCell
+                    clinic={clinic}
+                    showDetails={() => showDetails(clinic)}
+                  />
+                );
+            }
+          })}
+        </div>
+      </Section>
+    </>
   );
 }
 
