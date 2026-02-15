@@ -10,16 +10,31 @@ import { useNavigate } from "react-router-dom";
 function FindProvider() {
   const navigate = useNavigate();
 
-  const handleSubmit = (data: FormData) => {
-    // postal code question id in your questionnaire JSON is "location"
-    console.log("Form submitted:", data);
+// Inside FindProvider.tsx:
 
-    const raw = data.location;
-    const postalCode = (typeof raw === "string" ? raw : "").trim().toUpperCase();
+const handleSubmit = (data: FormData) => {
+  // Extract and normalize the postal code
+  const rawLocation = data.location;
+  const postalCode = (typeof rawLocation === "string" ? rawLocation : "")
+    .trim()
+    .toUpperCase();
 
-    // TODO: Handle form submission (e.g., send to API)
-    navigate(`/find-provider/results?postalCode=${encodeURIComponent(postalCode)}`);
-  };
+  // Extract the selected specialty
+  const rawSpecialty = data.specialty;
+  let specialty = "";
+  if (Array.isArray(rawSpecialty)) {
+    specialty = rawSpecialty[0] ?? "";
+  } else if (typeof rawSpecialty === "string") {
+    specialty = rawSpecialty;
+  }
+
+  // Build query params and navigate
+  const params = new URLSearchParams();
+  if (postalCode) params.set("postalCode", postalCode);
+  if (specialty) params.set("specialty", specialty);
+  navigate(`/find-provider/results?${params.toString()}`);
+};
+
 
   return (
     <Section id="questionnaire">
