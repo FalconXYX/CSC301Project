@@ -6,8 +6,6 @@ const { Client } = require("pg");
 const sqlFilePath = path.resolve(
   __dirname,
   "..",
-  "..",
-  "supabase",
   "migrations",
   "20260201074556_initial_schema.sql",
 );
