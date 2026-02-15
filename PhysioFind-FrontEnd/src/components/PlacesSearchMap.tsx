@@ -15,13 +15,26 @@ import {
  * `google.maps.places.PlaceResult` object.  Only properties needed for
  * display and marker placement are included.
  */
-type ProviderListing = {
+export type ProviderListing = {
   placeId: string;
   name: string;
   address: string;
   location: { lat: number; lng: number };
   rating?: number;
   userRatingsTotal?: number;
+};
+
+/**
+ * Props for the PlacesSearchMap component.
+ * - initialPostalCode and initialQuery prefill the search fields.
+ * - onResults is invoked whenever a new list of Places results is found.
+ * - onCenterResolved is invoked when the geocoded search center is determined.
+ */
+type PlacesSearchMapProps = {
+  initialPostalCode: string;
+  initialQuery: string;
+  onResults?: (results: ProviderListing[]) => void;
+  onCenterResolved?: (center: { lat: number; lng: number }) => void;
 };
 
 // Fallback map center (Toronto) used if geocoding fails.
@@ -45,18 +58,20 @@ function toLatLngLiteral(loc: any): { lat: number; lng: number } | null {
  *
  * Props:
  *  - onResults: callback invoked with a list of parsed provider results.
+ *  - onCenterResolved: callback invoked with the geocoded search center.
  *  - initialPostalCode: optional postal code to prefill the search field.
- *  - initialQuery: optional search term (e.g. speciality) to prefill the query field.
+ *  - initialQuery: optional search term (e.g. specialty) to prefill the query field.
  */
 function PlacesSearchControl(props: {
   onResults: (r: ProviderListing[]) => void;
+  onCenterResolved?: (center: { lat: number; lng: number }) => void;
   initialPostalCode?: string;
   initialQuery?: string;
 }) {
   const map = useMap(); // map instance created by <Map>
   const placesLib = useMapsLibrary('places'); // loads Places library
 
-  // Initialize query based on the provided speciality.  Default to
+  // Initialize query based on the provided specialty.  Default to
   // physiotherapy clinic if nothing is provided.
   const [query, setQuery] = useState(props.initialQuery ?? 'physiotherapy clinic');
   const [radius, setRadius] = useState(5000);
@@ -122,6 +137,11 @@ function PlacesSearchControl(props: {
         center = await geocodePostalCode(pc);
         map.panTo(center as any);
         map.setZoom(12);
+        // Notify parent about the resolved center
+        props.onCenterResolved?.(center);
+      } else {
+        // Even if we don't geocode, let the parent know the center we used
+        props.onCenterResolved?.(center);
       }
 
       setStatus('Searching...');
@@ -195,15 +215,14 @@ function PlacesSearchControl(props: {
  * collects provider results and renders them as markers and a simple
  * results list beneath the map.  The initial postal code and query
  * values may be provided by the parent component to pre-populate the
- * search fields.
+ * search fields.  It also forwards results and the resolved center to its parent.
  */
 export default function PlacesSearchMap({
   initialPostalCode,
   initialQuery,
-}: {
-  initialPostalCode?: string;
-  initialQuery?: string;
-}) {
+  onResults,
+  onCenterResolved,
+}: PlacesSearchMapProps) {
   const [results, setResults] = useState<ProviderListing[]>([]);
   return (
     <div>
@@ -211,7 +230,14 @@ export default function PlacesSearchMap({
         <Map defaultCenter={DEFAULT_CENTER} defaultZoom={11}>
           <MapControl position={ControlPosition.TOP_LEFT}>
             <PlacesSearchControl
-              onResults={setResults}
+              onResults={(listings) => {
+                // update our own state and notify parent
+                setResults(listings);
+                onResults?.(listings);
+              }}
+              onCenterResolved={(center) => {
+                onCenterResolved?.(center);
+              }}
               initialPostalCode={initialPostalCode}
               initialQuery={initialQuery}
             />
