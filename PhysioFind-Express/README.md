@@ -1,17 +1,3 @@
-# PhysioFind Express
-
-## Overview
-
-This is the Express backend for the PhysioFind project. It provides HTTP routes, server configuration, and middleware for the application. Configuration is managed through environment variables loaded from `.env`.
-
-## Prerequisites
-
-- Node.js 18+ (recommended)
-- Docker Desktop (for local Postgres)
-
-## Install dependencies
-
-```bash
 npm install
 ```
 
