@@ -9,7 +9,12 @@
     "test:delete-clinic": "node ./scripts/api-testing-scripts/testDeleteClinic.js",
     "test:update-clinic": "node ./scripts/api-testing-scripts/testUpdateClinic.js",
     "test:get-clinics": "node ./scripts/api-testing-scripts/testGetClinics.js",
-    "test:get-public-clinics": "node ./scripts/api-testing-scripts/testGetPublicClinics.js"
+    "test:get-public-clinics": "node ./scripts/api-testing-scripts/testGetPublicClinics.js",
+    "test:db-consistency": "node ./tests/db-consistency-test.js",
+    "test:all": "node ./tests/test-runner.js",
+    "test:create-user": "node ./tests/api-tests/users/testCreateUser.js",
+    "schema:sync": "node ./scripts/syncPrismaSchema.js",
+    "db:seed": "node ./scripts/seedDatabase.js"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0",
