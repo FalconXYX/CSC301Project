@@ -8,39 +8,118 @@ datasource db {
 }
 
 model clinics {
-  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name            String
-  phone           String?
-  email           String?
-  website         String?
-  address_line1   String
-  address_line2   String?
-  city            String
-  province        String   @default("ON")
-  postal_code     String
-  latitude        Decimal? @db.Decimal(10, 6)
-  longitude       Decimal? @db.Decimal(10, 6)
-  booking_provider String?
-  booking_url     String?
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
+  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                    String
+  phone                   String?
+  email                   String?
+  website                 String?
+  address_line1           String
+  address_line2           String?
+  city                    String
+  province                String              @default("ON")
+  postal_code             String
+  latitude                Decimal?            @db.Decimal
+  longitude               Decimal?            @db.Decimal
+  booking_provider        String?
+  booking_url             String?
+  offers_direct_billing   Boolean             @default(false)
+  specialties_json        Json?               @db.JsonB
+  services_json           Json?               @db.JsonB
+  created_at              DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime            @default(now()) @updatedAt @db.Timestamptz(6)
+  
+  // Relations
+  users                   users[]
+  practitioners           practitioners[]
+  clinic_insurances       clinic_insurances[]
+  appointment_requests    appointment_requests[]
 
   @@map("clinics")
 }
 
 model users {
-  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email          String   @unique
-  phone          String?
-  password_hash  String
-  role           String
-  first_name     String?
-  last_name      String?
-  date_of_birth  DateTime? @db.Date
-  clinic_id      String?  @db.Uuid
-  clinic_role    String?
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updated_at
+  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email                   String              @unique
+  phone                   String?
+  password_hash           String
+  role                    String
+  first_name              String?
+  last_name               String?
+  date_of_birth           DateTime?           @db.Date
+  clinic_id               String?             @db.Uuid
+  clinic_role             String?
+  created_at              DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime            @default(now()) @updatedAt @db.Timestamptz(6)
+  
+  // Relations
+  clinic                  clinics?            @relation(fields: [clinic_id], references: [id])
+  practitioner            practitioners?
+  appointment_requests    appointment_requests[]
 
   @@map("users")
+}
+
+model practitioners {
+  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                 String              @unique @db.Uuid
+  profession              String
+  bio                     String?
+  clinic_id               String?             @db.Uuid
+  is_active               Boolean             @default(true)
+  created_at              DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime            @default(now()) @updatedAt @db.Timestamptz(6)
+  
+  // Relations
+  user                    users               @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  clinic                  clinics?            @relation(fields: [clinic_id], references: [id])
+  appointment_requests    appointment_requests[]
+
+  @@map("practitioners")
+}
+
+model insurances {
+  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                    String              @unique
+  
+  // Relations
+  clinic_insurances       clinic_insurances[]
+
+  @@map("insurances")
+}
+
+model clinic_insurances {
+  clinic_id               String              @db.Uuid
+  insurance_id            String              @db.Uuid
+  supports_direct_billing Boolean             @default(false)
+  notes                   String?
+  
+  // Relations
+  clinic                  clinics             @relation(fields: [clinic_id], references: [id], onDelete: Cascade)
+  insurance               insurances          @relation(fields: [insurance_id], references: [id], onDelete: Cascade)
+
+  @@id([clinic_id, insurance_id])
+  @@index([insurance_id, supports_direct_billing], name: "idx_clinic_insurances_insurance_direct")
+  @@map("clinic_insurances")
+}
+
+model appointment_requests {
+  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  patient_user_id         String              @db.Uuid
+  clinic_id               String              @db.Uuid
+  practitioner_id         String?             @db.Uuid
+  preferred_start         DateTime?           @db.Timestamptz(6)
+  preferred_end           DateTime?           @db.Timestamptz(6)
+  constraints_json        Json?               @db.JsonB
+  status                  String
+  created_at              DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime            @default(now()) @updatedAt @db.Timestamptz(6)
+  
+  // Relations
+  patient                 users               @relation(fields: [patient_user_id], references: [id], onDelete: Restrict)
+  clinic                  clinics             @relation(fields: [clinic_id], references: [id], onDelete: Cascade)
+  practitioner            practitioners?      @relation(fields: [practitioner_id], references: [id], onDelete: SetNull)
+
+  @@index([clinic_id, status, created_at], name: "idx_appointment_requests_clinic_status_created")
+  @@index([patient_user_id, created_at], name: "idx_appointment_requests_patient_created")
+  @@map("appointment_requests")
 }
