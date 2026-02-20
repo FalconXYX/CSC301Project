@@ -27,10 +27,6 @@ var signOutRouter = require("./routes/auth/signOut");
 
 var app = express();
 
-// view engine setup
-app.set("views", path.join(__dirname, serverConfig.viewsPath));
-app.set("view engine", serverConfig.viewEngine);
-
 app.use(logger(serverConfig.logFormat));
 app.use(express.json());
 app.use(express.urlencoded(serverConfig.middleware.urlEncoded));
