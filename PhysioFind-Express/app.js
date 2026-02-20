@@ -62,21 +62,8 @@ app.use(function (err, req, res, next) {
     err.message = mapped.message;
   }
 
-  var wantsJson =
-    req.xhr ||
-    (req.headers.accept &&
-      req.headers.accept.indexOf("application/json") !== -1);
-  if (wantsJson) {
-    return res.status(err.status || 500).json({ error: err.message });
-  }
-
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+  // Always return JSON for API
+  return res.status(err.status || 500).json({ error: err.message });
 });
 
 module.exports = app;
