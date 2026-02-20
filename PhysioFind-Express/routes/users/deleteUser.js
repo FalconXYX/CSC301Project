@@ -1,14 +1,16 @@
 var express = require("express");
 var router = express.Router();
 var prisma = require("../../config/prisma");
+var { authorize_user } = require("../auth/authMiddleware.js");
 
 /**
- * DELETE /users/:id
+ * DELETE /users/
  * Delete a user by ID
  */
-router.delete("/:id", async function (req, res, next) {
+router.delete("/", async function (req, res, next) {
   try {
-    const userId = req.params.id;
+
+    const userId = await authorize_user(req)
 
     await prisma.users.delete({ where: { id: userId } });
 
