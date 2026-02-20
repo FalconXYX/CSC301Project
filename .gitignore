@@ -3,6 +3,4 @@
 node_modules/
 scripts/pull_schema.js
 .env*
-
-.env.production
 supabase/
