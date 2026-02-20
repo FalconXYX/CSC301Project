@@ -1,7 +1,7 @@
-require("dotenv").config({
-  path:
-    process.env.NODE_ENV === "production" ? ".env.production" : ".env.local",
-});
+// Load environment variables only in development
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config({ path: ".env.local" });
+}
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
