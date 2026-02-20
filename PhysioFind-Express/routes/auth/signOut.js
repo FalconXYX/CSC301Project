@@ -2,13 +2,13 @@ var express = require("express");
 var router = express.Router();
 
 var { createClient } = require("@supabase/supabase-js");
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY,
-);
 
 router.post("/signOut", async function (req, res, next) {
   try {
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_ANON_KEY,
+    );
     const { error } = await supabase.auth.signOut();
     if (error) {
       next(error);

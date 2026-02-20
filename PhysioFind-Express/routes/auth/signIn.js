@@ -3,13 +3,13 @@ var router = express.Router();
 var prisma = require("../../config/prisma");
 
 var { createClient } = require("@supabase/supabase-js");
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY,
-);
 
 router.post("/signIn", async function (req, res, next) {
   try {
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_ANON_KEY,
+    );
     const { data, error } = await supabase.auth.signInWithPassword({
       email: req.body.email,
       password: req.body.password_hash,

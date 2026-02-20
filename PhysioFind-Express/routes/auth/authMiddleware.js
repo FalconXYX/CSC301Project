@@ -1,12 +1,12 @@
 var express = require("express");
 
 var { createClient } = require("@supabase/supabase-js");
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY,
-);
 
 async function authorize_user(req) {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY,
+  );
   const {
     data: { user },
   } = await supabase.auth.getUser();
