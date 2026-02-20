@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const baseUrl = "https://csc-301-project.vercel.app/";
+const baseUrl = process.env.API_BASE_URL || "http://localhost:3000";
 const endpoint = `${baseUrl}/users`;
 
 async function run() {
