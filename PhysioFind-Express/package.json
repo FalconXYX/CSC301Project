@@ -5,7 +5,16 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "build": "prisma generate",
     "migrate:sql": "node ./scripts/runSqlMigration.js",
+    "test": "node ./scripts/runTests.js local all",
+    "test:prod": "node ./scripts/runTests.js production all",
+    "test:clinic": "node ./scripts/runTests.js local clinic",
+    "test:clinic:prod": "node ./scripts/runTests.js production clinic",
+    "test:user": "node ./scripts/runTests.js local user",
+    "test:user:prod": "node ./scripts/runTests.js production user",
+    "test:db": "node ./scripts/runTests.js local db",
+    "test:db:prod": "node ./scripts/runTests.js production db",
     "test:create-clinic": "node ./scripts/api-testing-scripts/testCreateClinic.js",
     "test:delete-clinic": "node ./scripts/api-testing-scripts/testDeleteClinic.js",
     "test:update-clinic": "node ./scripts/api-testing-scripts/testUpdateClinic.js",
@@ -15,7 +24,8 @@
     "test:all": "node ./tests/test-runner.js",
     "test:create-user": "node ./tests/api-tests/users/testCreateUser.js",
     "schema:sync": "node ./scripts/syncPrismaSchema.js",
-    "db:seed": "node ./scripts/seedDatabase.js"
+    "db:seed": "node ./scripts/seedDatabase.js",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0",
