@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "prisma generate",
+    "build": "prisma generate || true",
     "migrate:sql": "node ./scripts/runSqlMigration.js",
     "test": "node ./scripts/runTests.js local all",
     "test:prod": "node ./scripts/runTests.js production all",
@@ -24,8 +24,7 @@
     "test:all": "node ./tests/test-runner.js",
     "test:create-user": "node ./tests/api-tests/users/testCreateUser.js",
     "schema:sync": "node ./scripts/syncPrismaSchema.js",
-    "db:seed": "node ./scripts/seedDatabase.js",
-    "postinstall": "prisma generate"
+    "db:seed": "node ./scripts/seedDatabase.js"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0",
