@@ -88,8 +88,39 @@ The server listens on the port defined by `PORT` in `.env` (default: 3000).
 
 ## Testing
 
-Set `NODE_ENV=test` and ensure `.env.test` is configured, then run:
+### Environment Setup
+
+Tests use either `.env.local` (development) or `.env.production`. Ensure the correct environment file is configured before running tests.
+
+### Running Tests
+
+All tests are executed through npm with the syntax: `npm run test:<category>[:prod]`
+
+**All tests:**
+
+- `npm test` — runs all tests against local database
+- `npm run test:prod` — runs all tests against production database
+
+**By category:**
+
+- `npm run test:clinic` — all clinic API tests (local)
+- `npm run test:user` — all user API tests (local)
+- `npm run test:db` — database consistency check (local)
+
+Add `:prod` suffix to run against production (e.g., `npm run test:clinic:prod`)
+
+### How It Works
+
+The test runner (`scripts/runTests.js`) orchestrates test execution:
+
+1. Loads the specified environment file (`.env.local` or `.env.production`)
+2. Sets `NODE_ENV` appropriately (development or production)
+3. Executes tests sequentially in the specified category
+4. Reports results after all tests complete
+
+Individual test files can still be run directly:
 
 ```bash
-npm test
+node tests/api-tests/users/testCreateUser.js
+node scripts/api-testing-scripts/testGetClinics.js
 ```
