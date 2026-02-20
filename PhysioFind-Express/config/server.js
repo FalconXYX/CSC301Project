@@ -4,10 +4,6 @@
  */
 
 module.exports = {
-  // View engine setup
-  viewEngine: "pug",
-  viewsPath: "./views",
-
   // Static files path
   publicPath: "./public",
 
