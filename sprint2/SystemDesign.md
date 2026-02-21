@@ -12,6 +12,7 @@
     - [2.1. Database Models](#21-database-models)
     - [2.2. Backend Layer](#22-backend-layer)
     - [2.3. Frontend Layer](#23-frontend-layer)
+    - [2.4. Testing Infrastructure](#24-testing-infrastructure)
   - [3. Software Architecture](#3-software-architecture)
     - [3.1. Architecture Overview](#31-architecture-overview)
     - [3.2. Technology Stack](#32-technology-stack)
@@ -146,7 +147,7 @@ The purpose of this document is to outline the software architecture and design 
 |• Express Router|
 |• `users` model|
 
-|**Class:** `AuthMiddleware` (Supabase Auth — Sprint 2)|
+|**Class:** `AuthMiddleware` (routes/auth/authMiddleware.js)|
 |:-|
 |**_Responsibilities_**|
 |• Verify Supabase JWT tokens on protected routes|
@@ -155,8 +156,28 @@ The purpose of this document is to outline the software architecture and design 
 |• Configure CORS to allow only approved origins|
 |**_Collaborators_**|
 |• Express Router|
-|• Supabase Auth|
+|• Supabase Auth (`supabase.auth.getUser()`)|
 |• All protected route handlers|
+
+|**Class:** `AuthRouter` (routes/auth/)|
+|:-|
+|**_Responsibilities_**|
+|• `POST /auth/signIn` — Authenticate user via Supabase|
+|• `POST /auth/signOut` — Terminate user session|
+|**_Collaborators_**|
+|• Supabase Auth|
+|• Express Router|
+
+|**Class:** `ErrorMiddleware` (utils/prismaErrorMapper.js)|
+|:-|
+|**_Responsibilities_**|
+|• Intercept Prisma database errors|
+|• Map internal error codes (P2002, P2025, etc.) to HTTP status codes|
+|• Provide user-friendly error messages|
+|**_Collaborators_**|
+|• Express Error Handler|
+|• Prisma Client|
+|• All route handlers|
 
 ### 2.3. Frontend Layer
 
@@ -199,6 +220,29 @@ The purpose of this document is to outline the software architecture and design 
 |**_Collaborators_**|
 |• `PlacesSearchMap`|
 |• Google Maps Places API|
+
+### 2.4. Testing Infrastructure
+
+|**Class:** `TestRunner` (scripts/runTests.js)|
+|:-|
+|**_Responsibilities_**|
+|• Standardize API testing execution|
+|• Discover and run entity-specific test scripts|
+|• Aggregate test results and handle reporting|
+|**_Collaborators_**|
+|• `APITests`|
+|• Node.js Child Process|
+
+|**Class:** `APITests` (scripts/api-testing-scripts/)|
+|:-|
+|**_Responsibilities_**|
+|• Perform automated CRUD validation for Users and Clinics|
+|• Verify database consistency and error handling|
+|• Validate authorization logic for protected endpoints|
+|**_Collaborators_**|
+|• Express API|
+|• `PrismaClient`|
+|• `TestRunner`|
 
 ## 3. Software Architecture
 

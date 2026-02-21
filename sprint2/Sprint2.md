@@ -1,5 +1,5 @@
 # Sprint 2 Planning Meeting
-
+## 1. Planning Meeting — February 8, 2026
 **Date:** February 8, 2026  
 **Duration:** 40 minutes  
 **Participants:** Parth Jain, Drew Nerbas, Martin Stric, Jordan Jones, Saahil Pandit
@@ -9,7 +9,21 @@
 
 ---
 
-## Task Distribution
+## 2. Progress Update — February 16, 2026
+**Date:** February 16, 2026  
+**Duration:** 27 minutes  
+**Participants:** Parth Jain, Martin Stric, Jordan Jones, Saahil Pandit, Drew Nerbas
+
+**Notes:**
+- General progress update meeting.
+- Drew will be starting his portion in the next few days, will have it done by Thursday at the latest.
+- Martin and Parth have to wait until Drew is done but will get started immediately after.
+- Martin is almost done converting frontend to Vue. Result page format will be changing to include a map.
+- Jordan will be familiarizing himself with Docker before continuing.
+
+---
+
+## 3. Task Distribution
 - **Martin:** Focus on the frontend, Account management and Clinic management
 - **Saahil:** Focus on documentation, api/db testing files.
 - **Jordan:** External providers, Initialize maps integration, Implement External provider Query.
