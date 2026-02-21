@@ -1,14 +1,16 @@
 var express = require("express");
 var router = express.Router();
 var prisma = require("../../config/prisma");
+var { authorize_user } = require("../auth/authMiddleware.js");
 
 /**
- * PUT /users/:id
+ * PUT /users/
  * Update a user by ID and Body
  */
-router.put("/:id", async function (req, res, next) {
+router.put("/", async function (req, res, next) {
   try {
-    const userId = req.params.id;
+
+    const userId = await authorize_user(req)
 
     await prisma.users.update({ data: req.body, where: { id: userId } });
 

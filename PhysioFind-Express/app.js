@@ -1,4 +1,7 @@
-require("dotenv").config();
+// Load environment variables only in development
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config({ path: ".env.local" });
+}
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -19,6 +22,8 @@ var createclinicsRouter = require("./routes/providers/createProvider");
 var deleteclinicsRouter = require("./routes/providers/deleteProvider");
 var updateclinicsRouter = require("./routes/providers/updateProvider");
 var getclinicsRouter = require("./routes/providers/getProvider");
+var signInRouter = require("./routes/auth/signIn");
+var signOutRouter = require("./routes/auth/signOut");
 
 var app = express();
 
@@ -45,6 +50,8 @@ app.use("/clinics", updateclinicsRouter);
 app.use("/clinics", getclinicsRouter);
 app.use("/clinic", deleteclinicsRouter);
 app.use("/updateclinic", updateclinicsRouter);
+app.use("/auth", signInRouter);
+app.use("/auth", signOutRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
