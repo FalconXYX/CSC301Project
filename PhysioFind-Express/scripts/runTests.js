@@ -39,12 +39,7 @@ const tests = {
     "node ./scripts/api-testing-scripts/testUpdateClinic.js",
     "node ./scripts/api-testing-scripts/testDeleteClinic.js",
   ],
-  user: [
-    "node ./tests/api-tests/users/testCreateUser.js",
-    "node ./tests/api-tests/users/testGetUser.js",
-    "node ./tests/api-tests/users/testUpdateUser.js",
-    "node ./tests/api-tests/users/testDeleteUser.js",
-  ],
+  user: ["node ./scripts/api-testing-scripts/users/testUserLifecycle.js"],
   db: ["node ./tests/db-consistency-test.js"],
 };
 
