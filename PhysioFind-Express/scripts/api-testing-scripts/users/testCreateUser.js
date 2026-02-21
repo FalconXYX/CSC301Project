@@ -1,6 +1,7 @@
 require("dotenv").config();
 
-const baseUrl = process.env.API_BASE_URL || "http://localhost:3000";
+const baseUrl =
+  "https://csc-301-project-rlvrjo44l-parths-projects-1ea3fb9a.vercel.app";
 const endpoint = `${baseUrl}/users`;
 
 async function run() {
@@ -10,7 +11,7 @@ async function run() {
 
   const payload = {
     email: uniqueEmail,
-    password: "Password123!",
+    password_hash: "Password123!",
     role: "patient",
     first_name: "Test",
     last_name: "User",
