@@ -14,16 +14,19 @@ router.post("/", async function (req, res, next) {
       process.env.SUPABASE_URL,
       process.env.SUPABASE_ANON_KEY,
     );
-    const user = await prisma.users.create({ data: req.body });
 
+    // Sign up in Supabase Auth first to get the authoritative UUID
     const { data, error } = await supabase.auth.signUp({
-      email: user.email,
-      password: user.password_hash,
+      email: req.body.email,
+      password: req.body.password_hash,
     });
 
-    await prisma.users.update({
-      data: { id: data.user.id },
-      where: { id: user.id },
+    if (error) return next(error);
+    if (!data.user) return next(new Error("Supabase sign up failed"));
+
+    // Create Prisma record using the Supabase Auth UUID
+    const user = await prisma.users.create({
+      data: { ...req.body, id: data.user.id },
     });
 
     res.status(201).json({ user });

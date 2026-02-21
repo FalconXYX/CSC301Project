@@ -1,44 +1,97 @@
-require("dotenv").config();
+const baseUrl = process.env.API_BASE_URL || "http://localhost:3000";
 
-const userId = process.argv[2];
+async function run(email, password) {
+  email = email || process.argv[2];
+  password = password || process.argv[3];
 
-if (!userId) {
-    console.error("User ID required. Usage: node testUpdateUser.js <user_id>");
+  if (!email || !password) {
+    console.error("Usage: node testUpdateUser.js <email> <password>");
     process.exit(1);
+  }
+
+  const signInRes = await fetch(`${baseUrl}/auth/signIn`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!signInRes.ok) {
+    console.error("❌ Sign in failed:", await signInRes.text());
+    process.exit(1);
+  }
+
+  const { data } = await signInRes.json();
+  const token = data.session.access_token;
+
+  console.log(`Testing PUT ${baseUrl}/users...`);
+  const response = await fetch(`${baseUrl}/users`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ first_name: "UpdatedName", phone: "555-999-8888" }),
+  });
+
+  if (response.ok) {
+    console.log("✅ User updated");
+  } else {
+    console.error(`❌ Failed to update user. Status: ${response.status}`);
+    console.error("Response:", await response.text());
+    process.exit(1);
+  }
 }
 
-const baseUrl = process.env.API_BASE_URL || "http://localhost:3000";
-const endpoint = `${baseUrl}/users/${userId}`;
+if (require.main === module) {
+  run().catch((err) => { console.error("Request failed:", err.message); process.exit(1); });
+}
+
+module.exports = { run };
+
 
 async function run() {
-    console.log(`Testing PUT ${endpoint}...`);
+  // Sign in first to get a JWT
+  console.log("Signing in to get token...");
+  const signInRes = await fetch(`${baseUrl}/auth/signIn`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
 
-    const payload = {
-        first_name: "UpdatedName",
-        phone: "555-999-8888",
-    };
+  if (!signInRes.ok) {
+    console.error("Sign in failed:", await signInRes.text());
+    process.exit(1);
+  }
 
-    try {
-        const response = await fetch(endpoint, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-        });
+  const { data } = await signInRes.json();
+  const token = data.session.access_token;
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log("User updated successfully:");
-            console.log(JSON.stringify(data, null, 2));
-        } else {
-            console.error(`Failed to update user. Status: ${response.status}`);
-            const text = await response.text();
-            console.error("Response:", text);
-            process.exit(1);
-        }
-    } catch (error) {
-        console.error("Request failed:", error.message);
-        process.exit(1);
-    }
+  // Update user with token
+  console.log(`Testing PUT ${baseUrl}/users...`);
+  const response = await fetch(`${baseUrl}/users`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      first_name: "UpdatedName",
+      phone: "555-999-8888",
+    }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    console.log("User updated successfully:");
+    console.log(JSON.stringify(data, null, 2));
+  } else {
+    console.error(`Failed to update user. Status: ${response.status}`);
+    console.error("Response:", await response.text());
+    process.exit(1);
+  }
 }
 
-run();
+run().catch((err) => {
+  console.error("Request failed:", err.message);
+  process.exit(1);
+});

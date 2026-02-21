@@ -12,7 +12,7 @@ router.post("/signIn", async function (req, res, next) {
     );
     const { data, error } = await supabase.auth.signInWithPassword({
       email: req.body.email,
-      password: req.body.password_hash,
+      password: req.body.password,
     });
     if (error) {
       next(error);

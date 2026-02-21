@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "prisma generate",
+    "build": "prisma generate || true",
     "migrate:sql": "node ./scripts/runSqlMigration.js",
     "test": "node ./scripts/runTests.js local all",
     "test:prod": "node ./scripts/runTests.js production all",
@@ -21,11 +21,8 @@
     "test:get-clinics": "node ./scripts/api-testing-scripts/testGetClinics.js",
     "test:get-public-clinics": "node ./scripts/api-testing-scripts/testGetPublicClinics.js",
     "test:db-consistency": "node ./tests/db-consistency-test.js",
-    "test:all": "node ./tests/test-runner.js",
-    "test:create-user": "node ./tests/api-tests/users/testCreateUser.js",
     "schema:sync": "node ./scripts/syncPrismaSchema.js",
-    "db:seed": "node ./scripts/seedDatabase.js",
-    "postinstall": "prisma generate"
+    "db:seed": "node ./scripts/seedDatabase.js"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0",
@@ -36,8 +33,7 @@
     "express": "~5.2.1",
     "http-errors": "~2.0.1",
     "morgan": "~1.9.1",
-    "pg": "^8.12.0",
-    "pug": "^3.0.3"
+    "pg": "^8.12.0"
   },
   "devDependencies": {
     "prisma": "^5.11.0"

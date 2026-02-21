@@ -9,8 +9,7 @@ var { authorize_user } = require("../auth/authMiddleware.js");
  */
 router.delete("/", async function (req, res, next) {
   try {
-
-    const userId = await authorize_user(req)
+    const userId = await authorize_user(req);
 
     await prisma.users.delete({ where: { id: userId } });
 
