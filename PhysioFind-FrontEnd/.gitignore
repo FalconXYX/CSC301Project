@@ -1,3 +1,5 @@
+.env
+
 # Logs
 logs
 *.log
@@ -8,17 +10,32 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.DS_Store
 dist
 dist-ssr
+coverage
 *.local
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+*.tsbuildinfo
+
+.eslintcache
+
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+
+# Vitest
+__screenshots__/
+
+# Vite
+*.timestamp-*-*.mjs

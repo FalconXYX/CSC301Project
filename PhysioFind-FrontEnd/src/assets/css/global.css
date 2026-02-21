@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 :root {
   color-scheme: light dark;
@@ -7,19 +7,19 @@
   --c-bg: light-dark(oklch(96% 0% 0), oklch(17% 0% 0));
   --c-bg-secondary: light-dark(oklch(100% 0% 0), oklch(25% 0% 0));
   --c-text: light-dark(oklch(12% 0% 0), oklch(92% 0% 0));
-  --c-text-secondary: light-dark(
-    oklch(25% 0% 0 / 0.83),
-    oklch(83% 0% 0 / 0.83)
-  );
+  --c-text-secondary: light-dark(oklch(25% 0% 0 / 0.83), oklch(83% 0% 0 / 0.83));
+
+  --c-fill: oklch(from var(--c-bg) calc(l + 0.04) c h);
 
   --c-accent: var(--c-text);
+  --c-bar: light-dark(oklch(67% 0% 0 / 0.33), oklch(33% 0% 0 / 0.33));
   --c-separator: oklch(50% 0% 0 / 0.42);
 
   --c-green: light-dark(oklch(50% 100% 170), oklch(60% 100% 170));
 
   /* Fonts */
-  --f-serif: "Playfair Display", serif;
-  --f-body: "Inter", sans-serif;
+  --f-serif: 'Playfair Display', serif;
+  --f-body: 'Inter', sans-serif;
 
   --f-heading-size: calc(1.5rem + 1.5vw);
   --f-subheading-size: calc(0.875rem + 0.25vw);
@@ -30,12 +30,18 @@
 
   --g-navbar-height: 3rem;
   --g-footer-height: 2.5rem;
+
+  @media (width <= 32rem) {
+    --g-padding: 2rem;
+  }
 }
 
-* {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
@@ -47,22 +53,26 @@ body {
 a,
 button {
   all: unset;
+  cursor: pointer;
+  user-select: none;
 }
 
 .material-symbols-outlined {
+  font-size: 24px;
+
   &.sm {
     font-size: 20px;
-    font-variation-settings: "OPSZ" 20;
+    font-variation-settings: 'OPSZ' 20;
   }
 
   &.lg {
     font-size: 40px;
-    font-variation-settings: "OPSZ" 40;
+    font-variation-settings: 'OPSZ' 40;
   }
 
   &.xl {
     font-size: 48px;
-    font-variation-settings: "OPSZ" 48;
+    font-variation-settings: 'OPSZ' 48;
   }
 }
 
@@ -70,4 +80,21 @@ button {
   border: none;
   padding: 0;
   background: unset;
+}
+
+.content-lanes {
+  display: grid;
+  grid-template-columns:
+    [full-start]
+    minmax(var(--g-padding), 1fr)
+    [content-start]
+    min(100% - 2 * var(--g-padding), var(--g-max-width))
+    [content-end]
+    minmax(var(--g-padding), 1fr)
+    [full-end];
+
+  > * {
+    grid-column: content;
+    width: 100%;
+  }
 }

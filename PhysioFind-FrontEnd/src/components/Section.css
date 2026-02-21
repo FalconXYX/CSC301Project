@@ -1,9 +1,0 @@
-section {
-  padding: 0 var(--g-padding);
-
-  .constrained {
-    max-width: var(--g-max-width);
-    width: stretch;
-    margin: 0 auto;
-  }
-}

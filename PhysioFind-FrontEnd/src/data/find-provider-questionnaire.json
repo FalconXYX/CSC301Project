@@ -3,7 +3,7 @@
     {
       "id": "specialty",
       "type": "radio",
-      "question": "What type of healthcare professional are you looking for?",
+      "prompt": "What kind of healthcare professional are you looking for?",
       "required": true,
       "options": [
         { "value": "family_doctor", "label": "Family Doctor" },
@@ -16,8 +16,8 @@
     },
     {
       "id": "insurance",
-      "type": "multiselect",
-      "question": "Which insurance provider(s) do you have?",
+      "type": "multi-select",
+      "prompt": "Which insurance provider(s) do you have?",
       "required": true,
       "options": [
         { "value": "blue_cross", "label": "Blue Cross" },
@@ -31,7 +31,7 @@
     {
       "id": "location",
       "type": "text",
-      "question": "What's your postal code?",
+      "prompt": "What's your postal code?",
       "placeholder": "e.g., M5V 3A8",
       "required": true,
       "validation": {
@@ -42,7 +42,7 @@
     {
       "id": "appointment_type",
       "type": "radio",
-      "question": "What type of appointment do you prefer?",
+      "prompt": "What type of appointment do you prefer?",
       "required": true,
       "options": [
         { "value": "in_person", "label": "In-person visit" },
@@ -53,7 +53,7 @@
     {
       "id": "urgency",
       "type": "radio",
-      "question": "How soon do you need an appointment?",
+      "prompt": "How soon do you need an appointment?",
       "required": true,
       "options": [
         { "value": "asap", "label": "As soon as possible (within a week)" },
