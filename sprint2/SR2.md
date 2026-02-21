@@ -1,13 +1,13 @@
 Meeting on February 8, 2026 at 7:30 PM
 Lasted 40 minutes
-Attendees: @everyone 
+Attendees: Parth Jain, Martin Stric, Jordan Jones, Saahil Pandit, Drew Nerbas 
 Notes
 The primary focus of the meeting was sprint planning and assigning issues to group members. 
 
 
 Meeting on February 16, 2026 at 7:00 PM
 Lasted 27 minutes
-Attendees: @everyone 
+Attendees: Parth Jain, Martin Stric, Jordan Jones, Saahil Pandit, Drew Nerbas
 Notes:
 General progress update meeting.
 Drew will be starting his portion in the next few days, will have it done by Thursday at the latest.
