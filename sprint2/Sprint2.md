@@ -1,15 +1,28 @@
-Meeting on February 8, 2026 at 7:30 PM
-Lasted 40 minutes
-Attendees: @everyone 
-Notes
-The primary focus of the meeting was sprint planning and assigning issues to group members. 
+# Sprint 2 Planning Meeting
 
-The tasks were distributed as follows:
+**Date:** February 8, 2026  
+**Duration:** 40 minutes  
+**Participants:** Parth Jain, Drew Nerbas, Martin Stric, Jordan Jones, Saahil Pandit
 
-- Martin: Focus on the frontend, Account management and Clinic management
-- Saahil: Focus on documentation, api/db testing files.
-- Jordan: External providers, Initialize maps itergration, Implement External provider Query.
-- Parth: Create search functionality, FrontEnd/BackEnd intergration
-- Drew User authentication, configure CORS, Implement user authentication.
+**Sprint Goal:**  
+"Implement Supabase authentication, Google Places API integration, and core clinical/account management modules."
 
-Discussion on internal timeline, for example Martin confirmed he will start his part during the reading week, Jordan said he will start on the the weekend of the 13th. Saahil had his task pending from sprint 1 that other tickets were contingent on so he had to finish his part.
+---
+
+## Task Distribution
+- **Martin:** Focus on the frontend, Account management and Clinic management
+- **Saahil:** Focus on documentation, api/db testing files.
+- **Jordan:** External providers, Initialize maps integration, Implement External provider Query.
+- **Parth:** Create search functionality, FrontEnd/BackEnd integration
+- **Drew:** User authentication, configure CORS, Implement user authentication.
+
+---
+**Spikes:**
+- Supabase JWT middleware validation.
+- Google Maps healthcare place type filtering.
+
+**Team Capacity:**
+- Parth: 15h, Jordan: 10h, Martin: 12h, Drew: 12h, Saahil: 12h.
+
+**Timeline/Decisions:**
+Martin confirmed he will start during reading week; Jordan on Feb 13. Saahil has to finish 2.1 tasks to unblock team members working on dependent stories. All members attended and participated in the planning notes above.
