@@ -29,15 +29,18 @@ if (!fs.existsSync(envPath)) {
   process.exit(1);
 }
 
+// Load env vars from file into process.env
+require("dotenv").config({ path: envPath });
+
 console.log(`🔧 Using environment: ${env} (${envFile})`);
 
 const tests = {
   clinic: [
-    "node ./scripts/api-testing-scripts/testGetClinics.js",
-    "node ./scripts/api-testing-scripts/testGetPublicClinics.js",
-    "node ./scripts/api-testing-scripts/testCreateClinic.js",
-    "node ./scripts/api-testing-scripts/testUpdateClinic.js",
-    "node ./scripts/api-testing-scripts/testDeleteClinic.js",
+    "node ./scripts/api-testing-scripts/clinic/testGetClinics.js",
+    "node ./scripts/api-testing-scripts/clinic/testGetPublicClinics.js",
+    "node ./scripts/api-testing-scripts/clinic/testCreateClinic.js",
+    "node ./scripts/api-testing-scripts/clinic/testUpdateClinic.js",
+    "node ./scripts/api-testing-scripts/clinic/testDeleteClinic.js",
   ],
   user: ["node ./scripts/api-testing-scripts/users/testUserLifecycle.js"],
   db: ["node ./tests/db-consistency-test.js"],
