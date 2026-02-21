@@ -8,7 +8,7 @@ const mapElement = useTemplateRef('mapElement')
 const { mapsLib, markerLib } = useGoogleMaps()
 
 onMounted(async () => {
-  const [{ Map, InfoWindow }, { AdvancedMarkerElement }] = await Promise.all([mapsLib, markerLib])
+  const [{ InfoWindow, Map }, { AdvancedMarkerElement }] = await Promise.all([mapsLib, markerLib])
 
   const map = new Map(mapElement.value!, {
     center: center,
@@ -16,6 +16,7 @@ onMounted(async () => {
     mapId: import.meta.env.VITE_GOOGLE_MAPS_MAP_ID ?? 'DEMO_MAP_ID',
     disableDefaultUI: true,
     zoomControl: true,
+    colorScheme: google.maps.ColorScheme.FOLLOW_SYSTEM,
   })
 
   const infoWindow = new InfoWindow()
@@ -30,7 +31,8 @@ onMounted(async () => {
       if (clinic.type !== 'google-maps') continue
 
       const pin = document.createElement('div')
-      pin.className = `map-pin map-pin--${clinic.type}`
+      pin.classList.add('map-pin')
+      pin.classList.add(`map-pin--${clinic.type}`)
 
       const marker = new AdvancedMarkerElement({
         map,
@@ -39,7 +41,7 @@ onMounted(async () => {
         title: clinic.name,
       })
 
-      marker.addListener('click', () => {
+      marker.addListener('gmp-click', () => {
         infoWindow.setContent(`
           <div class="map-info-window">
             <strong>${clinic.name}</strong>
@@ -66,21 +68,25 @@ onMounted(async () => {
   height: 480px;
   border-radius: 0.75rem;
   overflow: hidden;
-
-  :deep(.map-pin) {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px hsl(0 0 0 / 0.3);
-  }
-
-  :deep(.map-pin--google-maps) {
-    background: var(--c-text-primary);
-  }
-
-  :deep(.map-pin--verified) {
-    background: var(--c-green);
-  }
 }
+</style>
+
+<style>
+/* @scope (.provider-map) { */
+.map-pin {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 1.5px solid white;
+  box-shadow: 0 0 0.25rem hsl(0 0 0 / 0.5);
+}
+
+.map-pin--google-maps {
+  background: hsl(0 0% 50%);
+}
+
+.map-pin--verified {
+  background: var(--c-green);
+}
+/* } */
 </style>
