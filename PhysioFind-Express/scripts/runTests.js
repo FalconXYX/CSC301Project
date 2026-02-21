@@ -44,16 +44,16 @@ const tests = {
 };
 
 const runTests = (testList) => {
-  const env = `NODE_ENV=${env.includes("prod") ? "production" : "development"}`;
+  const nodeEnv = env.includes("prod") ? "production" : "development";
 
   testList.forEach((test, idx) => {
     console.log(`\n[${idx + 1}/${testList.length}] Running: ${test}`);
     try {
-      execSync(`${env} ${test}`, {
+      execSync(`${test}`, {
         stdio: "inherit",
         env: {
           ...process.env,
-          NODE_ENV: env.includes("prod") ? "production" : "development",
+          NODE_ENV: nodeEnv,
         },
       });
     } catch (e) {
