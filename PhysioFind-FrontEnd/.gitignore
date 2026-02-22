@@ -1,5 +1,9 @@
 .env
 
+# Generated files
+src/auto-imports.d.ts
+src/components.d.ts
+
 # Logs
 logs
 *.log
