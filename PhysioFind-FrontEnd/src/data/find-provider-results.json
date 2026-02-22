@@ -15,10 +15,7 @@
       "phone": "(416) 555-0123",
       "website": "https://torontofamilyhealth.ca"
     },
-    "services": [
-      "Pediatrics",
-      "Physical Exams"
-    ]
+    "services": ["Pediatrics", "Physical Exams"]
   },
   {
     "id": "vc-002",
@@ -35,11 +32,7 @@
       "phone": "(416) 555-0456",
       "website": "https://bloormedical.com"
     },
-    "services": [
-      "Minor Procedures",
-      "Lab Services",
-      "X-Ray"
-    ]
+    "services": ["Minor Procedures", "Lab Services", "X-Ray"]
   },
   {
     "id": "vc-003",
@@ -56,10 +49,7 @@
       "email": "info@scarboroughwomenshealth.ca",
       "phone": "(416) 555-0789"
     },
-    "services": [
-      "Family Planning",
-      "Women's Health"
-    ]
+    "services": ["Family Planning", "Women's Health"]
   },
   {
     "id": "vc-004",
@@ -75,78 +65,6 @@
       "phone": "(416) 555-0321",
       "website": "https://nyurgentcare.ca"
     },
-    "services": [
-      "Urgent Care",
-      "Wound Care",
-      "IV Therapy"
-    ]
-  },
-  {
-    "id": "gm-001",
-    "type": "google-maps",
-    "name": "Rosedale Medical Centre",
-    "address": {
-      "line1": "600 Sherbourne Street",
-      "city": "Toronto",
-      "province": "Ontario",
-      "postalCode": "M4X 1W4"
-    },
-    "contact": {
-      "phone": "(416) 555-1111"
-    },
-    "distance": 1.2,
-    "mapsUrl": "https://maps.google.com/?cid=12345678901234567890"
-  },
-  {
-    "id": "gm-002",
-    "type": "google-maps",
-    "name": "St. Clair Wellness Clinic",
-    "address": {
-      "line1": "1455 St. Clair Avenue West",
-      "city": "Toronto",
-      "province": "Ontario",
-      "postalCode": "M6E 1C5"
-    },
-    "contact": {
-      "phone": "(416) 555-2222",
-      "website": "https://stclairwellness.com"
-    },
-    "distance": 3.7,
-    "mapsUrl": "https://maps.google.com/?cid=23456789012345678901"
-  },
-  {
-    "id": "gm-003",
-    "type": "google-maps",
-    "name": "The Beaches Health Clinic",
-    "address": {
-      "line1": "2150 Queen Street East",
-      "city": "Toronto",
-      "province": "Ontario",
-      "postalCode": "M4E 1E4"
-    },
-    "contact": {
-      "email": "contact@beacheshealth.ca",
-      "phone": "(416) 555-3333"
-    },
-    "distance": 5.1,
-    "mapsUrl": "https://maps.google.com/?cid=34567890123456789012"
-  },
-  {
-    "id": "gm-004",
-    "type": "google-maps",
-    "name": "Etobicoke Family Physicians",
-    "address": {
-      "line1": "3088 Bloor Street West",
-      "line2": "2nd Floor",
-      "city": "Etobicoke",
-      "province": "Ontario",
-      "postalCode": "M8X 1C4"
-    },
-    "contact": {
-      "phone": "(416) 555-4444",
-      "website": "https://etobicokefamilydocs.com"
-    },
-    "distance": 8.9,
-    "mapsUrl": "https://maps.google.com/?cid=45678901234567890123"
+    "services": ["Urgent Care", "Wound Care", "IV Therapy"]
   }
 ]
