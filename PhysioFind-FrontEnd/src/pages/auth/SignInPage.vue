@@ -1,0 +1,3 @@
+<template>
+  <AuthView />
+</template>
