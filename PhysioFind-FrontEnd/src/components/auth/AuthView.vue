@@ -83,7 +83,7 @@ async function handleSignUp() {
     role: 'patient',
     first_name: firstName.value,
     last_name: lastName.value,
-    date_of_birth: dateOfBirth.value,
+    date_of_birth: dateOfBirth.value ? new Date(dateOfBirth.value).toISOString() : undefined,
     phone: phone.value,
   }
 

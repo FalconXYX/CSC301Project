@@ -22,8 +22,12 @@ export async function createUser(
   })
 
   // Ensure successful creation
-  if (response.status !== 201) {
-    throw new Error('Failed to create user')
+  if (response.status == 422) {
+    const body = await response.json().catch(() => null)
+    throw new Error(body?.error ?? 'User Already Exists')
+  } else if (response.status !== 201) {
+    const body = await response.json().catch(() => null)
+    throw new Error(body?.error ?? 'Failed to create user')
   }
 
   const data = await response.json()
