@@ -83,8 +83,8 @@ async function handleSignUp() {
     role: 'patient',
     first_name: firstName.value,
     last_name: lastName.value,
-    date_of_birth: dateOfBirth.value ?? null,
-    phone: phone.value ?? null,
+    date_of_birth: dateOfBirth.value,
+    phone: phone.value,
   }
 
   await authStore.signUp(email.value, password.value, newUserProfile)

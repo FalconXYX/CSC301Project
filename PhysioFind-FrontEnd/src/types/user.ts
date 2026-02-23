@@ -18,8 +18,8 @@ export interface CreateUserPayload {
   role: string
   first_name: string
   last_name: string
-  phone: string | null
-  date_of_birth: string | null
+  phone?: string
+  date_of_birth?: string
   clinic_id?: string
   clinic_role?: string
 }
@@ -27,9 +27,9 @@ export interface CreateUserPayload {
 export interface NewUserProfile {
   first_name: string
   last_name: string
-  date_of_birth: string | null
+  date_of_birth?: string
   role: string
-  phone: string | null
+  phone?: string
   clinic_id?: string
   clinic_role?: string
 }

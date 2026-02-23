@@ -1,21 +1,24 @@
-import { authenticatedFetch, endpointURL } from '.'
+import { authenticatedFetch } from './client'
 
 import type { UserProfile } from '@/types/user'
 
 export async function getProfile(): Promise<UserProfile> {
-  const endpoint = endpointURL('/users')
-  const response = await authenticatedFetch(endpoint)
+  const response = await authenticatedFetch('/api/users')
 
   if (response.status !== 200) {
     throw new Error('Failed to fetch profile')
   }
 
-  return await response.json()
+  const data = await response.json()
+  if (!data || !data.user) {
+    throw new Error('Invalid response from server')
+  }
+
+  return data.user
 }
 
-export async function updateProfile(payload: Partial<UserProfile>): Promise<UserProfile> {
-  const endpoint = endpointURL('/users')
-  const response = await authenticatedFetch(endpoint, {
+export async function updateProfile(payload: Partial<UserProfile>): Promise<void> {
+  const response = await authenticatedFetch('/api/users', {
     method: 'PUT',
     body: JSON.stringify(payload),
   })
@@ -23,12 +26,10 @@ export async function updateProfile(payload: Partial<UserProfile>): Promise<User
   if (response.status !== 200) {
     throw new Error('Failed to update profile')
   }
-
-  return await response.json()
 }
 
 export async function deleteAccount(): Promise<void> {
-  const endpoint = endpointURL('/users')
+  const endpoint = '/api/users'
   const response = await authenticatedFetch(endpoint, { method: 'DELETE' })
 
   if (response.status !== 200) {

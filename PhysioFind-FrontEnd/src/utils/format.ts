@@ -40,3 +40,12 @@ export function formatGoogleMapsAddress(
     postalCode: getComponent(['postal_code']),
   }
 }
+
+export function removeEmptyFields<T extends object, K extends keyof T>(obj: T, keys: K[]): T {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [
+      key,
+      keys.includes(key as K) && value === '' ? null : value,
+    ]),
+  ) as T
+}

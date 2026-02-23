@@ -1,30 +1,42 @@
-import { createClient } from '@supabase/supabase-js'
-import type { User, Session, AuthError } from '@supabase/supabase-js'
+import { supabase, type SupabaseSession, type SupabaseUser } from '@/lib/supabase'
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY,
-)
+import * as API from '@/api'
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(null)
-  const session = ref<Session | null>(null)
+  const user = ref<SupabaseUser | null>(null)
+  const session = ref<SupabaseSession | null>(null)
+  const profile = ref<UserProfile | null>(null)
+
+  const isReady = ref(false)
   const isLoading = ref(false)
   const error = ref<string | null>(null)
 
   const isAuthenticated = computed(() => !!user.value)
 
-  // Restore session on app load
-  async function init() {
-    const { data } = await supabase.auth.getSession()
-    session.value = data.session
-    user.value = data.session?.user || null
+  let authSubscription: ReturnType<typeof supabase.auth.onAuthStateChange> | null = null
 
-    // Listen for auth state changes
-    supabase.auth.onAuthStateChange((_event, newSession) => {
+  // Restore session on app load and listen for auth state changes.
+  // onAuthStateChange fires immediately with INITIAL_SESSION.
+  // All state updates are centralized here — action functions only perform
+  // API calls and sync the Supabase session; the listener handles the rest.
+  function init() {
+    authSubscription = supabase.auth.onAuthStateChange(async (_event, newSession) => {
       session.value = newSession
-      user.value = newSession?.user || null
+      user.value = newSession?.user ?? null
+
+      if (user.value) {
+        profile.value = await API.getProfile()
+      } else {
+        profile.value = null
+      }
+
+      isReady.value = true
     })
+  }
+
+  function dispose() {
+    authSubscription?.data.subscription.unsubscribe()
+    authSubscription = null
   }
 
   async function signIn(email: string, password: string) {
@@ -32,30 +44,10 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      const { data, error: err } = await supabase.auth.signInWithPassword({ email, password })
-      if (err) throw err
-
-      session.value = data.session
-      user.value = data.user
+      const response = await API.signIn(email, password)
+      await supabase.auth.setSession(response.session)
     } catch (err) {
-      error.value = (err as AuthError).message ?? 'An error occurred during sign in'
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  async function signUp(email: string, password: string) {
-    isLoading.value = true
-    error.value = null
-
-    try {
-      const { data, error: err } = await supabase.auth.signUp({ email, password })
-      if (err) throw err
-
-      session.value = data.session
-      user.value = data.user
-    } catch (err) {
-      error.value = (err as AuthError).message ?? 'An error occurred during sign up'
+      error.value = (err as Error).message ?? 'An error occurred during sign in'
     } finally {
       isLoading.value = false
     }
@@ -66,17 +58,44 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      const { error: err } = await supabase.auth.signOut()
-      if (err) throw err
-
-      session.value = null
-      user.value = null
+      await API.signOut()
+      await supabase.auth.signOut()
     } catch (err) {
-      error.value = (err as AuthError).message ?? 'An error occurred during sign out'
+      error.value = (err as Error).message ?? 'An error occurred during sign out'
     } finally {
       isLoading.value = false
     }
   }
 
-  return { user, session, isLoading, error, isAuthenticated, init, signIn, signUp, signOut }
+  async function signUp(email: string, password: string, profileData: NewUserProfile) {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      await API.createUser(email, password, profileData)
+
+      // Sign in after successful sign up — the listener handles state updates
+      const response = await API.signIn(email, password)
+      await supabase.auth.setSession(response.session)
+    } catch (err) {
+      error.value = (err as Error).message ?? 'An error occurred during sign up'
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  return {
+    user,
+    session,
+    profile,
+    isAuthenticated,
+    isReady,
+    isLoading,
+    error,
+    init,
+    dispose,
+    signIn,
+    signOut,
+    signUp,
+  }
 })

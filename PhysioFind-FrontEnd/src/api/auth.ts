@@ -1,47 +1,49 @@
-import { authenticatedFetch, endpointURL } from '.'
+import { type SupabaseUser, type SupabaseSession } from '@/lib/supabase'
+import { authenticatedFetch } from './client'
 
 import type { CreateUserPayload, NewUserProfile, UserProfile } from '@/types/user'
-import type { User, Session } from '@supabase/supabase-js'
+import { removeEmptyFields } from '@/utils'
 
 export async function createUser(
   email: string,
   password: string,
   profile: NewUserProfile,
 ): Promise<UserProfile> {
-  const endpoint = endpointURL('/users')
   const payload: CreateUserPayload = {
     email,
     password_hash: hashPassword(password),
-    ...profile,
+    ...removeEmptyFields(profile, ['date_of_birth', 'phone', 'clinic_id', 'clinic_role']),
   }
 
-  const response = await fetch(endpoint, {
+  const response = await fetch('/api/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   })
-
-  console.log(response.status, response.bodyUsed, response.body)
 
   // Ensure successful creation
   if (response.status !== 201) {
     throw new Error('Failed to create user')
   }
 
-  return await response.json()
+  const data = await response.json()
+  if (!data || !data.user) {
+    throw new Error('Invalid response from server')
+  }
+
+  return data.user
 }
 
 export async function signIn(
   email: string,
   password: string,
-): Promise<{ session: Session; user: User }> {
-  const endpoint = endpointURL('/auth/signIn')
+): Promise<{ session: SupabaseSession; user: SupabaseUser }> {
   const payload = {
     email,
     password,
   }
 
-  const response = await fetch(endpoint, {
+  const response = await fetch('/api/auth/signIn', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -57,8 +59,7 @@ export async function signIn(
 }
 
 export async function signOut(): Promise<void> {
-  const endpoint = endpointURL('/auth/signOut')
-  await authenticatedFetch(endpoint, { method: 'POST' })
+  await authenticatedFetch('/api/auth/signOut', { method: 'POST' })
 }
 
 // MARK: Helper functions
