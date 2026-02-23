@@ -6,8 +6,6 @@
       "prompt": "What kind of healthcare professional are you looking for?",
       "required": true,
       "options": [
-        { "value": "family_doctor", "label": "Family Doctor" },
-        { "value": "dentist", "label": "Dentist" },
         { "value": "physiotherapist", "label": "Physiotherapist" },
         { "value": "psychologist", "label": "Psychologist" },
         { "value": "chiropractor", "label": "Chiropractor" },

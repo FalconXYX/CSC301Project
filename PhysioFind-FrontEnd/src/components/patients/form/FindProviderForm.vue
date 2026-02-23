@@ -34,6 +34,11 @@ function handlePrevious() {
 }
 
 function handleSubmit() {
+  if (canAdvance.value && !isLastStep.value) {
+    handleNext()
+    return
+  }
+
   const result = submit()
   if (result) emit('submit', result)
 }
