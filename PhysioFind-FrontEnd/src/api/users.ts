@@ -29,8 +29,7 @@ export async function updateProfile(payload: Partial<UserProfile>): Promise<void
 }
 
 export async function deleteAccount(): Promise<void> {
-  const endpoint = '/api/users'
-  const response = await authenticatedFetch(endpoint, { method: 'DELETE' })
+  const response = await authenticatedFetch('/api/users', { method: 'DELETE' })
 
   if (response.status !== 200) {
     throw new Error('Failed to delete account')
