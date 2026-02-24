@@ -30,5 +30,17 @@ module.exports = {
     serverError: "Internal server error",
   },
 
+  whitelist: ['http://localhost:3000', 'http://localhost:5173/'],
+
+  corsOptions: {
+    origin: function (origin, callback) {
+
+      if (!origin || constants.whitelist.findIndex(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Invalid URL Access Attempt'));
+      }
+    }
+  }
   // TODO: Add more constants as needed
 };
