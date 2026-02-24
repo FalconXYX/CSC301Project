@@ -15,7 +15,7 @@
   --c-bar: light-dark(oklch(67% 0% 0 / 0.33), oklch(33% 0% 0 / 0.33));
   --c-separator: oklch(50% 0% 0 / 0.42);
 
-  --c-red: light-dark(oklch(42% 92% 17), oklch(58% 92% 17));
+  --c-red: light-dark(oklch(42% 92% 17), oklch(75% 67% 25));
   --c-green: light-dark(oklch(50% 100% 170), oklch(60% 100% 170));
 
   /* Fonts */

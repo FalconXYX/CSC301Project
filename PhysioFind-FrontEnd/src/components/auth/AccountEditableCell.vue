@@ -60,6 +60,7 @@ defineExpose({ isEditing, hasChanges })
     border: none;
     flex: 1;
 
+    background: none;
     color: var(--c-text);
 
     outline: none;
