@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 var createError = require("http-errors");
 var express = require("express");
+var cors = require('cors')
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -27,6 +28,7 @@ var signOutRouter = require("./routes/auth/signOut");
 
 var app = express();
 
+app.use(cors(constants.corsOptions));
 app.use(logger(serverConfig.logFormat));
 app.use(express.json());
 app.use(express.urlencoded(serverConfig.middleware.urlEncoded));
