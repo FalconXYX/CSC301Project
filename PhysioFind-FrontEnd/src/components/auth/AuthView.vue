@@ -110,7 +110,7 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div v-if="!popover" class="auth-overlay">
+  <div v-if="popover" class="auth-overlay">
     <div class="auth-card">
       <h2>{{ mode === 'signIn' ? 'Sign In' : 'Sign Up' }}</h2>
 
@@ -266,20 +266,26 @@ function handleSubmit() {
 .auth-overlay {
   position: fixed;
   inset: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background: oklch(0% 0 0 / 0.45);
+
+  background: oklch(0% 0 0 / 0.42);
+  backdrop-filter: blur(0.25rem);
   z-index: 100;
 }
 
 .auth-card {
-  background: var(--c-bg-secondary);
-  border: 1px solid var(--c-separator);
-  border-radius: 1rem;
-  padding: 2rem;
+  max-width: var(--g-card-max-width);
   width: 100%;
-  max-width: 24rem;
+
+  background-color: var(--c-bg-secondary);
+  border: 0.5px solid var(--c-separator);
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 2rem hsl(0 0% 0% / 0.08);
+  padding: 2rem;
+
   display: flex;
   flex-direction: column;
   gap: 1.25rem;

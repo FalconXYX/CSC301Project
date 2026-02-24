@@ -14,9 +14,9 @@ import PhysioFindLogo from '@/assets/physiofind.svg?component'
         <RouterLink to="#" class="nav-btn">Clinics</RouterLink>
         <RouterLink to="#" class="nav-btn">About Us</RouterLink>
       </div>
-      <button class="account-btn">
+      <RouterLink to="/account" class="account-btn">
         <span class="material-symbols-outlined icon">account_circle</span>
-      </button>
+      </RouterLink>
     </nav>
   </div>
 </template>

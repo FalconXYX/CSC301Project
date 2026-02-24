@@ -8,6 +8,7 @@ import HomePage from '@/pages/HomePage.vue'
 import FindProviderPage from '@/pages/patients/FindProviderPage.vue'
 import ProviderResultsPage from '@/pages/patients/ProviderResultsPage.vue'
 
+import AccountPage from '@/pages/auth/AccountPage.vue'
 import AuthPage from '@/pages/auth/AuthPage.vue'
 
 const router = createRouter({
@@ -24,6 +25,11 @@ const router = createRouter({
             { path: '', component: FindProviderPage },
             { path: 'results', component: ProviderResultsPage, meta: { requiresAuth: true } },
           ],
+        },
+        {
+          path: 'account',
+          component: AccountPage,
+          meta: { requiresAuth: true },
         },
       ],
     },

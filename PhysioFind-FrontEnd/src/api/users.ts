@@ -20,6 +20,7 @@ export async function getProfile(): Promise<UserProfile> {
 export async function updateProfile(payload: Partial<UserProfile>): Promise<void> {
   const response = await authenticatedFetch('/api/users', {
     method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   })
 
