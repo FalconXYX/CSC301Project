@@ -4,3 +4,5 @@ node_modules/
 scripts/pull_schema.js
 .env*
 supabase/
+sprint2/sprint23_marking.txt
+sprint2/sprint23_marking_checklist.txt
