@@ -84,6 +84,25 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function updateProfile(updates: Partial<UserProfile>) {
+    if (!user.value) {
+      error.value = 'No authenticated user'
+      return
+    }
+
+    isLoading.value = true
+    error.value = null
+
+    try {
+      await API.updateProfile(updates)
+      profile.value = await API.getProfile()
+    } catch (err) {
+      error.value = (err as Error).message ?? 'An error occurred while updating profile'
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     user,
     session,
@@ -97,5 +116,6 @@ export const useAuthStore = defineStore('auth', () => {
     signIn,
     signOut,
     signUp,
+    updateProfile,
   }
 })

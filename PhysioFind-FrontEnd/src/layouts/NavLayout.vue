@@ -24,7 +24,7 @@ main {
   flex: 1;
 
   > :first-child {
-    padding-top: var(--g-navbar-height);
+    margin-top: var(--g-navbar-height);
   }
 
   /* > :last-child {
