@@ -1,4 +1,4 @@
-const baseUrl = process.env.API_BASE_URL || "http://localhost:3000";
+const baseUrl = "https://csc-301-project.vercel.app/";
 
 async function run() {
   const randomStr = Math.random().toString(36).substring(2, 7);
@@ -31,7 +31,10 @@ async function run() {
 }
 
 if (require.main === module) {
-  run().catch((err) => { console.error("Request failed:", err.message); process.exit(1); });
+  run().catch((err) => {
+    console.error("Request failed:", err.message);
+    process.exit(1);
+  });
 }
 
 module.exports = { run };
