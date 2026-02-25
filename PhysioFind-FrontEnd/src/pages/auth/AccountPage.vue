@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import AccountEditableCell from '@/components/auth/AccountEditableCell.vue'
 
-import * as API from '@/api/users'
-
 type CellInstance = InstanceType<typeof AccountEditableCell>
 
 const authStore = useAuthStore()
@@ -31,7 +29,7 @@ const editsMade = computed(
 )
 
 async function updateAccount() {
-  await API.updateProfile({
+  await authStore.updateProfile({
     first_name: firstName.value,
     last_name: lastName.value,
     email: email.value,
@@ -45,12 +43,22 @@ async function signOut() {
 function deleteAccount() {
   alert('Not implemented yet!')
 }
+
+watch(
+  profile,
+  (newProfile) => {
+    firstName.value = newProfile?.first_name ?? ''
+    lastName.value = newProfile?.last_name ?? ''
+    email.value = newProfile?.email ?? ''
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
-  <div id="account">
-    <h1 class="title">Hi, {{ profile?.first_name }}</h1>
-    <section class="account-settings">
+  <div id="account" v-if="profile">
+    <h1 class="title">Hi, {{ profile.first_name }}</h1>
+    <section class="account-settings" :key="profile.updated_at">
       <h2 class="heading">Account Settings</h2>
       <p class="subheading">
         Here you can update your account information, change your password, and manage your
@@ -65,7 +73,9 @@ function deleteAccount() {
         />
         <AccountEditableCell ref="lastNameCell" title="Last Name" type="text" v-model="lastName!" />
         <AccountEditableCell ref="emailCell" title="Email" type="email" v-model="email!" />
-        <button type="submit" :disabled="!editsMade || anyEditing">Update Account</button>
+        <button type="submit" :disabled="!editsMade || anyEditing || authStore.isLoading">
+          {{ authStore.isLoading ? 'Updating...' : 'Update Account' }}
+        </button>
       </form>
       <button type="button" class="secondary" @click="signOut">Sign Out</button>
     </section>
