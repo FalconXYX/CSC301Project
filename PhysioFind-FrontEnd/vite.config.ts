@@ -33,10 +33,17 @@ export default defineConfig(({ command }) => ({
   },
   server: {
     proxy: {
-      '/api': {
-        target: 'https://csc-301-project.vercel.app/',
+      '/users': {
+        target: 'https://csc-301-project.vercel.app',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/auth': {
+        target: 'https://csc-301-project.vercel.app',
+        changeOrigin: true,
+      },
+      '/clinics': {
+        target: 'https://csc-301-project.vercel.app',
+        changeOrigin: true,
       },
     },
   },

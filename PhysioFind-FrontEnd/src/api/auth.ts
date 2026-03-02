@@ -15,7 +15,7 @@ export async function createUser(
     ...removeEmptyFields(profile, ['date_of_birth', 'phone', 'clinic_id', 'clinic_role']),
   }
 
-  const response = await fetch(apiBaseUrl + '/api/users', {
+  const response = await fetch(apiBaseUrl + '/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -47,7 +47,7 @@ export async function signIn(
     password,
   }
 
-  const response = await fetch(apiBaseUrl + '/api/auth/signIn', {
+  const response = await fetch(apiBaseUrl + '/auth/signIn', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -63,7 +63,7 @@ export async function signIn(
 }
 
 export async function signOut(): Promise<void> {
-  await authenticatedFetch('/api/auth/signOut', { method: 'POST' })
+  await authenticatedFetch('/auth/signOut', { method: 'POST' })
 }
 
 // MARK: Helper functions
