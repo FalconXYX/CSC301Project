@@ -11,7 +11,8 @@ import Components from 'unplugin-vue-components/vite'
 import SvgLoader from 'vite-svg-loader'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/CSC301Project/' : '/',
   plugins: [
     vue(),
     vueDevTools(),
@@ -33,7 +34,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'https://csc-301-project.vercel.app/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
@@ -42,4 +43,4 @@ export default defineConfig({
   test: {
     globals: true,
   },
-})
+}))
