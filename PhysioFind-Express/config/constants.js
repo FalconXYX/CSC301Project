@@ -3,7 +3,7 @@
  * Global constants and configuration values
  */
 
-module.exports = {
+const constants = {
   // API settings
   api: {
     version: "v1",
@@ -49,3 +49,5 @@ module.exports = {
   },
   // TODO: Add more constants as needed
 };
+
+module.exports = constants;
