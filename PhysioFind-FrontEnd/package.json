@@ -13,7 +13,7 @@
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
     "format": "prettier --write --experimental-cli src/",
-    "deploy": "npm run build-only && gh-pages -d dist",
+    "deploy": "npm run build-only && rm -rf node_modules/.cache/gh-pages && gh-pages -d dist",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },
