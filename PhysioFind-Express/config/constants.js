@@ -3,7 +3,7 @@
  * Global constants and configuration values
  */
 
-module.exports = {
+const constants = {
   // API settings
   api: {
     version: "v1",
@@ -30,17 +30,24 @@ module.exports = {
     serverError: "Internal server error",
   },
 
-  whitelist: ['http://localhost:3000', 'http://localhost:5173/'],
+  whitelist: [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://falconxyx.github.io",
+    "https://parthjain.ca",
+    "https://csc-301-project.vercel.app",
+  ],
 
   corsOptions: {
     origin: function (origin, callback) {
-
-      if (!origin || constants.whitelist.findIndex(origin) !== -1) {
+      if (!origin || constants.whitelist.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
-        callback(new Error('Invalid URL Access Attempt'));
+        callback(new Error("Invalid URL Access Attempt"));
       }
-    }
-  }
+    },
+  },
   // TODO: Add more constants as needed
 };
+
+module.exports = constants;

@@ -1,5 +1,7 @@
 import { useAuthStore } from '@/stores/auth'
 
+export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? ''
+
 /**
  * Fetch wrapper that attaches the current session's access token.
  * Reads the token from the auth store (already validated via onAuthStateChange)
@@ -19,5 +21,5 @@ export async function authenticatedFetch(url: string, options?: RequestInit): Pr
     },
   }
 
-  return await fetch(url, optionsWithAuth)
+  return await fetch(apiBaseUrl + url, optionsWithAuth)
 }

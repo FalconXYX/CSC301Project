@@ -3,7 +3,7 @@ import { authenticatedFetch } from './client'
 import type { UserProfile } from '@/types/user'
 
 export async function getProfile(): Promise<UserProfile> {
-  const response = await authenticatedFetch('/api/users')
+  const response = await authenticatedFetch('/users')
 
   if (response.status !== 200) {
     throw new Error('Failed to fetch profile')
@@ -18,7 +18,7 @@ export async function getProfile(): Promise<UserProfile> {
 }
 
 export async function updateProfile(payload: Partial<UserProfile>): Promise<void> {
-  const response = await authenticatedFetch('/api/users', {
+  const response = await authenticatedFetch('/users', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -30,7 +30,7 @@ export async function updateProfile(payload: Partial<UserProfile>): Promise<void
 }
 
 export async function deleteAccount(): Promise<void> {
-  const response = await authenticatedFetch('/api/users', { method: 'DELETE' })
+  const response = await authenticatedFetch('/users', { method: 'DELETE' })
 
   if (response.status !== 200) {
     throw new Error('Failed to delete account')

@@ -69,10 +69,10 @@ watch(
           ref="firstNameCell"
           title="First Name"
           type="text"
-          v-model="firstName!"
+          v-model="firstName"
         />
-        <AccountEditableCell ref="lastNameCell" title="Last Name" type="text" v-model="lastName!" />
-        <AccountEditableCell ref="emailCell" title="Email" type="email" v-model="email!" />
+        <AccountEditableCell ref="lastNameCell" title="Last Name" type="text" v-model="lastName" />
+        <AccountEditableCell ref="emailCell" title="Email" type="email" v-model="email" />
         <button type="submit" :disabled="!editsMade || anyEditing || authStore.isLoading">
           {{ authStore.isLoading ? 'Updating...' : 'Update Account' }}
         </button>
