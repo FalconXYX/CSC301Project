@@ -23,6 +23,7 @@ var createclinicsRouter = require("./routes/providers/createProvider");
 var deleteclinicsRouter = require("./routes/providers/deleteProvider");
 var updateclinicsRouter = require("./routes/providers/updateProvider");
 var getclinicsRouter = require("./routes/providers/getProvider");
+var createPractitionersRouter = require("./routes/practitioner/createPractitioner");
 var signInRouter = require("./routes/auth/signIn");
 var signOutRouter = require("./routes/auth/signOut");
 
@@ -47,6 +48,7 @@ app.use("/clinics", deleteclinicsRouter);
 app.use("/clinics", updateclinicsRouter);
 app.use("/clinics", getclinicsRouter);
 app.use("/clinic", deleteclinicsRouter);
+app.use("/practitioners", createPractitionersRouter);
 app.use("/updateclinic", updateclinicsRouter);
 app.use("/auth", signInRouter);
 app.use("/auth", signOutRouter);
