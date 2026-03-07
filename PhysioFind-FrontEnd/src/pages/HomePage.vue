@@ -41,7 +41,6 @@ import heroImg from '../assets/hero.jpg'
 import physiotherapistImg from '../assets/physiotherapist.jpg'
 import psychologistImg from '../assets/psychologist.jpg'
 import chiropractorImg from '../assets/chiropractor.jpg'
-import dermatologistImg from '../assets/dermatologist.jpg'
 
 // Top searched specialties.  Each entry has a label and a photo.  In a
 // production system you might fetch these from your backend or CMS to
@@ -50,7 +49,7 @@ const specialties = [
   { label: 'Physiotherapist', image: physiotherapistImg },
   { label: 'Psychologist', image: psychologistImg },
   { label: 'Chiropractor', image: chiropractorImg },
-  { label: 'Dermatologist', image: dermatologistImg },
+  // Removed Dermatologist entry because the platform does not support this specialty
 ]
 
 // Top‑rated providers.  These are placeholder values meant to convey
@@ -62,7 +61,7 @@ const topProviders = [
   { name: 'Dr. Sarah Johnson', specialty: 'Physiotherapist', rating: 5 },
   { name: 'Dr. Miguel Pérez', specialty: 'Psychologist', rating: 5 },
   { name: 'Dr. Emily Chen', specialty: 'Chiropractor', rating: 4.5 },
-  { name: 'Dr. Ahmed Khan', specialty: 'Dermatologist', rating: 5 },
+  // Removed dermatologist because the platform does not list dermatologists
 ]
 </script>
 
@@ -168,11 +167,11 @@ const topProviders = [
   align-items: center;
   justify-content: center;
   padding-top: var(--g-navbar-height);
-  /* subtle gradient background using existing colour variables */
+  /* updated gradient with uplifting, healthcare‑appropriate colours */
   background: linear-gradient(
     to bottom right,
-    oklch(from var(--c-bg) l c h / 1),
-    oklch(from var(--c-text) l c h / 0.07)
+    #e6f9fc,
+    #f2f7fb
   );
 }
 
@@ -185,6 +184,14 @@ const topProviders = [
   margin: 0 auto;
   padding: 0 1rem;
   text-align: center;
+
+  /* Wrap the entire hero content (text and image) in a bordered box. This
+     adds a clear outline around the section with a subtle background so
+     the content stands apart from the hero gradient. */
+  border: 1px solid #e0eef9;
+  border-radius: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
 }
 
 @media (min-width: 768px) {
@@ -233,13 +240,14 @@ const topProviders = [
 }
 
 #hero .cta a.primary {
-  background-color: var(--c-text);
-  color: var(--c-bg);
+  /* primary call‑to‑action uses a calming blue tone instead of dark text */
+  background-color: #0078d4;
+  color: #ffffff;
 }
 
 #hero .cta a.secondary {
-  outline: 2px solid var(--c-text);
-  color: var(--c-text);
+  border: 2px solid #0078d4;
+  color: #0078d4;
 }
 
 #hero .cta a:hover {
@@ -256,7 +264,9 @@ const topProviders = [
 
 #hero .hero-image img {
   width: 100%;
-  max-width: 28rem;
+  /* Increase the maximum width of the hero image so it makes a stronger
+     visual impact, per feedback that the front image appeared too small. */
+  max-width: 34rem;
   height: auto;
   border-radius: 0.5rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -270,7 +280,10 @@ const topProviders = [
  * create depth.
  */
 #testimonials {
-  background-color: oklch(from var(--c-bg) l c h / 0.97);
+  /* Use a very light pastel background instead of relying on the
+     default background colour. This helps move away from the
+     previous black/white colour scheme toward a more welcoming palette. */
+  background-color: #f5faff;
   padding: 4rem 1rem;
 }
 
@@ -291,8 +304,10 @@ const topProviders = [
 
 .testimonial-card {
   max-width: 28ch;
-  background: var(--c-bg);
-  border: 1px solid oklch(from var(--c-text) l c h / 0.1);
+  /* Give testimonial cards a clean white backdrop and soft border to
+     enhance readability on the light section background. */
+  background-color: #ffffff;
+  border: 1px solid #e0eef9;
   border-radius: 0.75rem;
   padding: 1.5rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -315,7 +330,8 @@ const topProviders = [
  * Specialties section styling
  */
 #specialties {
-  background-color: oklch(from var(--c-bg) l c h / 0.98);
+  /* Match the pastel background used elsewhere for visual cohesion. */
+  background-color: #f5faff;
   padding: 4rem 1rem;
 }
 
@@ -339,8 +355,10 @@ const topProviders = [
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--c-bg);
-  border: 1px solid oklch(from var(--c-text) l c h / 0.1);
+  /* White card background with subtle border to contrast against the
+     pastel section. */
+  background-color: #ffffff;
+  border: 1px solid #e0eef9;
   border-radius: 0.75rem;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
@@ -354,7 +372,10 @@ const topProviders = [
 
 .specialty-card img {
   width: 100%;
-  height: 10rem;
+  /* Make the specialty images taller to draw more attention to each
+     discipline. This change responds to feedback that the pictures
+     felt too small. */
+  height: 12rem;
   object-fit: cover;
 }
 
@@ -370,7 +391,8 @@ const topProviders = [
  */
 #top-providers {
   padding: 4rem 1rem;
-  background-color: oklch(from var(--c-bg) l c h / 0.99);
+  /* Light background to distinguish the top providers section. */
+  background-color: #f5faff;
 }
 
 #top-providers h2 {
@@ -390,8 +412,10 @@ const topProviders = [
 }
 
 .provider-card {
-  background-color: var(--c-bg);
-  border: 1px solid oklch(from var(--c-text) l c h / 0.1);
+  /* Use a white card with a subtle border for consistency with the
+     specialties and testimonial cards. */
+  background-color: #ffffff;
+  border: 1px solid #e0eef9;
   border-radius: 0.75rem;
   padding: 1.5rem;
   display: flex;
@@ -406,6 +430,29 @@ const topProviders = [
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
 }
 
+/*
+ * Typography
+ *
+ * Override the global text colour variables within this component to ensure
+ * high contrast on the light backgrounds. Without these overrides the
+ * default colour scheme from the broader application may produce
+ * extremely pale or illegible text. Use a dark blue tone for all
+ * headings and body copy in this view.
+ */
+#hero .heading,
+#hero .description,
+#testimonials h2,
+.testimonial-card .quote,
+.testimonial-card .author,
+#specialties h2,
+.specialty-card .label,
+#top-providers h2,
+.provider-name,
+.provider-specialty,
+.provider-rating {
+  color: #0a2441;
+}
+
 .provider-name {
   font-size: 1.25rem;
   font-weight: 700;
@@ -414,19 +461,24 @@ const topProviders = [
 
 .provider-specialty {
   font-size: 1rem;
-  color: oklch(from var(--c-text) l c h / 0.8);
+  /* Remove explicit colour definition so the global override above
+     applies. This ensures the provider specialty text remains dark and
+     legible on the light background. */
   margin: 0 0 0.5rem 0;
 }
 
 .provider-rating {
   font-size: 1rem;
-  color: var(--c-text);
+  /* Use a warm gold colour for the star symbols to help them stand
+     out on the light background. The rating numeric value below uses
+     a subdued blue to harmonize with the rest of the palette. */
+  color: #f5a623;
 }
 
 .provider-rating .rating-value {
   margin-left: 0.25rem;
   font-size: 0.875rem;
-  color: oklch(from var(--c-text) l c h / 0.6);
+  color: #6b7c93;
 }
 
 .book-btn {
@@ -436,13 +488,31 @@ const topProviders = [
   font-size: 0.875rem;
   font-weight: 600;
   border-radius: 9999px;
-  background-color: var(--c-text);
-  color: var(--c-bg);
+  /* Match the main call‑to‑action blue used in the hero for the
+     provider booking button. White text ensures readability on the
+     coloured background. */
+  background-color: #0078d4;
+  color: #ffffff;
   transition: opacity 75ms ease;
   text-decoration: none;
 }
 
 .book-btn:hover {
   opacity: 0.75;
+}
+</style>
+
+<!--
+  Global style override
+  
+  The default layout of the application uses a dark background on the
+  `<body>`, which created large black borders on either side of the
+  landing page when we introduced light section backgrounds. To ensure
+  a consistent look across the entire viewport, apply a global body
+  background colour that matches the light palette used in this page.
+-->
+<style>
+body {
+  background-color: #f5faff;
 }
 </style>
