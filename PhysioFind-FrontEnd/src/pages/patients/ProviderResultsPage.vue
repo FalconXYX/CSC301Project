@@ -1,4 +1,16 @@
 <script setup lang="ts">
+// Provider results page
+//
+// This page displays a map and a list of matched healthcare providers based on
+// the user's questionnaire responses. The script uses the route's query
+// parameters to trigger a search in the provider search store when a postal
+// code is present.
+
+// Vite's `<script setup>` automatically imports utilities like `useRoute`,
+// `computed` and `watch` if the project is configured with auto‑imports. We
+// intentionally mirror the upstream implementation from the repository to
+// preserve functionality while adjusting styles below.
+
 const route = useRoute()
 const store = useProviderSearchStore()
 
@@ -30,8 +42,8 @@ watch(
     <div class="title-area">
       <h1 class="heading">Your Matches</h1>
       <p class="subheading">
-        We tried our best to match you with healthcare providers based on your responses to the
-        questionnaire.
+        We tried our best to match you with healthcare providers based on your
+        responses to the questionnaire.
       </p>
     </div>
     <div class="results">
@@ -53,6 +65,15 @@ watch(
 </template>
 
 <style scoped>
+/*
+ * Provider Results Page
+ *
+ * Adjust the colour scheme to match the refreshed landing page. Use a
+ * dark blue for the heading and subheading for improved contrast on
+ * light backgrounds, replacing the default variable‑based colours. The
+ * layout and spacing mirror the upstream implementation.
+ */
+
 #provider-results {
   margin-block: 2rem;
 
@@ -64,13 +85,16 @@ watch(
     .heading {
       font: 700 var(--f-heading-size)/1.2 var(--f-serif);
       margin-bottom: 0.5rem;
+      color: #0a2441;
     }
 
     .subheading {
       font-size: var(--f-subheading-size);
       line-height: 1.4;
       text-wrap: balance;
-      color: var(--c-text-secondary);
+      /* Override the default secondary text colour with a dark tone for better
+       * readability on light backgrounds. */
+      color: #0a2441;
       max-width: 64ch;
     }
   }
