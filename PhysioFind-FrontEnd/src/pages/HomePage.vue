@@ -32,20 +32,67 @@ const testimonials = [
     role: 'Patient',
   },
 ]
+
+// Images for the landing page.  These are imported so that Vite can
+// properly bundle them into the final build.  The hero photo shows
+// a friendly doctor greeting a patient, while the specialty images
+// illustrate each of the top‑searched healthcare fields on PhysioFind.
+import heroImg from '../assets/hero.jpg'
+import physiotherapistImg from '../assets/physiotherapist.jpg'
+import psychologistImg from '../assets/psychologist.jpg'
+import chiropractorImg from '../assets/chiropractor.jpg'
+import dermatologistImg from '../assets/dermatologist.jpg'
+
+// Top searched specialties.  Each entry has a label and a photo.  In a
+// production system you might fetch these from your backend or CMS to
+// reflect real search trends.
+const specialties = [
+  { label: 'Physiotherapist', image: physiotherapistImg },
+  { label: 'Psychologist', image: psychologistImg },
+  { label: 'Chiropractor', image: chiropractorImg },
+  { label: 'Dermatologist', image: dermatologistImg },
+]
+
+// Top‑rated providers.  These are placeholder values meant to convey
+// how high‑quality providers might be showcased on the landing page.  For
+// simplicity we represent ratings as numbers; in the template we
+// generate star symbols accordingly.  Replace this with real
+// provider data when available.
+const topProviders = [
+  { name: 'Dr. Sarah Johnson', specialty: 'Physiotherapist', rating: 5 },
+  { name: 'Dr. Miguel Pérez', specialty: 'Psychologist', rating: 5 },
+  { name: 'Dr. Emily Chen', specialty: 'Chiropractor', rating: 4.5 },
+  { name: 'Dr. Ahmed Khan', specialty: 'Dermatologist', rating: 5 },
+]
 </script>
 
 <template>
-  <!-- Hero section with value proposition and CTA -->
+  <!-- Hero section with value proposition, supporting copy and an illustrative image -->
   <section id="hero">
     <div class="hero-inner">
-      <h1 class="heading">Find the right physio. Not just the closest one.</h1>
-      <p class="subheading">
-        PhysioFind matches you with Ontario providers based on availability,
-        insurance, location and specialization – then lets you book instantly.
-      </p>
-      <div class="cta">
-        <RouterLink to="/find-provider" class="primary">Find a provider</RouterLink>
-        <RouterLink to="#" class="secondary">Learn more</RouterLink>
+      <div class="hero-text">
+        <h1 class="heading">Find the right provider.<br />Not just the closest one.</h1>
+        <!-- Multiple paragraphs explain the value PhysioFind provides.  Keep
+             the copy concise and scannable so visitors quickly grasp the
+             benefits of the platform. -->
+        <p class="description">
+          PhysioFind connects patients and clinics across Ontario, taking into
+          account your insurance, availability and specialty needs.  Our matching
+          questionnaire helps identify the best practitioner for your unique
+          situation.
+        </p>
+        <p class="description">
+          Whether you’re recovering from an injury, seeking mental health
+          support or looking for expert skin care, we’ve got you covered.  Book
+          instantly and securely through our platform.
+        </p>
+        <div class="cta">
+          <RouterLink to="/find-provider" class="primary">Find a provider</RouterLink>
+          <RouterLink to="#specialties" class="secondary">Browse specialties</RouterLink>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img :src="heroImg" alt="Doctor greeting a patient" />
       </div>
     </div>
   </section>
@@ -62,6 +109,41 @@ const testimonials = [
       </div>
     </div>
   </section>
+
+  <!-- Top searched specialties section -->
+  <section id="specialties">
+    <div class="content">
+      <h2>Top searched specialties</h2>
+      <div class="specialty-grid">
+        <div class="specialty-card" v-for="(s, i) in specialties" :key="i">
+          <img :src="s.image" :alt="s.label" />
+          <p class="label">{{ s.label }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top rated providers section -->
+  <section id="top-providers">
+    <div class="content">
+      <h2>Top‑rated providers</h2>
+      <div class="provider-grid">
+        <div class="provider-card" v-for="(p, i) in topProviders" :key="i">
+          <div class="provider-details">
+            <h3 class="provider-name">{{ p.name }}</h3>
+            <p class="provider-specialty">{{ p.specialty }}</p>
+            <p class="provider-rating">
+              <!-- Repeat the star symbol based on the integer portion of the rating -->
+              {{ '★'.repeat(Math.floor(p.rating)) }}
+              <span v-if="p.rating % 1 !== 0">½</span>
+              <span class="rating-value">({{ p.rating.toFixed(1) }})</span>
+            </p>
+          </div>
+          <RouterLink to="/find-provider" class="book-btn">Book now</RouterLink>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped>
@@ -72,13 +154,20 @@ const testimonials = [
  * centered content create a strong impression. CTA buttons are styled
  * consistently with the rest of the application.
  */
+/*
+ * Hero styling
+ *
+ * The hero section now uses a two‑column layout.  On small screens it
+ * stacks vertically, while on larger screens the copy appears to the left
+ * of an illustrative image.  The gradient background and generous height
+ * create an inviting first impression.
+ */
 #hero {
-  height: 50rem;
+  min-height: 50rem;
   display: flex;
   align-items: center;
   justify-content: center;
   padding-top: var(--g-navbar-height);
-  text-align: center;
   /* subtle gradient background using existing colour variables */
   background: linear-gradient(
     to bottom right,
@@ -91,9 +180,27 @@ const testimonials = [
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  max-width: 72ch;
+  gap: 2rem;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  #hero .hero-inner {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+/* Copy column */
+#hero .hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
 }
 
 #hero .heading {
@@ -104,21 +211,21 @@ const testimonials = [
   margin: 0;
 }
 
-#hero .subheading {
-  font-size: 1.25rem;
-  line-height: 1.5;
-  max-width: 60ch;
+#hero .description {
+  font-size: 1.125rem;
+  line-height: 1.6;
   margin: 0;
+  max-width: 65ch;
 }
 
 #hero .cta {
   display: flex;
   gap: 1.5rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 #hero .cta a {
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1.5rem;
   font-size: 1.125rem;
   font-weight: 600;
   border-radius: 16rem;
@@ -137,6 +244,22 @@ const testimonials = [
 
 #hero .cta a:hover {
   opacity: 0.75;
+}
+
+/* Image column */
+#hero .hero-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#hero .hero-image img {
+  width: 100%;
+  max-width: 28rem;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 /*
@@ -186,5 +309,140 @@ const testimonials = [
   font-size: 0.875rem;
   font-weight: 600;
   color: oklch(from var(--c-text) l c h / 0.7);
+}
+
+/*
+ * Specialties section styling
+ */
+#specialties {
+  background-color: oklch(from var(--c-bg) l c h / 0.98);
+  padding: 4rem 1rem;
+}
+
+#specialties h2 {
+  font-family: var(--f-serif);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.specialty-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.specialty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--c-bg);
+  border: 1px solid oklch(from var(--c-text) l c h / 0.1);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.specialty-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.specialty-card img {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+}
+
+.specialty-card .label {
+  padding: 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/*
+ * Top providers section styling
+ */
+#top-providers {
+  padding: 4rem 1rem;
+  background-color: oklch(from var(--c-bg) l c h / 0.99);
+}
+
+#top-providers h2 {
+  font-family: var(--f-serif);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.provider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.provider-card {
+  background-color: var(--c-bg);
+  border: 1px solid oklch(from var(--c-text) l c h / 0.1);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.provider-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.provider-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.provider-specialty {
+  font-size: 1rem;
+  color: oklch(from var(--c-text) l c h / 0.8);
+  margin: 0 0 0.5rem 0;
+}
+
+.provider-rating {
+  font-size: 1rem;
+  color: var(--c-text);
+}
+
+.provider-rating .rating-value {
+  margin-left: 0.25rem;
+  font-size: 0.875rem;
+  color: oklch(from var(--c-text) l c h / 0.6);
+}
+
+.book-btn {
+  align-self: flex-start;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background-color: var(--c-text);
+  color: var(--c-bg);
+  transition: opacity 75ms ease;
+  text-decoration: none;
+}
+
+.book-btn:hover {
+  opacity: 0.75;
 }
 </style>
