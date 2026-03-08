@@ -11,6 +11,8 @@ import AccountPage from '@/pages/auth/AccountPage.vue'
 import AuthPage from '@/pages/auth/AuthPage.vue'
 import PatientsValuePage from '@/pages/patients/PatientsValuePage.vue'
 
+const AUTH_ROLES = ['admin', 'clinic', 'patient', 'any'] as const
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -23,7 +25,7 @@ const router = createRouter({
           path: 'find-provider',
           children: [
             { path: '', component: FindProviderPage },
-            { path: 'results', component: ProviderResultsPage, meta: { requiresAuth: true } },
+            { path: 'results', component: ProviderResultsPage, meta: { auth: 'any' } },
           ],
         },
         {
@@ -33,7 +35,7 @@ const router = createRouter({
         {
           path: 'account',
           component: AccountPage,
-          meta: { requiresAuth: true },
+          meta: { auth: 'any' },
         },
       ],
     },
@@ -64,16 +66,28 @@ router.beforeEach(async (to, from, next) => {
     })
   }
 
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
-  const { isAuthenticated } = authStore
+  const requiredRole = to.matched.find((record) => record.meta.auth)?.meta.auth
+  const { profile, isAuthenticated } = authStore
 
-  if (requiresAuth && !isAuthenticated) {
-    next({ path: '/login', query: { redirect: to.fullPath } })
+  if (requiredRole) {
+    if (!isAuthenticated) {
+      next({ path: '/login', query: { redirect: to.fullPath } })
+    } else if (requiredRole !== 'any' && profile?.role !== requiredRole) {
+      next('/')
+    } else {
+      next()
+    }
   } else if (to.path === '/login' && isAuthenticated) {
     next('/')
   } else {
     next()
   }
 })
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    auth?: (typeof AUTH_ROLES)[number]
+  }
+}
 
 export default router
