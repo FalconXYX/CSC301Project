@@ -7,9 +7,9 @@ import NavLayout from '@/layouts/NavLayout.vue'
 import HomePage from '@/pages/HomePage.vue'
 import FindProviderPage from '@/pages/patients/FindProviderPage.vue'
 import ProviderResultsPage from '@/pages/patients/ProviderResultsPage.vue'
-
 import AccountPage from '@/pages/auth/AccountPage.vue'
 import AuthPage from '@/pages/auth/AuthPage.vue'
+import PatientsValuePage from '@/pages/patients/PatientsValuePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +25,10 @@ const router = createRouter({
             { path: '', component: FindProviderPage },
             { path: 'results', component: ProviderResultsPage, meta: { requiresAuth: true } },
           ],
+        },
+        {
+          path: 'patients',
+          component: PatientsValuePage,
         },
         {
           path: 'account',

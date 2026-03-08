@@ -10,7 +10,7 @@ import PhysioFindLogo from '@/assets/physiofind.svg?component'
         <span class="title">PhysioFind</span>
       </RouterLink>
       <div class="pages">
-        <RouterLink to="#" class="nav-btn">Patients</RouterLink>
+        <RouterLink to="/patients" class="nav-btn">Patients</RouterLink>
         <RouterLink to="#" class="nav-btn">Clinics</RouterLink>
         <RouterLink to="#" class="nav-btn">About Us</RouterLink>
       </div>
