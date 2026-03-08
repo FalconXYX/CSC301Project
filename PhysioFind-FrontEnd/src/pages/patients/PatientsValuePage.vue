@@ -3,9 +3,9 @@
  * Patients Value Proposition Page
  *
  * This view explains how PhysioFind helps patients get the right care. It
- * guides users through the high‑level journey of taking the matching
+ * guides users through the high-level journey of taking the matching
  * questionnaire, reviewing their matches and booking an appointment. The
- * content emphasises secure data handling and accurate matching based on
+ * content emphasizes secure data handling and accurate matching based on
  * insurance, availability and specialty needs. A prominent call to
  * action links directly to the questionnaire so patients can get started
  * immediately.
@@ -13,12 +13,11 @@
 </script>
 
 <template>
-  <!-- Hero section introduces the value proposition and encourages users to begin -->
   <section id="patients-hero">
     <div class="hero-inner">
       <h1 class="heading">Get matched with the right care</h1>
       <p class="description">
-        PhysioFind’s secure questionnaire and matching algorithm connect you
+        PhysioFind's secure questionnaire and matching algorithm connect you
         with providers who meet your insurance, availability and specialty needs.
       </p>
       <RouterLink to="/find-provider" class="cta primary">
@@ -27,7 +26,6 @@
     </div>
   </section>
 
-  <!-- Journey section outlines the three‑step process visually -->
   <section id="journey">
     <h2 class="journey-heading">Your journey</h2>
     <div class="steps">
@@ -43,7 +41,7 @@
         <div class="number">2</div>
         <h3>Get matched</h3>
         <p>
-          We’ll match you with vetted providers who fit your criteria – no
+          We'll match you with vetted providers who fit your criteria - no
           endless searching required.
         </p>
       </div>
@@ -58,7 +56,6 @@
     </div>
   </section>
 
-  <!-- Benefits section highlights reasons to trust the platform -->
   <section id="benefits">
     <h2 class="benefits-heading">Why choose PhysioFind</h2>
     <ul class="benefits-list">
@@ -73,15 +70,6 @@
 </template>
 
 <style scoped>
-/*
- * Patients Value Proposition Page styling
- *
- * The colour palette and typography mirror those used on the landing page to
- * maintain visual consistency. Sections are separated with generous
- * spacing and subtle backgrounds. Icons use the Material symbols font
- * included in the project.
- */
-
 #patients-hero {
   padding: 5rem 1rem 3rem;
   background: linear-gradient(to bottom right, #e6f9fc, #f2f7fb);
@@ -127,15 +115,18 @@
   transition: opacity 75ms ease;
   text-decoration: none;
 }
+
 .cta.primary {
   background-color: #0078d4;
   color: #ffffff;
 }
+
 .cta.secondary {
   border: 2px solid #0078d4;
   color: #0078d4;
   margin-top: 1.5rem;
 }
+
 .cta:hover {
   opacity: 0.75;
 }
@@ -156,7 +147,7 @@
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem;
   max-width: 60rem;
   margin: 0 auto;
@@ -175,7 +166,6 @@
   text-align: center;
 }
 
-/* Styled number circles for each step */
 .step .number {
   width: 2.5rem;
   height: 2.5rem;
@@ -241,5 +231,16 @@
   top: 0;
   font-weight: 700;
   color: #0078d4;
+}
+
+@media (max-width: 900px) {
+  .steps {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .step {
+    width: min(100%, 22rem);
+  }
 }
 </style>
