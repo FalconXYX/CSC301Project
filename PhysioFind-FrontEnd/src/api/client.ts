@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/stores/auth'
 
-export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? ''
+// export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? ''
 
 /**
  * Fetch wrapper that attaches the current session's access token.
@@ -21,5 +21,5 @@ export async function authenticatedFetch(url: string, options?: RequestInit): Pr
     },
   }
 
-  return await fetch(apiBaseUrl + url, optionsWithAuth)
+  return await fetch(url, optionsWithAuth)
 }

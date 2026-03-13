@@ -1,5 +1,5 @@
 import { type SupabaseUser, type SupabaseSession } from '@/lib/supabase'
-import { authenticatedFetch, apiBaseUrl } from './client'
+import { authenticatedFetch } from './client'
 
 import type { CreateUserPayload, NewUserProfile, UserProfile } from '@/types/user'
 import { removeEmptyFields } from '@/utils'
@@ -15,7 +15,7 @@ export async function createUser(
     ...removeEmptyFields(profile, ['date_of_birth', 'phone', 'clinic_id', 'clinic_role']),
   }
 
-  const response = await fetch(apiBaseUrl + '/users', {
+  const response = await fetch('/api/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -47,7 +47,7 @@ export async function signIn(
     password,
   }
 
-  const response = await fetch(apiBaseUrl + '/auth/signIn', {
+  const response = await fetch('/api/auth/signIn', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -63,7 +63,7 @@ export async function signIn(
 }
 
 export async function signOut(): Promise<void> {
-  await authenticatedFetch('/auth/signOut', { method: 'POST' })
+  await authenticatedFetch('/api/auth/signOut', { method: 'POST' })
 }
 
 // MARK: Helper functions
