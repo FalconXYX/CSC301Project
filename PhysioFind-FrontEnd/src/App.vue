@@ -19,4 +19,5 @@ onUnmounted(() => {
 
 <template>
   <RouterView />
+  <GlobalToast />
 </template>

@@ -86,3 +86,45 @@ export interface GoogleMapsClinic extends ClinicBase {
  * ```
  */
 export type Clinic = VerifiedClinic | GoogleMapsClinic
+
+/**
+ * Payload for creating a clinic in the backend API.
+ * Uses backend snake_case field names to match the Express contract.
+ */
+export interface CreateClinicPayload {
+  name: string
+  address_line1: string
+  city: string
+  province: string
+  postal_code: string
+  address_line2?: string | null
+  phone?: string | null
+  email?: string | null
+  website?: string | null
+  offers_direct_billing?: boolean
+}
+
+/**
+ * Clinic record returned by the backend API.
+ */
+export interface ClinicRecord {
+  id: string
+  name: string
+  phone: string | null
+  email: string | null
+  website: string | null
+  address_line1: string
+  address_line2: string | null
+  city: string
+  province: string
+  postal_code: string
+  latitude: string | null
+  longitude: string | null
+  booking_provider: string | null
+  booking_url: string | null
+  offers_direct_billing: boolean
+  specialties_json: unknown | null
+  services_json: unknown | null
+  created_at: string
+  updated_at: string
+}
