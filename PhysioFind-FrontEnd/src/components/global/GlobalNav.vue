@@ -13,7 +13,7 @@ const authStore = useAuthStore()
       </RouterLink>
       <div class="pages">
         <RouterLink to="/patients" class="nav-btn">Patients</RouterLink>
-        <RouterLink to="/clinics/create" class="nav-btn">Clinics</RouterLink>
+        <RouterLink to="/clinics" class="nav-btn">Clinics</RouterLink>
         <RouterLink to="#" class="nav-btn">About Us</RouterLink>
       </div>
       <AccountPane>
