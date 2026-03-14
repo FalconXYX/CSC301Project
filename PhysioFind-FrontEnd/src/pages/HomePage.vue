@@ -42,7 +42,7 @@ const topProviders = [
 </script>
 
 <template>
-  <section id="hero">
+  <section id="hero" class="full-with-lanes">
     <div class="hero-inner">
       <div class="hero-text">
         <h1 class="heading">Find the right provider.<br />Not just the closest one.</h1>
@@ -66,7 +66,7 @@ const topProviders = [
     </div>
   </section>
 
-  <section id="testimonials">
+  <section id="testimonials" class="full-with-lanes">
     <div class="content">
       <h2>What our users are saying</h2>
       <div class="testimonial-cards">
@@ -78,7 +78,7 @@ const topProviders = [
     </div>
   </section>
 
-  <section id="specialties">
+  <section id="specialties" class="full-with-lanes">
     <div class="content">
       <h2>Top searched specialties</h2>
       <div class="specialty-grid">
@@ -90,7 +90,7 @@ const topProviders = [
     </div>
   </section>
 
-  <section id="top-providers">
+  <section id="top-providers" class="full-with-lanes">
     <div class="content">
       <h2>Top-rated providers</h2>
       <div class="provider-grid">
@@ -111,13 +111,10 @@ const topProviders = [
   </section>
 </template>
 
-<style scoped>
+<style>
 #hero {
   min-height: 50rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: var(--g-navbar-height);
+  place-items: center;
   background: linear-gradient(to bottom right, #e6f9fc, #f2f7fb);
 }
 
