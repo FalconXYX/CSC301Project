@@ -10,6 +10,7 @@ export async function getProfile(): Promise<UserProfile> {
   }
 
   const data = await response.json()
+  console.log(data)
   if (!data || !data.user) {
     throw new Error('Invalid response from server')
   }

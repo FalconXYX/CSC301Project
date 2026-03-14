@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import * as API from '@/api'
 
+const authStore = useAuthStore()
+const router = useRouter()
+
 const postalCodePattern = /^[A-Z]\d[A-Z] ?\d[A-Z]\d$/
 const provinceCodePattern = /^[A-Z]{2}$/
 const phonePattern = /^(\+?1[-.\s]?)?(\(?\d{3}\)?[-.\s]?)\d{3}[-.\s]?\d{4}$/
@@ -141,6 +144,11 @@ async function createClinic() {
       offers_direct_billing: form.offers_direct_billing,
     })
 
+    await authStore.updateProfile({
+      clinic_id: clinic.id,
+      clinic_role: 'manager',
+    })
+
     useToaster().success(`Clinic "${clinic.name}" was created successfully.`)
     resetForm()
   } catch (error) {
@@ -148,7 +156,7 @@ async function createClinic() {
     console.error('Error creating clinic:', error)
   } finally {
     isSubmitting.value = false
-    // TODO: Go to dashboard
+    router.push({ path: '/clinic/dashboard' })
   }
 }
 </script>
@@ -329,7 +337,7 @@ async function createClinic() {
   </div>
 </template>
 
-<style scoped>
+<style>
 #clinic-creation {
   align-self: center;
 

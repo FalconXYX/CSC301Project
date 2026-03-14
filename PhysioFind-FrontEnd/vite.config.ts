@@ -13,8 +13,8 @@ import SvgLoader from 'vite-svg-loader'
 
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
-  const env = loadEnv(mode, process.cwd())
-  const API_URL = env.VITE_API_URL || 'http://localhost:3000'
+  const env = loadEnv(mode, process.cwd(), '')
+  const API_URL = env.API_BASE_URL || 'http://localhost:3000'
 
   return {
     base: command === 'build' ? '/CSC301Project/' : '/',

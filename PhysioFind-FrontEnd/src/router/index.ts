@@ -12,6 +12,8 @@ import AuthPage from '@/pages/auth/AuthPage.vue'
 import PatientsValuePage from '@/pages/patients/PatientsValuePage.vue'
 import ClinicCreationPage from '@/pages/clinics/ClinicCreationPage.vue'
 
+import ErrorPage from '@/pages/error/ErrorPage.vue'
+
 const AUTH_ROLES = ['admin', 'clinic', 'patient', 'any'] as const
 
 const router = createRouter({
@@ -33,26 +35,46 @@ const router = createRouter({
           path: 'patients',
           component: PatientsValuePage,
         },
-        {
-          path: 'clinics/create',
-          component: ClinicCreationPage,
-          meta: { auth: 'any' },
-        },
+        // Account
         {
           path: 'account',
           component: AccountPage,
           meta: { auth: 'any' },
         },
+        // Clinics
+        {
+          path: 'clinic',
+          meta: { auth: 'clinic' },
+          children: [
+            {
+              path: 'create',
+              component: ClinicCreationPage,
+            },
+            // {
+            //   path: 'dashboard',
+            //   component: ClinicDashboardPage,
+            // },
+          ],
+        },
       ],
     },
     {
-      path: '/login',
+      path: '/auth',
       component: AuthPage,
+    },
+    {
+      path: '/error',
+      component: ErrorPage,
     },
   ],
 })
 
 router.beforeEach(async (to, from, next) => {
+  if (!to.matched.length) {
+    next({ path: '/error', query: { code: 404 } })
+    return
+  }
+
   const authStore = useAuthStore()
 
   // Wait for INITIAL_SESSION to fire before making auth decisions.
@@ -77,13 +99,13 @@ router.beforeEach(async (to, from, next) => {
 
   if (requiredRole) {
     if (!isAuthenticated) {
-      next({ path: '/login', query: { redirect: to.fullPath } })
+      next({ path: '/auth', query: { redirect: to.fullPath } })
     } else if (requiredRole !== 'any' && profile?.role !== requiredRole) {
-      next('/')
+      next({ path: '/error', query: { code: 403 } })
     } else {
       next()
     }
-  } else if (to.path === '/login' && isAuthenticated) {
+  } else if (to.path === '/auth' && isAuthenticated) {
     next('/')
   } else {
     next()
