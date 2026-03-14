@@ -13,59 +13,55 @@
 </script>
 
 <template>
-  <section id="patients-hero">
+  <section id="patients-hero" class="full-with-lanes">
     <div class="hero-inner">
       <h1 class="heading">Get matched with the right care</h1>
       <p class="description">
-        PhysioFind's secure questionnaire and matching algorithm connect you
-        with providers who meet your insurance, availability and specialty needs.
+        PhysioFind's secure questionnaire and matching algorithm connect you with providers who meet
+        your insurance, availability and specialty needs.
       </p>
-      <RouterLink to="/find-provider" class="cta primary">
-        Take the questionnaire
-      </RouterLink>
+      <RouterLink to="/find-provider" class="cta primary"> Take the questionnaire </RouterLink>
     </div>
   </section>
 
-  <section id="journey">
+  <section id="journey" class="full-with-lanes">
     <h2 class="journey-heading">Your journey</h2>
     <div class="steps">
       <div class="step">
         <div class="number">1</div>
         <h3>Take the questionnaire</h3>
         <p>
-          Answer a few quick questions about your preferences, location and
-          insurance to personalise your search.
+          Answer a few quick questions about your preferences, location and insurance to personalise
+          your search.
         </p>
       </div>
       <div class="step">
         <div class="number">2</div>
         <h3>Get matched</h3>
         <p>
-          We'll match you with vetted providers who fit your criteria - no
-          endless searching required.
+          We'll match you with vetted providers who fit your criteria - no endless searching
+          required.
         </p>
       </div>
       <div class="step">
         <div class="number">3</div>
         <h3>Book an appointment</h3>
         <p>
-          Choose your favourite provider and book online through our secure
-          platform at a time that works for you.
+          Choose your favourite provider and book online through our secure platform at a time that
+          works for you.
         </p>
       </div>
     </div>
   </section>
 
-  <section id="benefits">
+  <section id="benefits" class="full-with-lanes">
     <h2 class="benefits-heading">Why choose PhysioFind</h2>
     <ul class="benefits-list">
       <li>Secure handling of your personal and medical information</li>
       <li>Accurate matching based on insurance, availability and specialty</li>
       <li>Access to verified providers across Ontario</li>
     </ul>
-    <RouterLink to="/find-provider" class="cta secondary">
-      Start your journey
-    </RouterLink>
+    <RouterLink to="/find-provider" class="cta secondary">Start your journey</RouterLink>
   </section>
 </template>
 
@@ -74,7 +70,6 @@
   padding: 5rem 1rem 3rem;
   background: linear-gradient(to bottom right, #e6f9fc, #f2f7fb);
   text-align: center;
-  display: flex;
   justify-content: center;
 }
 
@@ -198,6 +193,7 @@
   padding: 4rem 1rem;
   background-color: #ffffff;
   text-align: center;
+  justify-items: center;
 }
 
 .benefits-heading {

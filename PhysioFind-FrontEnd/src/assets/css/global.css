@@ -51,6 +51,8 @@ body {
   font-family: var(--f-body);
   background-color: var(--c-bg);
   color: var(--c-text);
+
+  font-synthesis: none;
 }
 
 a,
@@ -98,6 +100,16 @@ button {
 
   > * {
     grid-column: content;
-    width: 100%;
+  }
+
+  > .full-with-lanes {
+    grid-column: full;
+
+    display: grid;
+    grid-template-columns: subgrid;
+
+    > * {
+      grid-column: content;
+    }
   }
 }

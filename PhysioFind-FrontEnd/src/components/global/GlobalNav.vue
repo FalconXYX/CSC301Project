@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import PhysioFindLogo from '@/assets/physiofind.svg?component'
+
+const authStore = useAuthStore()
 </script>
 
 <template>
-  <div class="global-nav content-lanes">
+  <div id="global-nav" class="content-lanes">
     <nav>
       <RouterLink to="/" class="home-btn">
         <PhysioFindLogo class="icon" />
@@ -11,18 +13,24 @@ import PhysioFindLogo from '@/assets/physiofind.svg?component'
       </RouterLink>
       <div class="pages">
         <RouterLink to="/patients" class="nav-btn">Patients</RouterLink>
-        <RouterLink to="/clinics/create" class="nav-btn">Clinics</RouterLink>
+        <RouterLink to="/clinics" class="nav-btn">Clinics</RouterLink>
         <RouterLink to="#" class="nav-btn">About Us</RouterLink>
       </div>
-      <RouterLink to="/account" class="account-btn">
-        <span class="material-symbols-outlined icon">account_circle</span>
-      </RouterLink>
+      <AccountPane>
+        <img
+          v-if="authStore.isAuthenticated"
+          src="/images/avatar.png"
+          alt="Profile picture"
+          class="icon"
+        />
+        <span v-else class="material-symbols-outlined icon">account_circle</span>
+      </AccountPane>
     </nav>
   </div>
 </template>
 
 <style>
-.global-nav {
+#global-nav {
   position: fixed;
   top: 0;
 
@@ -37,26 +45,19 @@ import PhysioFindLogo from '@/assets/physiofind.svg?component'
 
   nav {
     max-width: var(--g-max-width);
+    width: 100%;
     height: 100%;
 
     margin: 0 auto;
 
     display: grid;
     grid-template-columns: 1fr auto 1fr;
+    align-items: center;
     gap: 1rem;
 
     .pages {
       display: flex;
       gap: 0.5rem;
-    }
-
-    a,
-    button {
-      transition: opacity 75ms ease;
-
-      &:hover {
-        opacity: 0.67;
-      }
     }
 
     .home-btn {
@@ -73,8 +74,8 @@ import PhysioFindLogo from '@/assets/physiofind.svg?component'
     }
 
     .account-btn {
+      display: inline-flex;
       justify-self: end;
-      height: 1.75rem;
     }
 
     .nav-btn {
@@ -87,6 +88,26 @@ import PhysioFindLogo from '@/assets/physiofind.svg?component'
       height: 1.75rem;
 
       font-size: 1.75rem;
+    }
+
+    img.icon {
+      width: 2rem;
+      height: 2rem;
+      object-fit: cover;
+
+      border: 1px solid var(--c-separator);
+      border-radius: 1.75rem;
+    }
+  }
+}
+
+@scope (#global-nav nav) to (#account-pane) {
+  a,
+  button {
+    transition: opacity 75ms ease;
+
+    &:hover {
+      opacity: 0.67;
     }
   }
 }

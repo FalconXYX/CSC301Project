@@ -1,5 +1,12 @@
 <script setup lang="ts">
-withDefaults(defineProps<{ popover?: boolean }>(), { popover: false })
+const props = withDefaults(
+  defineProps<{ popover?: boolean; mode?: 'signIn' | 'signUp'; role?: 'patient' | 'clinic' }>(),
+  {
+    popover: false,
+    mode: 'signIn',
+    role: 'patient',
+  },
+)
 
 const emit = defineEmits<{ signIn: [] }>()
 
@@ -7,7 +14,7 @@ const authStore = useAuthStore()
 
 // State
 
-const mode = ref<'signIn' | 'signUp'>('signIn')
+const mode = ref(props.mode) // 'signIn' or 'signUp'
 const step = ref(1) // sign-up: 1 = credentials, 2 = profile info
 
 const email = ref('')
@@ -80,7 +87,7 @@ async function handleSignUp() {
   }
 
   const newUserProfile: NewUserProfile = {
-    role: 'patient',
+    role: props.role,
     first_name: firstName.value,
     last_name: lastName.value,
     date_of_birth: dateOfBirth.value ? new Date(dateOfBirth.value).toISOString() : undefined,
@@ -112,7 +119,9 @@ function handleSubmit() {
 <template>
   <div v-if="popover" class="auth-overlay">
     <div class="auth-card">
-      <h2>{{ mode === 'signIn' ? 'Sign In' : 'Sign Up' }}</h2>
+      <h2>
+        {{ mode === 'signIn' ? 'Sign In' : 'Sign Up' }}
+      </h2>
 
       <p v-if="errorMessage" class="auth-error">{{ errorMessage }}</p>
 
@@ -179,7 +188,7 @@ function handleSubmit() {
         </div>
       </form>
 
-      <p class="auth-switch">
+      <p class="auth-switch" v-if="role !== 'clinic'">
         <template v-if="mode === 'signIn'">
           Don't have an account? <button class="link" @click="switchMode">Sign Up</button>
         </template>
@@ -190,9 +199,11 @@ function handleSubmit() {
     </div>
   </div>
 
-  <!-- Popover variant -->
   <div v-else id="auth-view" popover="auto" class="auth-card">
-    <h2>{{ mode === 'signIn' ? 'Sign In' : 'Sign Up' }}</h2>
+    <h2>
+      {{ mode === 'signIn' ? 'Sign In' : 'Sign Up' }}
+      <i v-if="mode === 'signUp' && role === 'clinic'">as Clinic</i>
+    </h2>
 
     <p v-if="errorMessage" class="auth-error">{{ errorMessage }}</p>
 
@@ -251,7 +262,7 @@ function handleSubmit() {
       </div>
     </form>
 
-    <p class="auth-switch">
+    <p class="auth-switch" v-if="role !== 'clinic'">
       <template v-if="mode === 'signIn'">
         Don't have an account? <button class="link" @click="switchMode">Sign Up</button>
       </template>
@@ -299,6 +310,11 @@ function handleSubmit() {
 h2 {
   font-family: var(--f-serif);
   font-size: 1.5rem;
+
+  i {
+    font: italic 0.75em/1 var(--f-body);
+    color: var(--c-text-secondary);
+  }
 }
 
 .auth-error {
