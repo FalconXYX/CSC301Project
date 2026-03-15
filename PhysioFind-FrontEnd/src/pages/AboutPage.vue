@@ -31,20 +31,27 @@ const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL ?? 'support@physiofind.c
         </p>
       </header>
 
-      <section class="section">
-        <h2>Our Mission</h2>
-        <p>{{ mission }}</p>
-      </section>
-
-      <section class="section">
-        <h2>Our Vision</h2>
-        <p>{{ vision }}</p>
-      </section>
-
-      <section class="section">
-        <h2>The Problem We Solve</h2>
-        <p>{{ problem }}</p>
-      </section>
+      <!-- Use a grid of information cards with icons to make the layout more engaging -->
+      <div class="info-grid">
+        <div class="info-card">
+          <!-- Rocket emoji conveys forward momentum and progress for the mission -->
+          <div class="icon-wrapper">🚀</div>
+          <h2>Our Mission</h2>
+          <p>{{ mission }}</p>
+        </div>
+        <div class="info-card">
+          <!-- Telescope emoji symbolises far‑reaching vision -->
+          <div class="icon-wrapper">🔭</div>
+          <h2>Our Vision</h2>
+          <p>{{ vision }}</p>
+        </div>
+        <div class="info-card">
+          <!-- Puzzle piece illustrates solving complex problems -->
+          <div class="icon-wrapper">🧩</div>
+          <h2>The Problem We Solve</h2>
+          <p>{{ problem }}</p>
+        </div>
+      </div>
 
       <section class="section contact">
         <h2>Contact Us</h2>
@@ -93,6 +100,8 @@ const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL ?? 'support@physiofind.c
   font-weight: 700;
   color: #0a2441;
   margin: 0;
+  width: 100%;
+  text-align: center;
 }
 
 .hero .intro {
@@ -101,6 +110,8 @@ const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL ?? 'support@physiofind.c
   color: #0a2441;
   max-width: 65ch;
   margin: 0 auto;
+  width: 100%;
+  text-align: center;
 }
 
 /* Section styles */
@@ -133,6 +144,66 @@ const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL ?? 'support@physiofind.c
 
   .section h2 {
     font-size: 1.75rem;
+  }
+}
+
+/*
+ * Info card grid for the mission, vision, and problem statements
+ *
+ * Rather than stacking plain text sections on top of each other, the
+ * redesigned page presents the core pillars of PhysioFind in a flexible
+ * grid of cards. Each card contains an emoji icon that helps convey
+ * the concept visually (e.g. a rocket for the mission), a heading, and
+ * supporting copy. The cards use the same colour palette as the rest
+ * of the site but with a subtle elevation and centred text to make
+ * them stand out. On smaller screens, the cards gracefully wrap into
+ * full‑width rows to maintain readability.
+ */
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.info-card {
+  flex: 1 1 30%;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0eef9;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.icon-wrapper {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.info-card h2 {
+  font-family: var(--f-serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #0a2441;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.info-card p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #0a2441;
+  margin: 0;
+  max-width: 65ch;
+}
+
+@media (max-width: 900px) {
+  .info-card {
+    flex: 1 1 100%;
   }
 }
 </style>
