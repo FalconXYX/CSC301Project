@@ -14,6 +14,6 @@ app.use(createPinia())
 app.use(router)
 
 const authStore = useAuthStore()
-await authStore.init() // restore session before mounting
+authStore.init() // restore session before mounting
 
 app.mount('#app')
