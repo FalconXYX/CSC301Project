@@ -29,6 +29,11 @@ var updatePractitionersRouter = require("./routes/practitioner/updatePractitione
 var getPractitionersRouter = require("./routes/practitioner/getPractitioner");
 var signInRouter = require("./routes/auth/signIn");
 var signOutRouter = require("./routes/auth/signOut");
+var googleAuthUrlRouter = require("./routes/google/authUrl");
+var googleCallbackRouter = require("./routes/google/callback");
+var googleDisconnectRouter = require("./routes/google/disconnect");
+var googleCalendarsRouter = require("./routes/google/calendars");
+var googleSelectCalendarRouter = require("./routes/google/selectCalendar");
 
 var app = express();
 
@@ -58,6 +63,12 @@ app.use("/practitioners", getPractitionersRouter);
 app.use("/updateclinic", updateclinicsRouter);
 app.use("/auth", signInRouter);
 app.use("/auth", signOutRouter);
+app.use("/google", googleAuthUrlRouter);
+app.use("/google", googleCallbackRouter);
+app.use("/google", googleDisconnectRouter);
+app.use("/google", googleCalendarsRouter);
+app.use("/google", googleSelectCalendarRouter);
+app.use("/api/google", googleCallbackRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -48,9 +48,13 @@ model users {
   date_of_birth           DateTime?           @db.Date
   clinic_id               String?             @db.Uuid
   clinic_role             String?
+  google_access_token     String?
+  google_refresh_token    String?
+  google_token_expiry     DateTime?           @db.Timestamptz(6)
+  google_calendar_id      String?
   created_at              DateTime            @default(now()) @db.Timestamptz(6)
   updated_at              DateTime            @default(now()) @updatedAt @db.Timestamptz(6)
-  
+
   // Relations
   clinic                  clinics?            @relation(fields: [clinic_id], references: [id])
   practitioner            practitioners?
@@ -111,6 +115,7 @@ model appointment_requests {
   preferred_end           DateTime?           @db.Timestamptz(6)
   constraints_json        Json?               @db.JsonB
   status                  String
+  google_event_id         String?
   created_at              DateTime            @default(now()) @db.Timestamptz(6)
   updated_at              DateTime            @default(now()) @updatedAt @db.Timestamptz(6)
   
