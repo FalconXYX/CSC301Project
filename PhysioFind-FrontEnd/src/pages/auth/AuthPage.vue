@@ -2,13 +2,19 @@
 const router = useRouter()
 const route = useRoute()
 
-const redirect = route.query.redirect as string | undefined
+const mode = computed(() => (route.query.mode === 'sign-up' ? 'signUp' : 'signIn'))
+const role = computed(() => (route.query.role === 'clinic' ? 'clinic' : 'patient'))
+const redirect = computed(() => route.query.redirect as string | undefined)
 
 function onSignIn() {
-  router.push(redirect ?? '/')
+  if (mode.value === 'signUp' && role.value === 'clinic') {
+    return void router.push('/clinic/create')
+  }
+
+  router.push(redirect.value ?? '/')
 }
 </script>
 
 <template>
-  <AuthView @sign-in="onSignIn" />
+  <AuthView @sign-in="onSignIn" :mode :role />
 </template>

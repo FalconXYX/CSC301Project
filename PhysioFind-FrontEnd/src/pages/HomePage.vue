@@ -17,8 +17,7 @@ const testimonials = [
     role: 'Patient',
   },
   {
-    quote:
-      'The matching questionnaire saved me from hours of research. Highly recommend!',
+    quote: 'The matching questionnaire saved me from hours of research. Highly recommend!',
     author: 'Sofia L.',
     role: 'Patient',
   },
@@ -43,20 +42,18 @@ const topProviders = [
 </script>
 
 <template>
-  <section id="hero">
+  <section id="hero" class="full-with-lanes">
     <div class="hero-inner">
       <div class="hero-text">
         <h1 class="heading">Find the right provider.<br />Not just the closest one.</h1>
         <p class="description">
-          PhysioFind connects patients and clinics across Ontario, taking into
-          account your insurance, availability and specialty needs. Our matching
-          questionnaire helps identify the best practitioner for your unique
-          situation.
+          PhysioFind connects patients and clinics across Ontario, taking into account your
+          insurance, availability and specialty needs. Our matching questionnaire helps identify the
+          best practitioner for your unique situation.
         </p>
         <p class="description">
-          Whether you're recovering from an injury, seeking mental health
-          support or looking for expert skin care, we've got you covered. Book
-          instantly and securely through our platform.
+          Whether you're recovering from an injury, seeking mental health support or looking for
+          expert skin care, we've got you covered. Book instantly and securely through our platform.
         </p>
         <div class="cta">
           <RouterLink to="/find-provider" class="primary">Find a provider</RouterLink>
@@ -69,7 +66,7 @@ const topProviders = [
     </div>
   </section>
 
-  <section id="testimonials">
+  <section id="testimonials" class="full-with-lanes">
     <div class="content">
       <h2>What our users are saying</h2>
       <div class="testimonial-cards">
@@ -81,7 +78,7 @@ const topProviders = [
     </div>
   </section>
 
-  <section id="specialties">
+  <section id="specialties" class="full-with-lanes">
     <div class="content">
       <h2>Top searched specialties</h2>
       <div class="specialty-grid">
@@ -93,7 +90,7 @@ const topProviders = [
     </div>
   </section>
 
-  <section id="top-providers">
+  <section id="top-providers" class="full-with-lanes">
     <div class="content">
       <h2>Top-rated providers</h2>
       <div class="provider-grid">
@@ -114,13 +111,10 @@ const topProviders = [
   </section>
 </template>
 
-<style scoped>
+<style>
 #hero {
   min-height: 50rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: var(--g-navbar-height);
+  place-items: center;
   background: linear-gradient(to bottom right, #e6f9fc, #f2f7fb);
 }
 
@@ -286,7 +280,9 @@ const topProviders = [
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .specialty-card:hover,
