@@ -26,8 +26,7 @@ const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL ?? 'support@physiofind.c
       <header class="hero">
         <h1>About PhysioFind</h1>
         <p class="intro">
-          Learn about our mission, vision, and the problem we aim to solve in the
-          healthcare space.
+          Learn about our mission, vision, and the problem we aim to solve in the healthcare space.
         </p>
       </header>
 
@@ -57,7 +56,8 @@ const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL ?? 'support@physiofind.c
         <h2>Contact Us</h2>
         <p>
           If you have any questions or need support, please reach out to us at
-          <a :href="`mailto:${supportEmail}`">{{ supportEmail }}</a>.
+          <a :href="`mailto:${supportEmail}`">{{ supportEmail }}</a
+          >.
         </p>
       </section>
     </div>
@@ -74,9 +74,13 @@ const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL ?? 'support@physiofind.c
  */
 
 .about-page {
-  /* Provide generous padding and a gradient background */
   padding: 5rem 1rem 3rem;
+
   background: linear-gradient(to bottom right, #e6f9fc, #f2f7fb);
+
+  border-radius: 2rem;
+  box-shadow: 0 0 30px 15px #e6f9fc;
+
   display: flex;
   justify-content: center;
 }
@@ -87,12 +91,16 @@ const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL ?? 'support@physiofind.c
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid #e0eef9;
+  background-color: rgba(255, 255, 255, 0.95);
+
+  border: none;
+  border-top: 4px solid #0078d4;
+
+  box-shadow: 0 30px 80px rgba(10, 36, 65, 0.15);
+
   border-radius: 0.75rem;
   padding: 2.5rem 2rem;
 }
-
 /* Hero header styles */
 .hero h1 {
   font-family: var(--f-serif);
