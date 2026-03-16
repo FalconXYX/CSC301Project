@@ -13,6 +13,7 @@ import PatientsValuePage from '@/pages/patients/PatientsValuePage.vue'
 // Newly added About page
 import AboutPage from '@/pages/AboutPage.vue'
 import ClinicCreationPage from '@/pages/clinics/ClinicCreationPage.vue'
+import ClinicDashboardPage from '@/pages/clinics/ClinicDashboardPage.vue'
 
 import ErrorPage from '@/pages/error/ErrorPage.vue'
 
@@ -57,10 +58,10 @@ const router = createRouter({
               path: 'create',
               component: ClinicCreationPage,
             },
-            // {
-            //   path: 'dashboard',
-            //   component: ClinicDashboardPage,
-            // },
+            {
+              path: 'dashboard',
+              component: ClinicDashboardPage,
+            },
           ],
         },
       ],
