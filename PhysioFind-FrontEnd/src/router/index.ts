@@ -10,7 +10,7 @@ import ProviderResultsPage from '@/pages/patients/ProviderResultsPage.vue'
 import AccountPage from '@/pages/auth/AccountPage.vue'
 import AuthPage from '@/pages/auth/AuthPage.vue'
 import PatientsValuePage from '@/pages/patients/PatientsValuePage.vue'
-// Newly added About page
+import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage.vue'
 import AboutPage from '@/pages/AboutPage.vue'
 import ClinicCreationPage from '@/pages/clinics/ClinicCreationPage.vue'
 
@@ -37,7 +37,10 @@ const router = createRouter({
           path: 'patients',
           component: PatientsValuePage,
         },
-        // Account
+        {
+          path: 'privacy-policy',
+          component: PrivacyPolicyPage,
+        },
         {
           // Route for the About page
           path: 'about',

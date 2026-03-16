@@ -23,6 +23,7 @@ const firstName = ref('')
 const lastName = ref('')
 const phone = ref('')
 const dateOfBirth = ref('')
+const acceptPolicy = ref(false)
 
 const errorMessage = ref<string | null>(null)
 
@@ -44,6 +45,7 @@ function resetForm() {
   phone.value = ''
   dateOfBirth.value = ''
   errorMessage.value = null
+  acceptPolicy.value = false
 }
 
 // Actions
@@ -72,6 +74,11 @@ function handleSignUpContinue() {
 
   if (!email.value || !password.value) {
     errorMessage.value = 'Please enter your email and password.'
+    return
+  }
+
+  if (!acceptPolicy.value) {
+    errorMessage.value = 'You must accept the Privacy Policy to continue.'
     return
   }
 
@@ -148,6 +155,16 @@ function handleSubmit() {
               required
             />
           </label>
+
+          <label v-if="mode === 'signUp'" class="privacy-checkbox">
+            <input v-model="acceptPolicy" type="checkbox" required />
+            <span>
+              I accept the
+              <RouterLink to="/privacy-policy" class="privacy-link" target="_blank">
+                Privacy Policy
+              </RouterLink>
+            </span>
+          </label>
         </template>
 
         <!-- Step 2: profile info (sign-up only) -->
@@ -222,6 +239,16 @@ function handleSubmit() {
         <label>
           Password
           <input v-model="password" type="password" class="field" placeholder="••••••••" required />
+        </label>
+
+        <label v-if="mode === 'signUp'" class="privacy-checkbox">
+          <input v-model="acceptPolicy" type="checkbox" required />
+          <span>
+            I accept the
+            <RouterLink to="/privacy-policy" class="privacy-link" target="_blank">
+              Privacy Policy
+            </RouterLink>
+          </span>
         </label>
       </template>
 
@@ -409,5 +436,26 @@ label {
   text-underline-offset: 2px;
   color: var(--c-text);
   font-weight: 500;
+}
+
+.privacy-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--c-text-secondary);
+}
+
+.privacy-checkbox input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--c-accent);
+}
+
+.privacy-link {
+  color: var(--c-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 </style>
