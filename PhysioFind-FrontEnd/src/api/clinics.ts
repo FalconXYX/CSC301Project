@@ -65,3 +65,18 @@ export async function updateClinic(
 
   return data.clinic
 }
+
+export async function searchClinics(preferences: any): Promise<ClinicRecord[]> {
+  const response = await fetch('/api/clinics/search', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(preferences),
+  });
+
+  if (response.status !== 200) {
+    throw new Error('Failed to search clinics');
+  }
+
+  const data = await response.json();
+  return data.clinics || [];
+}
