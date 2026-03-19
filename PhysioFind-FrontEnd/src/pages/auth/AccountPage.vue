@@ -4,6 +4,8 @@ import AccountEditableCell from '@/components/auth/AccountEditableCell.vue'
 type CellInstance = InstanceType<typeof AccountEditableCell>
 
 const authStore = useAuthStore()
+const googleStore = useGoogleCalendarStore()
+const route = useRoute()
 const profile = computed(() => authStore.profile)
 
 const firstName = ref(profile.value?.first_name ?? '')
@@ -44,6 +46,12 @@ function deleteAccount() {
   alert('Not implemented yet!')
 }
 
+const googleStatus = computed(() => route.query.google as string | undefined)
+
+onMounted(async () => {
+  await googleStore.fetchCalendars()
+})
+
 watch(
   profile,
   (newProfile) => {
@@ -78,6 +86,30 @@ watch(
         </button>
       </form>
       <button type="button" class="secondary" @click="signOut">Sign Out</button>
+    </section>
+    <section class="google-calendar">
+      <h2 class="heading">Google Calendar</h2>
+      <p class="subheading">Connect your Google Calendar to automatically create events when you book appointments.</p>
+      <p v-if="googleStatus === 'connected'" class="status-message success">Google Calendar connected successfully.</p>
+      <p v-if="googleStatus === 'error'" class="status-message error">Failed to connect Google Calendar. Please try again.</p>
+      <template v-if="googleStore.isConnected">
+        <select
+          :value="googleStore.selectedCalendarId"
+          @change="googleStore.selectCalendar(($event.target as HTMLSelectElement).value)"
+          :disabled="googleStore.isLoading"
+        >
+          <option value="" disabled>Select a calendar</option>
+          <option v-for="cal in googleStore.calendars" :key="cal.id" :value="cal.id">
+            {{ cal.summary }}{{ cal.primary ? ' (Primary)' : '' }}
+          </option>
+        </select>
+        <button type="button" class="secondary" @click="googleStore.disconnect" :disabled="googleStore.isLoading">
+          Disconnect
+        </button>
+      </template>
+      <button v-else type="button" @click="googleStore.connect" :disabled="googleStore.isLoading">
+        {{ googleStore.isLoading ? 'Connecting...' : 'Connect Google Calendar' }}
+      </button>
     </section>
     <section class="danger-zone">
       <h2 class="heading">Danger Zone</h2>
@@ -129,6 +161,35 @@ watch(
       font-size: 0.875rem;
       line-height: 1.4;
       color: var(--c-text-secondary);
+    }
+
+    &.google-calendar {
+      select {
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        border: 0.5px solid var(--c-separator);
+        background-color: var(--c-bg);
+        color: var(--c-text);
+        font-size: 0.9375rem;
+        margin-top: 0.25rem;
+      }
+
+      .status-message {
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+
+        &.success {
+          background-color: oklch(from var(--c-green) l c h / 0.1);
+          color: var(--c-green);
+        }
+
+        &.error {
+          background-color: oklch(from var(--c-red) l c h / 0.1);
+          color: var(--c-red);
+        }
+      }
     }
 
     &.danger-zone {
