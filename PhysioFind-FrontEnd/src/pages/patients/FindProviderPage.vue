@@ -8,8 +8,8 @@ const questions = qs as Question[]
 function onFormSubmit(answers: QuestionnaireAnswers) {
   console.log('Form submitted with answers:', answers)
 
-  // Navigate to results page with postal code as query parameter
-  router.push({ path: '/find-provider/results', query: { postalCode: answers['location'] } })
+  // Navigate to results page with preferences as stringified query parameter
+  router.push({ path: '/find-provider/results', query: { preferences: JSON.stringify(answers) } })
 }
 </script>
 

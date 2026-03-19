@@ -14,7 +14,7 @@
 const route = useRoute()
 const store = useProviderSearchStore()
 
-const postalCode = computed(() => route.query.postalCode as string | undefined)
+const preferencesStr = computed(() => route.query.preferences as string | undefined)
 
 function showProviderDetails(provider: Clinic) {
   // Logic to show clinic details
@@ -22,10 +22,15 @@ function showProviderDetails(provider: Clinic) {
 }
 
 watch(
-  postalCode,
-  async (newPostalCode) => {
-    if (!newPostalCode) return
-    await store.searchByPostalCode(newPostalCode)
+  preferencesStr,
+  async (newPrefsStr) => {
+    if (!newPrefsStr) return
+    try {
+      const preferences = JSON.parse(newPrefsStr)
+      await store.searchByPreferences(preferences)
+    } catch (e) {
+      console.error('Failed to parse preferences', e)
+    }
   },
   { immediate: true },
 )
@@ -42,8 +47,8 @@ watch(
     <div class="title-area">
       <h1 class="heading">Your Matches</h1>
       <p class="subheading">
-        We tried our best to match you with healthcare providers based on your
-        responses to the questionnaire.
+        We tried our best to match you with healthcare providers based on your responses to the
+        questionnaire.
       </p>
     </div>
     <div class="results">

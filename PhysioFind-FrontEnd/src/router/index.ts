@@ -10,7 +10,10 @@ import ProviderResultsPage from '@/pages/patients/ProviderResultsPage.vue'
 import AccountPage from '@/pages/auth/AccountPage.vue'
 import AuthPage from '@/pages/auth/AuthPage.vue'
 import PatientsValuePage from '@/pages/patients/PatientsValuePage.vue'
+// Newly added About page
+import AboutPage from '@/pages/AboutPage.vue'
 import ClinicCreationPage from '@/pages/clinics/ClinicCreationPage.vue'
+import ClinicDashboardPage from '@/pages/clinics/ClinicDashboardPage.vue'
 
 import ErrorPage from '@/pages/error/ErrorPage.vue'
 
@@ -37,6 +40,11 @@ const router = createRouter({
         },
         // Account
         {
+          // Route for the About page
+          path: 'about',
+          component: AboutPage,
+        },
+        {
           path: 'account',
           component: AccountPage,
           meta: { auth: 'any' },
@@ -50,10 +58,10 @@ const router = createRouter({
               path: 'create',
               component: ClinicCreationPage,
             },
-            // {
-            //   path: 'dashboard',
-            //   component: ClinicDashboardPage,
-            // },
+            {
+              path: 'dashboard',
+              component: ClinicDashboardPage,
+            },
           ],
         },
       ],
