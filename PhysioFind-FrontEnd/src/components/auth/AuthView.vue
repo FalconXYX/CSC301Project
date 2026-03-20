@@ -12,6 +12,9 @@ const emit = defineEmits<{ signIn: [] }>()
 
 const authStore = useAuthStore()
 
+// Import the Privacy Policy page so it can be rendered inside a modal
+import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage.vue'
+
 // State
 
 const mode = ref(props.mode) // 'signIn' or 'signUp'
@@ -26,6 +29,18 @@ const dateOfBirth = ref('')
 const acceptPolicy = ref(false)
 
 const errorMessage = ref<string | null>(null)
+
+// Privacy Policy modal state and handlers
+const showPrivacyPolicy = ref(false)
+
+function openPrivacyPolicy(event?: Event) {
+  if (event) event.preventDefault()
+  showPrivacyPolicy.value = true
+}
+
+function closePrivacyPolicy() {
+  showPrivacyPolicy.value = false
+}
 
 // Helpers
 
@@ -124,6 +139,16 @@ function handleSubmit() {
 </script>
 
 <template>
+  <!-- Modal overlay for Privacy Policy -->
+  <div v-if="showPrivacyPolicy" class="privacy-overlay">
+    <div class="privacy-modal">
+      <button type="button" class="close-btn" @click="closePrivacyPolicy">
+        ×
+      </button>
+      <PrivacyPolicyPage />
+    </div>
+  </div>
+
   <div v-if="popover" class="auth-overlay">
     <div class="auth-card">
       <h2>
@@ -160,9 +185,9 @@ function handleSubmit() {
             <input v-model="acceptPolicy" type="checkbox" required />
             <span>
               I accept the
-              <RouterLink to="/privacy-policy" class="privacy-link" target="_blank">
+              <button type="button" class="privacy-link link" @click="openPrivacyPolicy">
                 Privacy Policy
-              </RouterLink>
+              </button>
             </span>
           </label>
         </template>
@@ -245,9 +270,9 @@ function handleSubmit() {
           <input v-model="acceptPolicy" type="checkbox" required />
           <span>
             I accept the
-            <RouterLink to="/privacy-policy" class="privacy-link" target="_blank">
+            <button type="button" class="privacy-link link" @click="openPrivacyPolicy">
               Privacy Policy
-            </RouterLink>
+            </button>
           </span>
         </label>
       </template>
@@ -457,5 +482,42 @@ label {
   color: var(--c-text);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+/* Modal styles for privacy policy */
+.privacy-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(0% 0 0 / 0.42);
+  backdrop-filter: blur(0.25rem);
+  z-index: 200;
+}
+
+.privacy-modal {
+  position: relative;
+  max-width: 60rem;
+  max-height: 80vh;
+  overflow-y: auto;
+  background-color: var(--c-bg-secondary);
+  border: 0.5px solid var(--c-separator);
+  border-radius: 1rem;
+  box-shadow: 0 2px 2rem hsl(0 0% 0% / 0.08);
+  padding: 2rem;
+  color: var(--c-text);
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--c-text-secondary);
 }
 </style>
