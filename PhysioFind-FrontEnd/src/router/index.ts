@@ -14,6 +14,7 @@ import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage.vue'
 import AboutPage from '@/pages/AboutPage.vue'
 import ClinicCreationPage from '@/pages/clinics/ClinicCreationPage.vue'
 import ClinicDashboardPage from '@/pages/clinics/ClinicDashboardPage.vue'
+import ClinicsValuePage from '@/pages/clinics/ClinicsValuePage.vue'
 
 import ErrorPage from '@/pages/error/ErrorPage.vue'
 
@@ -37,6 +38,10 @@ const router = createRouter({
         {
           path: 'patients',
           component: PatientsValuePage,
+        },
+        {
+          path: 'clinics',
+          component: ClinicsValuePage,
         },
         {
           path: 'privacy-policy',
