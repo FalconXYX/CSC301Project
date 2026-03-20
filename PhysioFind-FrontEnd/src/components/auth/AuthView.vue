@@ -30,18 +30,6 @@ const acceptPolicy = ref(false)
 
 const errorMessage = ref<string | null>(null)
 
-// Privacy Policy modal state and handlers
-const showPrivacyPolicy = ref(false)
-
-function openPrivacyPolicy(event?: Event) {
-  if (event) event.preventDefault()
-  showPrivacyPolicy.value = true
-}
-
-function closePrivacyPolicy() {
-  showPrivacyPolicy.value = false
-}
-
 // Helpers
 
 function switchMode() {
@@ -140,13 +128,11 @@ function handleSubmit() {
 
 <template>
   <!-- Modal overlay for Privacy Policy -->
-  <div v-if="showPrivacyPolicy" class="privacy-overlay">
-    <div class="privacy-modal">
-      <button type="button" class="close-btn" @click="closePrivacyPolicy">
-        ×
-      </button>
-      <PrivacyPolicyPage />
-    </div>
+  <div id="privacy-popover" popover="auto" ref="privacy-policy">
+    <button class="close-btn" popovertarget="privacy-popover" popovertargetaction="hide">
+      &times;
+    </button>
+    <PrivacyPolicyPage class="privacy-page" />
   </div>
 
   <div v-if="popover" class="auth-overlay">
@@ -185,7 +171,7 @@ function handleSubmit() {
             <input v-model="acceptPolicy" type="checkbox" required />
             <span>
               I accept the
-              <button type="button" class="privacy-link link" @click="openPrivacyPolicy">
+              <button type="button" class="privacy-link link" popovertarget="privacy-popover">
                 Privacy Policy
               </button>
             </span>
@@ -270,7 +256,7 @@ function handleSubmit() {
           <input v-model="acceptPolicy" type="checkbox" required />
           <span>
             I accept the
-            <button type="button" class="privacy-link link" @click="openPrivacyPolicy">
+            <button type="button" class="privacy-link link" popovertarget="privacy-popover">
               Privacy Policy
             </button>
           </span>
@@ -485,39 +471,77 @@ label {
 }
 
 /* Modal styles for privacy policy */
-.privacy-overlay {
+#privacy-popover {
   position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: oklch(0% 0 0 / 0.42);
-  backdrop-filter: blur(0.25rem);
-  z-index: 200;
-}
 
-.privacy-modal {
-  position: relative;
-  max-width: 60rem;
+  max-width: 40rem;
   max-height: 80vh;
+  margin: auto;
+  padding: 1.5rem;
+
   overflow-y: auto;
+
   background-color: var(--c-bg-secondary);
   border: 0.5px solid var(--c-separator);
   border-radius: 1rem;
   box-shadow: 0 2px 2rem hsl(0 0% 0% / 0.08);
-  padding: 2rem;
+
   color: var(--c-text);
+
+  @starting-style {
+    opacity: 0;
+    scale: 0.95;
+    pointer-events: none;
+
+    &::backdrop {
+      background: transparent;
+    }
+  }
+
+  &:popover-open::backdrop {
+    backdrop-filter: blur(2px);
+    background: oklch(0% 0 0 / 0.33);
+  }
+
+  &:not(:popover-open) {
+    opacity: 0;
+    scale: 0.95;
+    pointer-events: none;
+
+    &::backdrop {
+      background: transparent;
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+
+    border: none;
+    background: none;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--c-text-secondary);
+  }
+
+  .privacy-page {
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+  }
 }
 
-.close-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.75rem;
-  border: none;
-  background: none;
-  font-size: 1.5rem;
-  line-height: 1;
-  cursor: pointer;
-  color: var(--c-text-secondary);
+#privacy-popover,
+#privacy-popover::backdrop {
+  transition:
+    display 150ms ease allow-discrete,
+    overlay 150ms ease allow-discrete,
+    background 150ms ease,
+    opacity 150ms ease,
+    scale 150ms ease,
+    backdrop-filter 150ms ease;
 }
 </style>
