@@ -51,7 +51,23 @@ watch(
         questionnaire.
       </p>
     </div>
-    <div class="results">
+
+    <div v-if="store.isLoading" class="state-message">
+      <p>Searching for providers...</p>
+    </div>
+
+    <div v-else-if="store.error" class="state-message error">
+      <p>{{ store.error }}</p>
+    </div>
+
+    <div v-else-if="store.clinics.length === 0" class="state-message">
+      <p>
+        No providers were found matching your criteria. Try adjusting your preferences or expanding
+        your location.
+      </p>
+    </div>
+
+    <div v-else class="results">
       <template v-for="clinic in store.clinics" :key="clinic.id">
         <!-- Provider result cards will go here -->
         <VerifiedProviderCell
@@ -114,6 +130,21 @@ watch(
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
     gap: 1.5rem;
+  }
+
+  .state-message {
+    text-align: center;
+    padding: 3rem 1rem;
+    background-color: var(--c-surface-1);
+    border-radius: 0.5rem;
+    border: 1px dashed var(--c-separator);
+    color: var(--c-text-2);
+    font-size: 1.1rem;
+
+    &.error {
+      color: var(--c-error, #d32f2f);
+      background-color: var(--c-error-bg, #fdedea);
+    }
   }
 }
 </style>
