@@ -28,7 +28,7 @@ onMounted(async () => {
     markers.length = 0
 
     for (const clinic of clinics) {
-      if (clinic.type !== 'google-maps') continue
+      if (!clinic.location) continue
 
       const pin = document.createElement('div')
       pin.classList.add('map-pin')
@@ -46,7 +46,7 @@ onMounted(async () => {
           <div class="map-info-window">
             <strong>${clinic.name}</strong>
             <p>${clinic.address.line1}</p>
-            <a href="${clinic.mapsUrl}" target="_blank" rel="noopener">View on Google Maps</a>
+            <a href="${clinic.type === 'google-maps' ? clinic.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${clinic.location.lat},${clinic.location.lng}`}" target="_blank" rel="noopener">View on Google Maps</a>
           </div>
         `)
         infoWindow.open({ map, anchor: marker })

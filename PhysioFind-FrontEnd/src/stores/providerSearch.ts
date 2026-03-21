@@ -16,27 +16,39 @@ export const useProviderSearchStore = defineStore('providerSearch', () => {
       const postalCode = preferences.location || ''
       if (postalCode) {
         center.value = await geocodePostalCode(postalCode)
+        if (center.value) {
+          preferences.latitude = center.value.lat
+          preferences.longitude = center.value.lng
+        }
       }
 
-            const newClinics = await searchClinics(preferences)
-      clinics.value = newClinics.map(c => ({
+      const newClinics = await searchClinics(preferences)
+      clinics.value = newClinics.map((c) => ({
         id: c.id,
         name: c.name,
         type: 'verified',
-        services: Array.isArray(c.specialties_json) ? c.specialties_json : (Array.isArray(c.services_json) ? c.services_json : ['General Care']),
+        services: Array.isArray(c.specialties_json)
+          ? c.specialties_json
+          : Array.isArray(c.services_json)
+            ? c.services_json
+            : ['General Care'],
         address: {
           line1: c.address_line1,
           line2: c.address_line2 || undefined,
           city: c.city,
           province: c.province,
-          postalCode: c.postal_code
+          postalCode: c.postal_code,
         },
         contact: {
           phone: c.phone || undefined,
           email: c.email || undefined,
-          website: c.website || undefined
-        }
-      })) as Clinic[];
+          website: c.website || undefined,
+        },
+        location:
+          c.latitude && c.longitude
+            ? { lat: Number(c.latitude), lng: Number(c.longitude) }
+            : undefined,
+      })) as Clinic[]
     } catch (err) {
       error.value = 'Failed to search for providers. Please try again.'
       console.error('Provider search error:', err)
