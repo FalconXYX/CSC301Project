@@ -12,6 +12,9 @@ const emit = defineEmits<{ signIn: [] }>()
 
 const authStore = useAuthStore()
 
+// Import the Privacy Policy page so it can be rendered inside a modal
+import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage.vue'
+
 // State
 
 const mode = ref(props.mode) // 'signIn' or 'signUp'
@@ -23,6 +26,7 @@ const firstName = ref('')
 const lastName = ref('')
 const phone = ref('')
 const dateOfBirth = ref('')
+const acceptPolicy = ref(false)
 
 const errorMessage = ref<string | null>(null)
 
@@ -44,6 +48,7 @@ function resetForm() {
   phone.value = ''
   dateOfBirth.value = ''
   errorMessage.value = null
+  acceptPolicy.value = false
 }
 
 // Actions
@@ -72,6 +77,11 @@ function handleSignUpContinue() {
 
   if (!email.value || !password.value) {
     errorMessage.value = 'Please enter your email and password.'
+    return
+  }
+
+  if (!acceptPolicy.value) {
+    errorMessage.value = 'You must accept the Privacy Policy to continue.'
     return
   }
 
@@ -117,6 +127,14 @@ function handleSubmit() {
 </script>
 
 <template>
+  <!-- Modal overlay for Privacy Policy -->
+  <div id="privacy-popover" popover="auto" ref="privacy-policy">
+    <button class="close-btn" popovertarget="privacy-popover" popovertargetaction="hide">
+      &times;
+    </button>
+    <PrivacyPolicyPage class="privacy-page" />
+  </div>
+
   <div v-if="popover" class="auth-overlay">
     <div class="auth-card">
       <h2>
@@ -147,6 +165,16 @@ function handleSubmit() {
               placeholder="••••••••"
               required
             />
+          </label>
+
+          <label v-if="mode === 'signUp'" class="privacy-checkbox">
+            <input v-model="acceptPolicy" type="checkbox" required />
+            <span>
+              I accept the
+              <button type="button" class="privacy-link link" popovertarget="privacy-popover">
+                Privacy Policy
+              </button>
+            </span>
           </label>
         </template>
 
@@ -222,6 +250,16 @@ function handleSubmit() {
         <label>
           Password
           <input v-model="password" type="password" class="field" placeholder="••••••••" required />
+        </label>
+
+        <label v-if="mode === 'signUp'" class="privacy-checkbox">
+          <input v-model="acceptPolicy" type="checkbox" required />
+          <span>
+            I accept the
+            <button type="button" class="privacy-link link" popovertarget="privacy-popover">
+              Privacy Policy
+            </button>
+          </span>
         </label>
       </template>
 
@@ -409,5 +447,101 @@ label {
   text-underline-offset: 2px;
   color: var(--c-text);
   font-weight: 500;
+}
+
+.privacy-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--c-text-secondary);
+}
+
+.privacy-checkbox input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--c-accent);
+}
+
+.privacy-link {
+  color: var(--c-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Modal styles for privacy policy */
+#privacy-popover {
+  position: fixed;
+
+  max-width: 40rem;
+  max-height: 80vh;
+  margin: auto;
+  padding: 1.5rem;
+
+  overflow-y: auto;
+
+  background-color: var(--c-bg-secondary);
+  border: 0.5px solid var(--c-separator);
+  border-radius: 1rem;
+  box-shadow: 0 2px 2rem hsl(0 0% 0% / 0.08);
+
+  color: var(--c-text);
+
+  @starting-style {
+    opacity: 0;
+    scale: 0.95;
+    pointer-events: none;
+
+    &::backdrop {
+      background: transparent;
+    }
+  }
+
+  &:popover-open::backdrop {
+    backdrop-filter: blur(2px);
+    background: oklch(0% 0 0 / 0.33);
+  }
+
+  &:not(:popover-open) {
+    opacity: 0;
+    scale: 0.95;
+    pointer-events: none;
+
+    &::backdrop {
+      background: transparent;
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+
+    border: none;
+    background: none;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--c-text-secondary);
+  }
+
+  .privacy-page {
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+#privacy-popover,
+#privacy-popover::backdrop {
+  transition:
+    display 150ms ease allow-discrete,
+    overlay 150ms ease allow-discrete,
+    background 150ms ease,
+    opacity 150ms ease,
+    scale 150ms ease,
+    backdrop-filter 150ms ease;
 }
 </style>
