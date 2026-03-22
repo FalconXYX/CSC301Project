@@ -25,15 +25,15 @@ router.get("/", async function (req, res, next) {
  * Get all users. Currently not working due to auth middleware, could be reimplemented once user permissions 
  * are added (when clinic auth is done).
  */
-// router.get("/", async function (req, res, next) {
-//   try {
+router.get("/all", async function (req, res, next) {
+   try {
     
-//     const user = await prisma.users.findMany({});
+     const user = await prisma.users.findMany({});
 
-//     res.json({ message: "Get all users",  user: user });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+     res.json({ message: "Get all users",  user: user });
+   } catch (error) {
+     next(error);
+   }
+ });
 
 module.exports = router;
