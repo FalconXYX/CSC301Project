@@ -11,7 +11,7 @@ var { getAuthenticatedClient } = require('../../utils/googleCalendar')
  */
 router.post("/", async function (req, res, next) {
   try {
-    const userId = "4fc6fdb5-6dbd-4090-8e9b-b075d598c7cf"
+    const userId = await authorize_user(req);
     const auth = await getAuthenticatedClient(userId)
     const user = await prisma.users.findFirst({ where: { id: userId } })
     const calendar = google.calendar({ version: 'v3', auth })
