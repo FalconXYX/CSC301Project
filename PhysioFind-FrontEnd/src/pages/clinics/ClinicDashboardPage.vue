@@ -20,6 +20,14 @@ const formattedDate = (dateString: string) => {
 const isEditing = ref(false)
 const disabled = computed(() => !isEditing.value)
 
+const specialtiesString = ref('')
+const specialtiesArray = computed(() =>
+  specialtiesString.value
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0),
+)
+
 const isLoading = ref(false)
 
 async function startEditing() {
@@ -42,6 +50,7 @@ async function submitChanges() {
   // Update clinic details via API
   const updatedClinic = await API.updateClinic(clinic.value.id, {
     ...clinic.value,
+    specialties_json: JSON.stringify(specialtiesArray.value),
     updated_at: new Date().toISOString(),
   })
   clinic.value = updatedClinic
@@ -62,6 +71,7 @@ watch(
     if (newClinicId) {
       try {
         clinic.value = await API.getClinic(newClinicId)
+        specialtiesString.value = JSON.parse(clinic.value.specialties_json as string).join(', ')
         clinicBackup.value = { ...clinic.value }
       } catch (error) {
         console.error(error)
@@ -87,7 +97,7 @@ watch(
       </div>
     </header>
     <section class="clinic-info">
-      <h2>Information</h2>
+      <h2>Profile</h2>
 
       <ClinicDashboardField id="clinic--name" label="Name" v-model="clinic.name" :disabled />
       <ClinicDashboardField
@@ -132,9 +142,18 @@ watch(
         v-model="clinic.province"
         :disabled
       />
+
+      <h3>Additional Information</h3>
+      <ClinicDashboardField
+        id="clinic--specialties"
+        label="Specialties"
+        v-model="specialtiesString"
+        :disabled
+      />
     </section>
     <section class="clinic-bookings">
-      <h2>Bookings</h2>
+      <h2>Booking & Billing</h2>
+
       <ClinicDashboardField
         id="clinic--booking-provider"
         label="Booking Provider"

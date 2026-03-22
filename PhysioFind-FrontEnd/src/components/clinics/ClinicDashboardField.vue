@@ -22,7 +22,8 @@ const model = defineModel<string | boolean | null>({ required: true })
 <template>
   <label :for="id">
     <span>{{ label }}</span>
-    <input :id :type :placeholder :disabled v-model="model" />
+    <slot v-if="$slots.default" />
+    <input v-else :id :type :placeholder :disabled v-model="model" />
   </label>
 </template>
 
