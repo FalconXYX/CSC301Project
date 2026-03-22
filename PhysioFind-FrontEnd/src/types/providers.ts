@@ -11,6 +11,8 @@ interface ClinicBase {
   address: ClinicAddress
   /** Contact information for the clinic */
   contact: ClinicContact
+  /** Location (coordinates) of the clinic */
+  location?: ClinicLocation
 }
 
 /**
