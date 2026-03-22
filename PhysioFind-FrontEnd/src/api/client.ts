@@ -1,12 +1,14 @@
 import { useAuthStore } from '@/stores/auth'
 
-// export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? ''
+
 
 /**
  * Fetch wrapper that attaches the current session's access token.
  * Reads the token from the auth store (already validated via onAuthStateChange)
  * instead of calling supabase.auth.getSession() which only reads local storage.
  */
+export const apiBaseUrl = import.meta.env.PROD ? (import.meta.env.VITE_API_BASE_URL ?? '') : '/api'
+
 export async function authenticatedFetch(url: string, options?: RequestInit): Promise<Response> {
   const { session } = useAuthStore()
   if (!session) {

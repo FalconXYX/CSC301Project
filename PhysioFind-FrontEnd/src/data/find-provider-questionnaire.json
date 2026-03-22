@@ -8,8 +8,7 @@
       "options": [
         { "value": "physiotherapist", "label": "Physiotherapist" },
         { "value": "psychologist", "label": "Psychologist" },
-        { "value": "chiropractor", "label": "Chiropractor" },
-        { "value": "dermatologist", "label": "Dermatologist" }
+        { "value": "chiropractor", "label": "Chiropractor" }
       ]
     },
     {
