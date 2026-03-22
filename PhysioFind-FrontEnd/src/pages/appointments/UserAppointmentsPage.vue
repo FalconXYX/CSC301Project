@@ -3,76 +3,56 @@
 import { ref } from 'vue'
 
 const appointmentStore = useAppointmentStore()
-// const googleStore = useGoogleCalendarStore()
-// const route = useRoute()
+const authStore = useAuthStore()
+const profile = computed(() => authStore.profile)
 
-const createClinic = ref('')
-const createPrac = ref('')
-const createStart = ref('')
-const createEnd = ref('')
-const createStatus = ref('')
+const timezoneOffset = new Date().getTimezoneOffset() / 60
 
-const updateAppointment = ref('')
-const updateClinic = ref('')
-const updatePrac = ref('')
-const updateStart = ref('')
-const updateEnd = ref('')
-const updateStatus = ref('')
+function editAppointment() {
+  alert('Not implemented yet!')
+}
 
-const getAppointment = ref('')
+const practitionerNames = ref<Record<string, string>>({})
 
-const deleteAppointment = ref('')
+async function getPractitionerName(practitionerId: string | null): Promise<string> {
+  if (!practitionerId) return 'Unknown practitioner'
+  // cache check
+  if (practitionerNames.value[practitionerId]) {
+    return practitionerNames.value[practitionerId]
+  }
+  const response = await fetch('/api/practitioners/' + practitionerId)
+  const data = await response.json()
+  const name = data.practitioner.user.first_name + " " + data.practitioner.user.last_name
+  practitionerNames.value[practitionerId] = name
+  return name
+}
+
+onMounted(async () => {
+  await appointmentStore.fetchAppointments()
+  appointmentStore.appointments.sort((a, b) => {
+    const ta = a.preferred_start ? new Date(a.preferred_start).getTime() : 0
+    const tb = b.preferred_start ? new Date(b.preferred_start).getTime() : 0
+    return ta - tb
+  })
+
+  const ids = Array.from(new Set(appointmentStore.appointments.map(a => a.practitioner_id).filter(Boolean)))
+  await Promise.all(ids.map((id) => getPractitionerName(id)))
+})
 
 </script>
 
 <template>
-  <div class="container1">
+  <div class="container1" v-if="profile">
     <div id="child">
-      <h1 class="title">Test Appointment Creation:</h1>
-      <input v-model="createClinic" placeholder="Enter Clinic Id">
-      <input v-model="createPrac" placeholder="Enter Practitioner Id">
-      <input v-model="createStart" placeholder="Enter Start Time">
-      <input v-model="createEnd" placeholder="Enter End Time">
-      <input v-model="createStatus" placeholder="Enter Status">
-      <h3 v-if="appointmentStore.appointment">Appointment Created. Id: {{ appointmentStore.appointment.id}}</h3>
-      <button type="button" @click="appointmentStore.createAppointment(createClinic, createPrac, createStart, createEnd, createStatus)" :disabled="appointmentStore.isLoading">
-        {{ appointmentStore.isLoading ? 'Creating Appointment...' : 'Create Appointment' }}
-      </button>
-    </div>
-    <div id="child">
-      <h1 class="title">Test Appointment Updating:</h1>
-      <input v-model="updateAppointment" placeholder="Enter Appointment Id">
-      <input v-model="updateClinic" placeholder="Enter Clinic Id">
-      <input v-model="updatePrac" placeholder="Enter Practitioner Id">
-      <input v-model="updateStart" placeholder="Enter Start Time">
-      <input v-model="updateEnd" placeholder="Enter End Time">
-      <input v-model="updateStatus" placeholder="Enter Status">
-      <button type="button" @click="appointmentStore.updateAppointment(updateAppointment, updateClinic, updatePrac, updateStart, updateEnd, updateStatus)" :disabled="appointmentStore.isUpdating">
-        {{ appointmentStore.isUpdating ? 'Updating Appointment...' : 'Update Appointment' }}
-      </button>
-    </div>
-  </div>
-  <div class="container1">
-    <div id="child">
-      <h1 class="title">Test Get Appointments:</h1>
-      <input v-model="getAppointment" placeholder="Enter Appointment Id">
-      <button type="button" @click="appointmentStore.fetchAppointmentById(getAppointment)" :disabled="appointmentStore.isFetching">
-        {{ appointmentStore.isFetching ? 'Getting Appointment...' : 'Get Appointment by Id' }}
-      </button>
-      <h3 v-if="appointmentStore.appointment && appointmentStore.gotten">Appointment Information: {{ appointmentStore.appointment}}</h3>
-      <button type="button" @click="appointmentStore.fetchAppointments()" :disabled="appointmentStore.isFetching">
-        {{ appointmentStore.isFetching ? 'Getting Appointment...' : 'Get All Appointment Ids' }}
-      </button>
-      <h3 v-for="app in appointmentStore.appointments" :key="app.id" :value="app.id">
-            {{ app.id }}
-      </h3>
-    </div>
-    <div id="child">
-      <h1 class="title">Test Appointment Deletion:</h1>
-      <input v-model="deleteAppointment" placeholder="Enter Appointment Id">
-      <button type="button" @click="appointmentStore.deleteAppointment(deleteAppointment)" :disabled="appointmentStore.isDeleting">
-        {{ appointmentStore.isDeleting ? 'Deleting Appointment...' : 'Delete Appointment' }}
-      </button>
+      <h1 class="title">Here are your upcoming appointments, {{ profile.first_name }}</h1>
+      <div id="child" v-show="Date.now() < (appt.preferred_start ? new Date(appt.preferred_start).getTime() : 0)" v-for="appt in appointmentStore.appointments" :key="appt.id" :value="appt.id">
+        <h3>
+          {{ appt.preferred_start ? appt.preferred_start.split('T')[0] : 'Unknown date' }} - Appointment with practitioner {{ appt.practitioner_id ? (practitionerNames[appt.practitioner_id] || 'Loading...') : 'Unknown practitioner' }} from {{ appt.preferred_start ? new Date(appt.preferred_start).getUTCHours() - timezoneOffset : '' }}:{{ appt.preferred_start ? new Date(appt.preferred_start).getUTCMinutes() : '' }} to {{ appt.preferred_end ? new Date(appt.preferred_end).getUTCHours() - timezoneOffset : '' }}:{{ appt.preferred_end ? new Date(appt.preferred_end).getUTCMinutes() : '' }}
+        </h3>
+        <button type="button" @click="editAppointment">
+          Edit appointment
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -80,6 +60,7 @@ const deleteAppointment = ref('')
 <style scoped>
 .container1 {
   display: flex;
+  padding: 100px
 }
 .child {
   flex: 1;
@@ -87,7 +68,7 @@ const deleteAppointment = ref('')
 #child {
   align-self: center;
 
-  max-width: var(--g-card-max-width);
+  max-width: 500;
   width: 100%;
   margin-inline: auto;
 

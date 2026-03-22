@@ -11,12 +11,13 @@ var { getAuthenticatedClient } = require('../../utils/googleCalendar')
  */
 router.post("/", async function (req, res, next) {
   try {
-    const userId = await authorize_user(req);
+    const userId = "ab81eccf-a278-41df-afde-29b4c56cfedb"
     const auth = await getAuthenticatedClient(userId)
     const user = await prisma.users.findFirst({ where: { id: userId } })
     const calendar = google.calendar({ version: 'v3', auth })
     const clinic = await prisma.clinics.findFirst({ where: { id: req.clinic_id } });
     const practitioner = await prisma.practitioners.findFirst({ where: { id: req.practitioner_id } })
+    const practitionerUser = await prisma.users.findFirst({ where: { id: practitioner.user_id } })
     
     var appointment = await prisma.appointment_requests.findFirst({ where: { patient_user_id: userId, preferred_start: req.body.preferred_start, preferred_end: req.body.preferred_end, clinic_id: req.clinic_id, practitioner_id: req.practitioner_id } })
     if (appointment) {
@@ -24,9 +25,9 @@ router.post("/", async function (req, res, next) {
     }
     else {
       const event = {
-        summary: "Appointment with GP " + practitioner.first_name + " " + practitioner.last_name + ".",
+        summary: "Appointment with GP " + practitionerUser.first_name + " " + practitionerUser.last_name + ".",
         location: clinic.address_line1,
-        description: practitioner.profession + " appointment with " + practitioner.first_name + " " + practitioner.last_name + " at " + clinic.name + ".",
+        description: practitioner.profession + " appointment with " + practitionerUser.first_name + " " + practitionerUser.last_name + " at " + clinic.name + ".",
         start: {
           dateTime: req.body.preferred_start,
           timeZone: 'UTC'

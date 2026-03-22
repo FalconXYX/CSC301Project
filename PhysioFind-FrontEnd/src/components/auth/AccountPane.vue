@@ -51,7 +51,7 @@ watch(
         </div>
         <div class="group-cell">
           <RouterLink to="/account" class="link-cell">My Account</RouterLink>
-          <RouterLink to="/appointments" class="link-cell">Appointments Tester</RouterLink>
+          <RouterLink to="/appointments" class="link-cell">My Appointments</RouterLink>
           <button class="link-cell danger" @click="auth.signOut">Logout</button>
         </div>
       </template>

@@ -17,6 +17,7 @@ router.put("/:id", async function (req, res, next) {
     const calendar = google.calendar({ version: 'v3', auth })
     const clinic = await prisma.clinics.findFirst({ where: { id: req.clinic_id } });
     const practitioner = await prisma.practitioners.findFirst({ where: { id: req.practitioner_id } })
+    const practitionerUser = await prisma.users.findFirst({ where: { id: practitioner.user_id } })
     const appointmentId = req.params.id;
     const appointment = await prisma.appointment_requests.findFirst({ where: { id: appointmentId } })
 
@@ -24,9 +25,9 @@ router.put("/:id", async function (req, res, next) {
       calendarId: user.google_calendar_id,
       eventId: appointment.google_event_id,
       requestBody: {
-        summary: "Appointment with GP " + practitioner.first_name + " " + practitioner.last_name + ".",
+        summary: "Appointment with GP " + practitionerUser.first_name + " " + practitionerUser.last_name + ".",
         location: clinic.address_line1,
-        description: practitioner.profession + " appointment with " + practitioner.first_name + " " + practitioner.last_name + " at " + clinic.name + ".",
+        description: practitioner.profession + " appointment with " + practitionerUser.first_name + " " + practitionerUser.last_name + " at " + clinic.name + ".",
         start: {
           dateTime: req.body.preferred_start,
           timeZone: 'UTC'
