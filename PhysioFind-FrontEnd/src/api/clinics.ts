@@ -1,9 +1,9 @@
-import { authenticatedFetch } from './client'
+import { apiBaseUrl, authenticatedFetch } from './client'
 
 import type { ClinicRecord, CreateClinicPayload } from '@/types/providers'
 
 export async function createClinic(payload: CreateClinicPayload): Promise<ClinicRecord> {
-  const response = await authenticatedFetch('/api/clinics', {
+  const response = await authenticatedFetch(`${apiBaseUrl}/clinics`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -23,7 +23,7 @@ export async function createClinic(payload: CreateClinicPayload): Promise<Clinic
 }
 
 export async function getClinic(id: string): Promise<ClinicRecord> {
-  const response = await fetch(`/api/clinics/${id}`)
+  const response = await fetch(`${apiBaseUrl}/clinics/${id}`)
 
   if (response.status !== 200) {
     const body = await response.json().catch(() => null)
@@ -47,7 +47,7 @@ export async function updateClinic(
   id: string,
   payload: Partial<ClinicRecord>,
 ): Promise<ClinicRecord> {
-  const response = await fetch(`/api/clinics/${id}`, {
+  const response = await fetch(`${apiBaseUrl}/clinics/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -67,7 +67,7 @@ export async function updateClinic(
 }
 
 export async function searchClinics(preferences: any): Promise<ClinicRecord[]> {
-  const response = await fetch('/api/clinics/search', {
+  const response = await fetch(`${apiBaseUrl}/clinics/search`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(preferences),
