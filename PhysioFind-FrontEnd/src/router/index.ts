@@ -10,12 +10,14 @@ import ProviderResultsPage from '@/pages/patients/ProviderResultsPage.vue'
 import AccountPage from '@/pages/auth/AccountPage.vue'
 import AuthPage from '@/pages/auth/AuthPage.vue'
 import PatientsValuePage from '@/pages/patients/PatientsValuePage.vue'
-// Newly added About page
+import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage.vue'
 import AboutPage from '@/pages/AboutPage.vue'
 import ClinicCreationPage from '@/pages/clinics/ClinicCreationPage.vue'
 import ClinicDashboardPage from '@/pages/clinics/ClinicDashboardPage.vue'
+import ClinicsValuePage from '@/pages/clinics/ClinicsValuePage.vue'
 
 import ErrorPage from '@/pages/error/ErrorPage.vue'
+import UserAppointmentsPage from '@/pages/appointments/UserAppointmentsPage.vue'
 
 const AUTH_ROLES = ['admin', 'clinic', 'patient', 'any'] as const
 
@@ -38,7 +40,14 @@ const router = createRouter({
           path: 'patients',
           component: PatientsValuePage,
         },
-        // Account
+        {
+          path: 'clinics',
+          component: ClinicsValuePage,
+        },
+        {
+          path: 'privacy-policy',
+          component: PrivacyPolicyPage,
+        },
         {
           // Route for the About page
           path: 'about',
@@ -47,6 +56,11 @@ const router = createRouter({
         {
           path: 'account',
           component: AccountPage,
+          meta: { auth: 'any' },
+        },
+        {
+          path: 'appointments',
+          component: UserAppointmentsPage,
           meta: { auth: 'any' },
         },
         // Clinics

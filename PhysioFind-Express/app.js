@@ -28,8 +28,17 @@ var createPractitionersRouter = require("./routes/practitioner/createPractitione
 var deletePractitionersRouter = require("./routes/practitioner/deletePractitioner");
 var updatePractitionersRouter = require("./routes/practitioner/updatePractitioner");
 var getPractitionersRouter = require("./routes/practitioner/getPractitioner");
+var createAppointmentsRouter = require("./routes/appointments/createAppointment");
+var deleteAppointmentsRouter = require("./routes/appointments/deleteAppointment");
+var updateAppointmentsRouter = require("./routes/appointments/updateAppointment");
+var getAppointmentsRouter = require("./routes/appointments/getAppointment");
 var signInRouter = require("./routes/auth/signIn");
 var signOutRouter = require("./routes/auth/signOut");
+var googleAuthUrlRouter = require("./routes/google/authUrl");
+var googleCallbackRouter = require("./routes/google/callback");
+var googleDisconnectRouter = require("./routes/google/disconnect");
+var googleCalendarsRouter = require("./routes/google/calendars");
+var googleSelectCalendarRouter = require("./routes/google/selectCalendar");
 
 var app = express();
 
@@ -57,9 +66,19 @@ app.use("/practitioners", createPractitionersRouter);
 app.use("/practitioners", deletePractitionersRouter);
 app.use("/practitioners", updatePractitionersRouter);
 app.use("/practitioners", getPractitionersRouter);
+app.use("/appointments", createAppointmentsRouter);
+app.use("/appointments", deleteAppointmentsRouter);
+app.use("/appointments", updateAppointmentsRouter);
+app.use("/appointments", getAppointmentsRouter);
 app.use("/updateclinic", updateclinicsRouter);
 app.use("/auth", signInRouter);
 app.use("/auth", signOutRouter);
+app.use("/google", googleAuthUrlRouter);
+app.use("/google", googleCallbackRouter);
+app.use("/google", googleDisconnectRouter);
+app.use("/google", googleCalendarsRouter);
+app.use("/google", googleSelectCalendarRouter);
+app.use("/api/google", googleCallbackRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

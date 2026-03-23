@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: ".env.local" });
 const fs = require("fs");
 const path = require("path");
 const { Client } = require("pg");
@@ -7,7 +7,7 @@ const sqlFilePath = path.resolve(
   __dirname,
   "..",
   "migrations",
-  "20260201074556_initial_schema.sql",
+  "20260315000000_google_calendar_oauth.sql",
 );
 
 function buildConnectionString() {
