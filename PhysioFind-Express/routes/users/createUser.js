@@ -2,35 +2,53 @@ var express = require("express");
 var router = express.Router();
 var prisma = require("../../config/prisma");
 
-var { createClient } = require("@supabase/supabase-js");
+const { createClient } = require("@supabase/supabase-js");
 
-/**
- * POST /users
- * Create a new user
- */
 router.post("/", async function (req, res, next) {
-  try {
-    const supabase = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_ANON_KEY,
-    );
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY,
+  );
 
+  let authUser = null;
+
+  try {
     // Sign up in Supabase Auth first to get the authoritative UUID
     const { data, error } = await supabase.auth.signUp({
       email: req.body.email,
       password: req.body.password_hash,
     });
 
-    if (error) return next(error);
-    if (!data.user) return next(new Error("Supabase sign up failed"));
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    if (!data.user) {
+      return res.status(400).json({ error: "Supabase sign up failed" });
+    }
+
+    authUser = data.user;
 
     // Create Prisma record using the Supabase Auth UUID
     const user = await prisma.users.create({
-      data: { ...req.body, id: data.user.id },
+      data: { ...req.body, id: authUser.id },
     });
 
     res.status(201).json({ user });
   } catch (error) {
+    // Rollback: If Prisma fails, delete the user from Supabase to avoid orphaned accounts
+    if (authUser && authUser.id) {
+      try {
+        const supabaseAdmin = createClient(
+          process.env.SUPABASE_URL,
+          process.env.SUPABASE_SERVICE_ROLE_KEY ||
+            process.env.SUPABASE_ANON_KEY, // fallback just in case, but usually needs service_role
+        );
+        await supabaseAdmin.auth.admin.deleteUser(authUser.id);
+      } catch (rollbackError) {
+        console.error("Failed to rollback Supabase user:", rollbackError);
+      }
+    }
     next(error);
   }
 });

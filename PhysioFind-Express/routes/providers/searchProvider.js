@@ -61,12 +61,12 @@ router.post("/search", async function (req, res, next) {
         ],
       };
 
-      // Merge into where clause
-      Object.assign(whereClause, specialtyCondition);
+      OR_conditions.push(specialtyCondition);
     }
 
     // 2. Appointment Type
     if (preferences.appointment_type === "virtual") {
+      // Use SQL-safe check or keep array_contains. Adding to OR or AND where needed.
       whereClause.services_json = {
         array_contains: "virtual",
       };
@@ -79,6 +79,11 @@ router.post("/search", async function (req, res, next) {
         startsWith: fsa,
         mode: "insensitive",
       };
+    }
+
+    // Merge OR conditions if present
+    if (OR_conditions.length > 0) {
+      whereClause.AND = OR_conditions;
     }
 
     const clinicsList = await prisma.clinics.findMany({
@@ -148,18 +153,24 @@ router.post("/search", async function (req, res, next) {
       };
     });
 
-    // Sort by distance (nearest first) if distances are available, otherwise fallback to score
+    // Sort by distance and score combined
     scoredClinics.sort((a, b) => {
-      // If both have distance calculated, sort by distance
-      if (a.distance !== null && b.distance !== null) {
-        return a.distance - b.distance;
-      }
-      // If only one has distance, prioritize the one with distance
-      if (a.distance !== null) return -1;
-      if (b.distance !== null) return 1;
+      let scoreA = a.matchScore;
+      let scoreB = b.matchScore;
 
-      // Fallback: sort by descending score
-      return b.matchScore - a.matchScore;
+      // Penalize distance (farther = lower score). For example, subtract 1 point per km
+      if (a.distance !== null) {
+        scoreA -= a.distance / 1000;
+      }
+      if (b.distance !== null) {
+        scoreB -= b.distance / 1000;
+      }
+
+      // If one has distance and another doesn't, prioritize the one with distance slightly
+      if (a.distance !== null && b.distance === null) scoreA += 10;
+      if (b.distance !== null && a.distance === null) scoreB += 10;
+
+      return scoreB - scoreA; // descending
     });
 
     const topClinics = scoredClinics.slice(0, 10);
