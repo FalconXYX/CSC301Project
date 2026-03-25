@@ -57,6 +57,10 @@ export interface VerifiedClinic extends ClinicBase {
   type: 'verified'
   /** List of medical services offered by the clinic */
   services: string[]
+  /** Any accepted insurances parsed out from the system payload */
+  insurances?: string[]
+  /** Provider hours as a string */
+  hours?: string
 }
 
 /**
@@ -104,6 +108,7 @@ export interface CreateClinicPayload {
   email?: string | null
   website?: string | null
   offers_direct_billing?: boolean
+  services_json?: string[] | string | null
 }
 
 /**
