@@ -37,52 +37,54 @@ watch(
 </script>
 
 <template>
-  <section id="provider-results">
-    <ProviderMap
-      v-if="store.center"
-      :clinics="store.clinics"
-      :center="store.center"
-      class="provider-map"
-    />
-    <div class="title-area">
-      <h1 class="heading">Your Matches</h1>
-      <p class="subheading">
-        We tried our best to match you with healthcare providers based on your responses to the
-        questionnaire.
-      </p>
-    </div>
+  <main class="content-lanes">
+    <section id="provider-results">
+      <ProviderMap
+        v-if="store.center"
+        :clinics="store.clinics"
+        :center="store.center"
+        class="provider-map"
+      />
+      <div class="title-area">
+        <h1 class="heading">Your Matches</h1>
+        <p class="subheading">
+          We tried our best to match you with healthcare providers based on your responses to the
+          questionnaire.
+        </p>
+      </div>
 
-    <div v-if="store.isLoading" class="state-message">
-      <p>Searching for providers...</p>
-    </div>
+      <div v-if="store.isLoading" class="state-message">
+        <p>Searching for providers...</p>
+      </div>
 
-    <div v-else-if="store.error" class="state-message error">
-      <p>{{ store.error }}</p>
-    </div>
+      <div v-else-if="store.error" class="state-message error">
+        <p>{{ store.error }}</p>
+      </div>
 
-    <div v-else-if="store.clinics.length === 0" class="state-message">
-      <p>
-        No providers were found matching your criteria. Try adjusting your preferences or expanding
-        your location.
-      </p>
-    </div>
+      <div v-else-if="store.clinics.length === 0" class="state-message">
+        <p>
+          No providers were found matching your criteria. Try adjusting your preferences or
+          expanding your location.
+        </p>
+      </div>
 
-    <div v-else class="results">
-      <template v-for="clinic in store.clinics" :key="clinic.id">
-        <!-- Provider result cards will go here -->
-        <VerifiedProviderCell
-          :provider="clinic"
-          @show-details="showProviderDetails"
-          v-if="clinic.type === 'verified'"
-        />
-        <GoogleMapsProviderCell
-          :provider="clinic"
-          @show-details="showProviderDetails"
-          v-else-if="clinic.type === 'google-maps'"
-        />
-      </template>
-    </div>
-  </section>
+      <div v-else class="results">
+        <template v-for="clinic in store.clinics" :key="clinic.id">
+          <!-- Provider result cards will go here -->
+          <VerifiedProviderCell
+            :provider="clinic"
+            @show-details="showProviderDetails"
+            v-if="clinic.type === 'verified'"
+          />
+          <GoogleMapsProviderCell
+            :provider="clinic"
+            @show-details="showProviderDetails"
+            v-else-if="clinic.type === 'google-maps'"
+          />
+        </template>
+      </div>
+    </section>
+  </main>
 </template>
 
 <style scoped>

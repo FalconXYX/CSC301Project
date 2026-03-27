@@ -21,47 +21,50 @@ const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL ?? 'support@physiofind.c
 </script>
 
 <template>
-  <div class="about-page">
-    <div class="about-inner">
-      <header class="hero">
-        <h1>About PhysioFind</h1>
-        <p class="intro">
-          Learn about our mission, vision, and the problem we aim to solve in the healthcare space.
-        </p>
-      </header>
+  <main class="content-lanes">
+    <div class="about-page">
+      <div class="about-inner">
+        <header class="hero">
+          <h1>About PhysioFind</h1>
+          <p class="intro">
+            Learn about our mission, vision, and the problem we aim to solve in the healthcare
+            space.
+          </p>
+        </header>
 
-      <!-- Use a grid of information cards with icons to make the layout more engaging -->
-      <div class="info-grid">
-        <div class="info-card">
-          <!-- Rocket emoji conveys forward momentum and progress for the mission -->
-          <div class="icon-wrapper">🚀</div>
-          <h2>Our Mission</h2>
-          <p>{{ mission }}</p>
+        <!-- Use a grid of information cards with icons to make the layout more engaging -->
+        <div class="info-grid">
+          <div class="info-card">
+            <!-- Rocket emoji conveys forward momentum and progress for the mission -->
+            <div class="icon-wrapper">🚀</div>
+            <h2>Our Mission</h2>
+            <p>{{ mission }}</p>
+          </div>
+          <div class="info-card">
+            <!-- Telescope emoji symbolises far‑reaching vision -->
+            <div class="icon-wrapper">🔭</div>
+            <h2>Our Vision</h2>
+            <p>{{ vision }}</p>
+          </div>
+          <div class="info-card">
+            <!-- Puzzle piece illustrates solving complex problems -->
+            <div class="icon-wrapper">🧩</div>
+            <h2>The Problem We Solve</h2>
+            <p>{{ problem }}</p>
+          </div>
         </div>
-        <div class="info-card">
-          <!-- Telescope emoji symbolises far‑reaching vision -->
-          <div class="icon-wrapper">🔭</div>
-          <h2>Our Vision</h2>
-          <p>{{ vision }}</p>
-        </div>
-        <div class="info-card">
-          <!-- Puzzle piece illustrates solving complex problems -->
-          <div class="icon-wrapper">🧩</div>
-          <h2>The Problem We Solve</h2>
-          <p>{{ problem }}</p>
-        </div>
+
+        <section class="section contact">
+          <h2>Contact Us</h2>
+          <p>
+            If you have any questions or need support, please reach out to us at
+            <a :href="`mailto:${supportEmail}`">{{ supportEmail }}</a
+            >.
+          </p>
+        </section>
       </div>
-
-      <section class="section contact">
-        <h2>Contact Us</h2>
-        <p>
-          If you have any questions or need support, please reach out to us at
-          <a :href="`mailto:${supportEmail}`">{{ supportEmail }}</a
-          >.
-        </p>
-      </section>
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped>

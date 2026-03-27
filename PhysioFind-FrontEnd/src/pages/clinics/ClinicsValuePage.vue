@@ -11,58 +11,60 @@
 </script>
 
 <template>
-  <!-- Hero section introducing the value proposition -->
-  <section id="clinics-hero" class="full-with-lanes">
-    <div class="hero-inner">
-      <h1 class="heading">Reach more patients &amp; streamline bookings</h1>
-      <p class="description">
-        List your practice on PhysioFind to increase your clinic’s visibility,
-        attract more patients and simplify booking through our secure platform.
-      </p>
-      <!-- CTA directing users to the clinic creation form -->
-      <RouterLink to="/clinic/create" class="cta primary">List your clinic</RouterLink>
-    </div>
-  </section>
+  <main class="content-lanes">
+    <!-- Hero section introducing the value proposition -->
+    <section id="clinics-hero" class="full-with-lanes">
+      <div class="hero-inner">
+        <h1 class="heading">Reach more patients &amp; streamline bookings</h1>
+        <p class="description">
+          List your practice on PhysioFind to increase your clinic’s visibility, attract more
+          patients and simplify booking through our secure platform.
+        </p>
+        <!-- CTA directing users to the clinic creation form -->
+        <RouterLink to="/clinic/create" class="cta primary">List your clinic</RouterLink>
+      </div>
+    </section>
 
-  <!-- Benefits section outlining why clinics should join -->
-  <section id="benefits" class="full-with-lanes">
-    <h2 class="benefits-heading">Why join PhysioFind</h2>
-    <ul class="benefits-list">
-      <li>Increase your clinic’s visibility to patients across Ontario</li>
-      <li>Streamlined online booking for reduced administrative overhead</li>
-      <li>Promote your services and specialties with a rich clinic profile</li>
-    </ul>
-  </section>
+    <!-- Benefits section outlining why clinics should join -->
+    <section id="benefits" class="full-with-lanes">
+      <h2 class="benefits-heading">Why join PhysioFind</h2>
+      <ul class="benefits-list">
+        <li>Increase your clinic’s visibility to patients across Ontario</li>
+        <li>Streamlined online booking for reduced administrative overhead</li>
+        <li>Promote your services and specialties with a rich clinic profile</li>
+      </ul>
+    </section>
 
-  <!-- Dashboard overview section explaining the clinic portal -->
-  <section id="dashboard" class="full-with-lanes">
-    <h2 class="dashboard-heading">Your clinic dashboard</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="number">1</div>
-        <h3>Create your clinic</h3>
-        <p>
-          Register your clinic and provide your practice details. It only takes a few minutes.
-        </p>
+    <!-- Dashboard overview section explaining the clinic portal -->
+    <section id="dashboard" class="full-with-lanes">
+      <h2 class="dashboard-heading">Your clinic dashboard</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="number">1</div>
+          <h3>Create your clinic</h3>
+          <p>
+            Register your clinic and provide your practice details. It only takes a few minutes.
+          </p>
+        </div>
+        <div class="step">
+          <div class="number">2</div>
+          <h3>Manage your profile</h3>
+          <p>
+            Update your clinic information, booking link and offerings directly from your dashboard.
+          </p>
+        </div>
+        <div class="step">
+          <div class="number">3</div>
+          <h3>Receive &amp; track bookings</h3>
+          <p>
+            Patients can book appointments online and you can view upcoming bookings in one place.
+          </p>
+        </div>
       </div>
-      <div class="step">
-        <div class="number">2</div>
-        <h3>Manage your profile</h3>
-        <p>
-          Update your clinic information, booking link and offerings directly from your dashboard.
-        </p>
-      </div>
-      <div class="step">
-        <div class="number">3</div>
-        <h3>Receive &amp; track bookings</h3>
-        <p>
-          Patients can book appointments online and you can view upcoming bookings in one place.
-        </p>
-      </div>
-    </div>
-    <!-- Secondary CTA linking to the dashboard for existing clinics -->
-    <RouterLink to="/clinic/dashboard" class="cta secondary">View dashboard</RouterLink>
-  </section>
+      <!-- Secondary CTA linking to the dashboard for existing clinics -->
+      <RouterLink to="/clinic/dashboard" class="cta secondary">View dashboard</RouterLink>
+    </section>
+  </main>
 </template>
 
 <style scoped>

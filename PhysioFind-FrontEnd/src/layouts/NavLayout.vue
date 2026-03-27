@@ -1,8 +1,6 @@
 <template>
   <GlobalNav />
-  <main class="content-lanes">
-    <RouterView />
-  </main>
+  <RouterView />
   <GlobalFooter />
 </template>
 
@@ -22,13 +20,5 @@ body {
 
 main {
   flex: 1;
-
-  > :first-child {
-    margin-top: var(--g-navbar-height);
-  }
-
-  /* > :last-child {
-    padding-bottom: var(--g-footer-height);
-  } */
 }
 </style>

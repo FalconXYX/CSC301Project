@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 // Layouts
 import NavLayout from '@/layouts/NavLayout.vue'
@@ -22,7 +22,7 @@ import UserAppointmentsPage from '@/pages/appointments/UserAppointmentsPage.vue'
 const AUTH_ROLES = ['admin', 'clinic', 'patient', 'any'] as const
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',

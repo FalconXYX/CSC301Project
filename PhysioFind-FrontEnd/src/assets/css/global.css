@@ -1,13 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('./expose.css');
+@import url('./satoshi.css');
 
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
 
   /* Colors */
   --c-bg: light-dark(oklch(96% 0% 0), oklch(17% 0% 0));
   --c-bg-secondary: light-dark(oklch(100% 0% 0), oklch(25% 0% 0));
   --c-text: light-dark(oklch(12% 0% 0), oklch(92% 0% 0));
   --c-text-secondary: light-dark(oklch(25% 0% 0 / 0.83), oklch(83% 0% 0 / 0.83));
+  --c-primary: light-dark(oklch(12% 0% 0), oklch(92% 0% 0));
+  --c-secondary: light-dark(oklch(25% 0% 0 / 0.83), oklch(83% 0% 0 / 0.83));
 
   --c-fill: oklch(from var(--c-bg) calc(l + 0.04) c h);
 
@@ -19,9 +23,6 @@
   --c-green: light-dark(oklch(50% 100% 170), oklch(60% 100% 170));
 
   /* Fonts */
-  --f-serif: 'Playfair Display', serif;
-  --f-body: 'Inter', sans-serif;
-
   --f-heading-size: calc(1.5rem + 1.5vw);
   --f-subheading-size: calc(0.875rem + 0.25vw);
 
@@ -48,43 +49,26 @@
 }
 
 body {
-  font-family: var(--f-body);
+  font-family: 'Satoshi', sans-serif;
   background-color: var(--c-bg);
-  color: var(--c-text);
+  color: var(--c-primary);
 
   font-synthesis: none;
 }
 
-a,
-button {
-  all: unset;
-  cursor: pointer;
-  user-select: none;
+h1,
+h2,
+h3 {
+  font-family: 'Expose', sans-serif;
 }
 
-.material-symbols-outlined {
-  font-size: 24px;
-
-  &.sm {
-    font-size: 20px;
-    font-variation-settings: 'OPSZ' 20;
-  }
-
-  &.lg {
-    font-size: 40px;
-    font-variation-settings: 'OPSZ' 40;
-  }
-
-  &.xl {
-    font-size: 48px;
-    font-variation-settings: 'OPSZ' 48;
-  }
+h1 {
+  font-size: 4rem;
 }
 
-[popover] {
-  border: none;
-  padding: 0;
-  background: unset;
+h2 {
+  font-size: 2.5rem;
+  line-height: 0.9;
 }
 
 .content-lanes {
@@ -110,6 +94,30 @@ button {
 
     > * {
       grid-column: content;
+    }
+  }
+}
+
+@layer base {
+  a,
+  button {
+    all: unset;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  [popover] {
+    border: none;
+    padding: 0;
+    background: unset;
+  }
+
+  .material-symbols-outlined {
+    font-size: 24px;
+
+    &.sm {
+      font-size: 20px;
+      font-variation-settings: 'OPSZ' 20;
     }
   }
 }

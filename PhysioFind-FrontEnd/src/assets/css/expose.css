@@ -1,0 +1,74 @@
+/**
+* @license
+*
+* Font Family: Expose
+* Designed by: Lukas Schneider
+* URL: https://www.fontshare.com/fonts/expose
+* © 2026 Indian Type Foundry
+*
+* Expose Regular
+* Expose Medium
+* Expose Bold
+* Expose Black
+* Expose Variable (Variable font)
+
+*
+*/
+@font-face {
+  font-family: 'Expose';
+  src:
+    url('../fonts/Expose-Regular.woff2') format('woff2'),
+    url('../fonts/Expose-Regular.woff') format('woff'),
+    url('../fonts/Expose-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Expose';
+  src:
+    url('../fonts/Expose-Medium.woff2') format('woff2'),
+    url('../fonts/Expose-Medium.woff') format('woff'),
+    url('../fonts/Expose-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Expose';
+  src:
+    url('../fonts/Expose-Bold.woff2') format('woff2'),
+    url('../fonts/Expose-Bold.woff') format('woff'),
+    url('../fonts/Expose-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Expose';
+  src:
+    url('../fonts/Expose-Black.woff2') format('woff2'),
+    url('../fonts/Expose-Black.woff') format('woff'),
+    url('../fonts/Expose-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
+}
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 400.0;
+*
+* available axes:
+'wght' (range from 400.0 to 900.0
+*/
+@font-face {
+  font-family: 'Expose Variable';
+  src:
+    url('../fonts/Expose-Variable.woff2') format('woff2'),
+    url('../fonts/Expose-Variable.woff') format('woff'),
+    url('../fonts/Expose-Variable.ttf') format('truetype');
+  font-weight: 400 900;
+  font-display: swap;
+  font-style: normal;
+}
