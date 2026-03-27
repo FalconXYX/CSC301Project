@@ -145,6 +145,7 @@ async function createClinic() {
     if (form.hours_text.trim()) services.push(`hours:${form.hours_text.trim()}`)
     form.insurances.forEach((ins) => services.push(`insurance:${ins}`))
 
+<<<<<<< 3.6.5-Placeholder-Parts
     let latitude = undefined
     let longitude = undefined
 
@@ -160,6 +161,8 @@ async function createClinic() {
       console.warn('Failed to geocode postal code during clinic creation:', geocodeError)
     }
 
+=======
+>>>>>>> main
     const clinic = await API.createClinic({
       name: form.name.trim(),
       address_line1: form.address_line1.trim(),

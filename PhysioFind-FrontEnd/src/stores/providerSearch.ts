@@ -77,17 +77,21 @@ export const useProviderSearchStore = defineStore('providerSearch', () => {
             formattedVerifiedClinics.map((c) => c.name.toLowerCase().trim()),
           )
 
-          googleClinics = mapResults
-            .filter((gc) => !verifiedNames.has(gc.name.toLowerCase().trim()))
-            .slice(0, 4) // Fetch up to 4 google clinics
+          googleClinics = mapResults.filter(
+            (gc) => !verifiedNames.has(gc.name.toLowerCase().trim()),
+          )
         } catch (mapErr) {
           console.error('Failed to fetch from Google Maps:', mapErr)
           // Continue execution, map failures shouldn't break the whole results block
         }
       }
 
+<<<<<<< 3.6.5-Placeholder-Parts
       // Max out the database verified lists to up to 4 in case it returned more, then combine.
       clinics.value = [...formattedVerifiedClinics.slice(0, 4), ...googleClinics]
+=======
+      clinics.value = [...formattedVerifiedClinics, ...googleClinics]
+>>>>>>> main
     } catch (err) {
       error.value = 'Failed to search for providers. Please try again.'
       console.error('Provider search error:', err)
