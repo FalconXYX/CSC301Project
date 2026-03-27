@@ -81,11 +81,6 @@ router.post("/search", async function (req, res, next) {
       whereClause.AND = OR_conditions;
     }
 
-    // Merge OR conditions if present
-    if (OR_conditions.length > 0) {
-      whereClause.AND = OR_conditions;
-    }
-
     const clinicsList = await prisma.clinics.findMany({
       where: whereClause,
       include: {
@@ -217,7 +212,6 @@ router.post("/search", async function (req, res, next) {
       // Penalize distance (farther = lower score). For example, subtract 1 point per km
       if (a.distance !== null) {
         scoreA -= a.distance / 1000;
-<<<<<<< 3.6.5-Placeholder-Parts
       }
       if (b.distance !== null) {
         scoreB -= b.distance / 1000;
@@ -230,16 +224,6 @@ router.post("/search", async function (req, res, next) {
         if (a.distance !== null && b.distance === null) scoreA += 10;
         if (b.distance !== null && a.distance === null) scoreB += 10;
       }
-=======
-      }
-      if (b.distance !== null) {
-        scoreB -= b.distance / 1000;
-      }
-
-      // If one has distance and another doesn't, prioritize the one with distance slightly
-      if (a.distance !== null && b.distance === null) scoreA += 10;
-      if (b.distance !== null && a.distance === null) scoreB += 10;
->>>>>>> main
 
       return scoreB - scoreA; // descending
     });

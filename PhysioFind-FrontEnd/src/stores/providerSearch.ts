@@ -86,12 +86,8 @@ export const useProviderSearchStore = defineStore('providerSearch', () => {
         }
       }
 
-<<<<<<< 3.6.5-Placeholder-Parts
       // Max out the database verified lists to up to 4 in case it returned more, then combine.
       clinics.value = [...formattedVerifiedClinics.slice(0, 4), ...googleClinics]
-=======
-      clinics.value = [...formattedVerifiedClinics, ...googleClinics]
->>>>>>> main
     } catch (err) {
       error.value = 'Failed to search for providers. Please try again.'
       console.error('Provider search error:', err)
