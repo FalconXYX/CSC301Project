@@ -145,6 +145,21 @@ async function createClinic() {
     if (form.hours_text.trim()) services.push(`hours:${form.hours_text.trim()}`)
     form.insurances.forEach((ins) => services.push(`insurance:${ins}`))
 
+    let latitude = undefined
+    let longitude = undefined
+
+    try {
+      const location = await useGoogleMaps().geocodePostalCode(
+        normalizePostalCode(form.postal_code),
+      )
+      if (location) {
+        latitude = location.lat
+        longitude = location.lng
+      }
+    } catch (geocodeError) {
+      console.warn('Failed to geocode postal code during clinic creation:', geocodeError)
+    }
+
     const clinic = await API.createClinic({
       name: form.name.trim(),
       address_line1: form.address_line1.trim(),
@@ -152,6 +167,8 @@ async function createClinic() {
       city: form.city.trim(),
       province: normalizeProvinceCode(form.province),
       postal_code: normalizePostalCode(form.postal_code),
+      latitude,
+      longitude,
       phone: normalizeOptional(form.phone),
       email: normalizeOptional(form.email),
       website: normalizeOptional(form.website),

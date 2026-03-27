@@ -104,6 +104,8 @@ export interface CreateClinicPayload {
   province: string
   postal_code: string
   address_line2?: string | null
+  latitude?: number | null
+  longitude?: number | null
   phone?: string | null
   email?: string | null
   website?: string | null
