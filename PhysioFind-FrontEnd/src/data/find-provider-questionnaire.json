@@ -7,8 +7,10 @@
       "required": true,
       "options": [
         { "value": "physiotherapist", "label": "Physiotherapist" },
-        { "value": "psychologist", "label": "Psychologist" },
-        { "value": "chiropractor", "label": "Chiropractor" }
+        { "value": "massage_therapy", "label": "Massage Therapist" },
+        { "value": "chiropractor", "label": "Chiropractor" },
+        { "value": "occupational_therapy", "label": "Occupational Therapist" },
+        { "value": "athletic_therapy", "label": "Sports Injury Therapist" }
       ]
     },
     {
