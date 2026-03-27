@@ -36,7 +36,7 @@ const topProviders = [
         <span>Find the right provider.</span>
         <span>Not just the closest one.</span>
       </h1>
-      <RouterLink to="/find-provider" class="cta-btn">Find a Provider</RouterLink>
+      <RouterLink to="/find-provider" class="cta-btn bordered">Find a Provider</RouterLink>
       <p class="scroll-tip">Scroll down to learn more</p>
     </section>
     <section id="testimonials">
@@ -58,7 +58,7 @@ const topProviders = [
       </div>
     </section>
     <section id="find-provider">
-      <RouterLink to="/find-provider" class="cta-btn">Find a Provider</RouterLink>
+      <RouterLink to="/find-provider" class="cta-btn bordered">Find a Provider</RouterLink>
     </section>
   </main>
 </template>
@@ -121,24 +121,7 @@ const topProviders = [
 
   .cta-btn {
     padding: 0.75rem 1.5rem;
-
-    background: var(--c-primary);
-    color: var(--c-bg);
-    border-radius: 100px;
-
     font-size: 1.25rem;
-    font-weight: 600;
-
-    will-change: scale;
-
-    transition:
-      opacity 300ms ease-out,
-      scale 300ms ease-out;
-
-    &:hover {
-      opacity: 0.83;
-      scale: 1.04;
-    }
   }
 
   .scroll-tip {

@@ -190,7 +190,7 @@ function handleSubmit() {
         >
           Back
         </button>
-        <button type="submit" class="auth-btn primary" :disabled="authStore.isLoading">
+        <button type="submit" class="auth-btn bordered" :disabled="authStore.isLoading">
           <template v-if="authStore.isLoading">Loading…</template>
           <template v-else-if="mode === 'signIn'">Sign In</template>
           <template v-else-if="step === 1">Continue</template>
@@ -284,27 +284,6 @@ function handleSubmit() {
 
   .auth-btn {
     width: 100%;
-    padding: 0.5rem 1.25rem;
-    margin-top: 0.75rem;
-
-    background: var(--c-primary);
-    color: var(--c-bg);
-    border-radius: 100px;
-
-    font-size: 1rem;
-    font-weight: 600;
-    text-align: center;
-
-    will-change: scale;
-
-    transition:
-      opacity 300ms ease-out,
-      scale 300ms ease-out;
-
-    &:not(:disabled):hover {
-      opacity: 0.83;
-      scale: 1.04;
-    }
   }
 
   .auth-btn:disabled {

@@ -71,6 +71,31 @@ h2 {
   line-height: 0.9;
 }
 
+a.bordered,
+button.bordered {
+  padding: 0.5rem 1.25rem;
+  margin-top: 0.75rem;
+
+  background: var(--c-primary);
+  color: var(--c-bg);
+  border-radius: 100px;
+
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+
+  will-change: scale;
+
+  transition:
+    opacity 300ms ease-out,
+    scale 300ms ease-out;
+
+  &:not(:disabled):hover {
+    opacity: 0.83;
+    scale: 1.04;
+  }
+}
+
 .content-lanes {
   display: grid;
   grid-template-columns:
