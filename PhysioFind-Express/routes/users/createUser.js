@@ -13,30 +13,98 @@ router.post("/", async function (req, res, next) {
   let authUser = null;
 
   try {
-    // Sign up in Supabase Auth first to get the authoritative UUID
-    const { data, error } = await supabase.auth.signUp({
+    // 1. Try to sign up the user in Supabase Auth
+    let { data, error } = await supabase.auth.signUp({
       email: req.body.email,
       password: req.body.password_hash,
     });
 
     if (error) {
-      return res.status(400).json({ error: error.message });
+      // 🚨 GHOST ACCOUNT RECOVERY LOGIC 🚨
+      // If a previous Prisma failure left this user stranded in Supabase Auth without a
+      // database record, we catch the "Already registered" error and log them in to recover their ID!
+      if (
+        error.message.toLowerCase().includes("already registered") ||
+        error.message.toLowerCase().includes("already exists")
+      ) {
+        console.log(
+          "Ghost account detected. Attempting to recover and sync ID...",
+        );
+
+        const { data: signInData, error: signInError } =
+          await supabase.auth.signInWithPassword({
+            email: req.body.email,
+            password: req.body.password_hash,
+          });
+
+        // If login failed, they just provided a bad password to an actual existing account
+        if (signInError) {
+          return res
+            .status(400)
+            .json({
+              error:
+                "Email already registered. If this is you, please sign in.",
+            });
+        }
+
+        // We successfully grabbed the ghost account!
+        authUser = signInData.user;
+      } else {
+        return res.status(400).json({ error: error.message });
+      }
+    } else {
+      authUser = data.user;
     }
 
-    if (!data.user) {
-      return res.status(400).json({ error: "Supabase sign up failed" });
+    if (!authUser) {
+      return res.status(400).json({ error: "Supabase sign up failed." });
     }
 
-    authUser = data.user;
+    // Checking if they are already fully synced in the database
+    const existingDBUser = await prisma.users.findUnique({
+      where: { id: authUser.id },
+    });
 
-    // Create Prisma record using the Supabase Auth UUID
+    if (existingDBUser) {
+      return res.status(400).json({ error: "User already registered." });
+    }
+
+    // 2. Safely map fields to avoid Prisma crashes from unexpected frontend data
+    // Spreading `...req.body` directly into Prisma is what causes it to crash initially if
+    // the frontend passes things like "confirm_password" or other unmatched schema variables.
+    const safeData = {
+      id: authUser.id,
+      email: req.body.email,
+      password_hash: req.body.password_hash,
+      role: req.body.role || "patient",
+      first_name: req.body.first_name || null,
+      last_name: req.body.last_name || null,
+      phone: req.body.phone || null,
+      date_of_birth: req.body.date_of_birth
+        ? new Date(req.body.date_of_birth)
+        : null,
+      clinic_id: req.body.clinic_id || null,
+      clinic_role: req.body.clinic_role || null,
+    };
+
+    // Strip out null values so we just rely on Prisma defaults where appropriate
+    Object.keys(safeData).forEach((key) => {
+      if (safeData[key] === null) {
+        delete safeData[key];
+      }
+    });
+
+    // 3. Create Prisma record using the recovered/new Supabase Auth UUID
     const user = await prisma.users.create({
-      data: { ...req.body, id: authUser.id },
+      data: safeData,
     });
 
     res.status(201).json({ user });
   } catch (error) {
-    // Rollback: If Prisma fails, delete the user from Supabase to avoid orphaned accounts
+    console.error("Prisma Creation Error:", error);
+
+    // Theoretical rollback: If Prisma STILL fails, delete the user from Supabase.
+    // (Note: This relies on SUPABASE_SERVICE_ROLE_KEY being set in .env to actually work)
     if (authUser && authUser.id) {
       try {
         const supabaseAdmin = createClient(

@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 var createError = require("http-errors");
 var express = require("express");
-var cors = require('cors')
+var cors = require("cors");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -78,7 +78,11 @@ app.use("/google", googleCallbackRouter);
 app.use("/google", googleDisconnectRouter);
 app.use("/google", googleCalendarsRouter);
 app.use("/google", googleSelectCalendarRouter);
+app.use("/api/google", googleAuthUrlRouter);
 app.use("/api/google", googleCallbackRouter);
+app.use("/api/google", googleDisconnectRouter);
+app.use("/api/google", googleCalendarsRouter);
+app.use("/api/google", googleSelectCalendarRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
