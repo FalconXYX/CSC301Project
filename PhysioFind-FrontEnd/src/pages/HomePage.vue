@@ -35,7 +35,7 @@ const specialties = [
 ]
 
 const topProviders = [
-  { name: 'Dr. Sarah Johnson', specialty: 'Physiotherapist', rating: 5 },
+  { name: 'Dr. John Practitioner', specialty: 'Physiotherapist', rating: 5 },
   { name: 'Dr. Miguel Pérez', specialty: 'Psychologist', rating: 5 },
   { name: 'Dr. Emily Chen', specialty: 'Chiropractor', rating: 4.5 },
 ]
@@ -104,7 +104,7 @@ const topProviders = [
               <span class="rating-value">({{ p.rating.toFixed(1) }})</span>
             </p>
           </div>
-          <RouterLink to="/find-provider" class="book-btn">Book now</RouterLink>
+          <RouterLink :to="{name: 'booking', query: { pracId: '2bdc3c35-0be8-42fc-90da-419664c85354' } }" class="book-btn">Book now</RouterLink>
         </div>
       </div>
     </div>

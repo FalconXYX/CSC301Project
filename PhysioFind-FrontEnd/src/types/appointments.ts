@@ -11,3 +11,12 @@ export interface AppointmentRequest {
   created_at: string,
   updated_at: string
 }
+
+export interface FreeBusyResponse {
+  busy: Busy[]
+}
+
+export interface Busy {
+  start: string,
+  end: string,
+}
