@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import { journey, features } from '@/data/static/clinics-page.json'
+
+const auth = useAuthStore()
+
+function scrollToDashboard() {
+  const dashboardSection = document.getElementById('dashboard')
+  if (dashboardSection) {
+    dashboardSection.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 </script>
 
 <template>
@@ -11,10 +20,19 @@ import { journey, features } from '@/data/static/clinics-page.json'
         coverage—so you spend less time filtering and more time treating.
       </p>
       <div class="cta-area">
-        <RouterLink to="/auth?mode=sign-up&role=clinic" class="cta-btn bordered">
+        <RouterLink
+          v-if="auth.profile?.role === 'clinic'"
+          to="/clinic/dashboard"
+          class="cta-btn bordered"
+        >
+          View your dashboard
+        </RouterLink>
+        <RouterLink v-else to="/auth?mode=sign-up&role=clinic" class="cta-btn bordered">
           Create your clinic profile
         </RouterLink>
-        <RouterLink to="#" class="cta-btn bordered secondary">See how it works</RouterLink>
+        <button class="cta-btn bordered secondary" @click="scrollToDashboard">
+          See how it works
+        </button>
       </div>
     </section>
     <section id="journey" class="full-with-lanes">
