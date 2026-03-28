@@ -8,7 +8,6 @@
 html,
 body {
   max-width: 100dvw;
-  overflow-x: hidden;
 }
 
 #app {
@@ -20,5 +19,10 @@ body {
 
 main {
   flex: 1;
+
+  section {
+    padding-block: 5rem;
+    row-gap: 3rem;
+  }
 }
 </style>

@@ -83,110 +83,112 @@ watch(
 </script>
 
 <template>
-  <form id="clinic-dashboard" v-if="clinic" @submit.prevent="submitChanges">
-    <header>
-      <h1 class="title">Your Clinic</h1>
-      <div class="actions">
-        <button v-if="isEditing" type="button" @click="cancelEditing" class="edit-btn secondary">
-          Cancel
-        </button>
-        <button v-if="isEditing" type="submit" class="edit-btn active" :disabled="isLoading">
-          Save
-        </button>
-        <button v-else type="button" @click="startEditing" class="edit-btn">Edit</button>
-      </div>
-    </header>
-    <section class="clinic-info">
-      <h2>Profile</h2>
+  <main class="content-lanes">
+    <form id="clinic-dashboard" v-if="clinic" @submit.prevent="submitChanges">
+      <header>
+        <h2 class="title">Your Clinic</h2>
+        <div class="actions">
+          <button v-if="isEditing" type="button" @click="cancelEditing" class="edit-btn secondary">
+            Cancel
+          </button>
+          <button v-if="isEditing" type="submit" class="edit-btn active" :disabled="isLoading">
+            Save
+          </button>
+          <button v-else type="button" @click="startEditing" class="edit-btn">Edit</button>
+        </div>
+      </header>
+      <section class="clinic-info">
+        <h3>Profile</h3>
 
-      <ClinicDashboardField id="clinic--name" label="Name" v-model="clinic.name" :disabled />
-      <ClinicDashboardField
-        id="clinic--email"
-        label="Email"
-        type="email"
-        v-model="clinic.email"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--phone"
-        label="Phone Number"
-        type="tel"
-        v-model="clinic.phone"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--website"
-        label="Website"
-        type="url"
-        v-model="clinic.website"
-        :disabled
-      />
+        <ClinicDashboardField id="clinic--name" label="Name" v-model="clinic.name" :disabled />
+        <ClinicDashboardField
+          id="clinic--email"
+          label="Email"
+          type="email"
+          v-model="clinic.email"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--phone"
+          label="Phone Number"
+          type="tel"
+          v-model="clinic.phone"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--website"
+          label="Website"
+          type="url"
+          v-model="clinic.website"
+          :disabled
+        />
 
-      <h3>Location</h3>
-      <ClinicDashboardField
-        id="clinic--address-line1"
-        label="Address Line 1"
-        v-model="clinic.address_line1"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--address-line2"
-        label="Address Line 2"
-        v-model="clinic.address_line2"
-        :disabled
-      />
-      <ClinicDashboardField id="clinic--city" label="City" v-model="clinic.city" :disabled />
-      <ClinicDashboardField
-        id="clinic--province"
-        label="Province"
-        v-model="clinic.province"
-        :disabled
-      />
+        <h4>Location</h4>
+        <ClinicDashboardField
+          id="clinic--address-line1"
+          label="Address Line 1"
+          v-model="clinic.address_line1"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--address-line2"
+          label="Address Line 2"
+          v-model="clinic.address_line2"
+          :disabled
+        />
+        <ClinicDashboardField id="clinic--city" label="City" v-model="clinic.city" :disabled />
+        <ClinicDashboardField
+          id="clinic--province"
+          label="Province"
+          v-model="clinic.province"
+          :disabled
+        />
 
-      <h3>Additional Information</h3>
-      <ClinicDashboardField
-        id="clinic--specialties"
-        label="Specialties"
-        v-model="specialtiesString"
-        :disabled
-      />
-    </section>
-    <section class="clinic-bookings">
-      <h2>Booking & Billing</h2>
+        <h4>Additional Information</h4>
+        <ClinicDashboardField
+          id="clinic--specialties"
+          label="Specialties"
+          v-model="specialtiesString"
+          :disabled
+        />
+      </section>
+      <section class="clinic-bookings">
+        <h3>Booking & Billing</h3>
 
-      <ClinicDashboardField
-        id="clinic--booking-provider"
-        label="Booking Provider"
-        v-model="clinic.booking_provider"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--booking-link"
-        label="Booking URL"
-        type="url"
-        v-model="clinic.booking_url"
-        :disabled
-      />
+        <ClinicDashboardField
+          id="clinic--booking-provider"
+          label="Booking Provider"
+          v-model="clinic.booking_provider"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--booking-link"
+          label="Booking URL"
+          type="url"
+          v-model="clinic.booking_url"
+          :disabled
+        />
 
-      <h3>Offerings</h3>
-      <ClinicDashboardField
-        id="clinic--direct-billing"
-        label="Offer Direct Billing"
-        type="checkbox"
-        v-model="clinic.offers_direct_billing"
-        :disabled
-      />
-    </section>
-    <footer>
-      <p class="last-updated">Last updated: {{ formattedDate(clinic.updated_at) }}</p>
-      <p class="created-at">Created at: {{ formattedDate(clinic.created_at) }}</p>
-    </footer>
-  </form>
+        <h4>Offerings</h4>
+        <ClinicDashboardField
+          id="clinic--direct-billing"
+          label="Offer Direct Billing"
+          type="checkbox"
+          v-model="clinic.offers_direct_billing"
+          :disabled
+        />
+      </section>
+      <footer>
+        <p class="last-updated">Last updated: {{ formattedDate(clinic.updated_at) }}</p>
+        <p class="created-at">Created at: {{ formattedDate(clinic.created_at) }}</p>
+      </footer>
+    </form>
+  </main>
 </template>
 
 <style>
 #clinic-dashboard {
-  padding-block: 1.5rem;
+  padding-block-start: calc(var(--g-navbar-height) + 5rem);
   height: fit-content;
 
   display: grid;
@@ -203,13 +205,6 @@ watch(
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-
-    .title {
-      font-size: 1.75rem;
-      font-weight: 600;
-
-      white-space: nowrap;
-    }
 
     .actions {
       height: 100%;
@@ -258,7 +253,7 @@ watch(
   }
 
   section {
-    padding: 1.125rem;
+    padding: 1.5rem;
 
     background: var(--c-bg-secondary);
     border-radius: 1.125rem;
@@ -266,16 +261,15 @@ watch(
 
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-
-    h2 {
-      margin-block: 0 0.25rem;
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
+    gap: 0.375rem;
 
     h3 {
-      margin-block: 0.5rem 0.125rem;
+      margin-block: 0 0.5rem;
+    }
+
+    h4 {
+      margin-block: 0.75rem 0.125rem;
+
       font-size: 0.875rem;
       font-weight: 500;
       color: var(--c-text-secondary);

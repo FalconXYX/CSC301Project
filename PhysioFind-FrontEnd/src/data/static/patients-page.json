@@ -1,0 +1,24 @@
+{
+  "journey": [
+    {
+      "title": "Tell us what you need",
+      "body": "Answer a few quick questions about your preferences, location, and coverage so we can tailor your search."
+    },
+    {
+      "title": "Get your best matches",
+      "body": "We instantly connect you with vetted providers that fit your needs—saving you hours of research."
+    },
+    {
+      "title": "Book with confidence",
+      "body": "Compare options, choose your provider, and book securely at a time that works for you."
+    }
+  ],
+  "benefits": [
+    "Your personal and medical information is securely protected",
+    "Smart matching based on your insurance, availability, and care needs",
+    "Access to a network of trusted, verified providers across Ontario",
+    "Real-time availability so you can book without back-and-forth",
+    "Transparent pricing and coverage information upfront",
+    "Find the best fit for you—not just the nearest option"
+  ]
+}

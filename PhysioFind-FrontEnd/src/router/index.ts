@@ -5,19 +5,22 @@ import NavLayout from '@/layouts/NavLayout.vue'
 
 // Pages
 import HomePage from '@/pages/HomePage.vue'
+import PatientsPage from '@/pages/static/PatientsPage.vue'
+import ClinicsPage from '@/pages/static/ClinicsPage.vue'
+import AboutPage from '@/pages/static/AboutPage.vue'
+
+import AuthPage from '@/pages/auth/AuthPage.vue'
+import AccountPage from '@/pages/auth/AccountPage.vue'
+
 import FindProviderPage from '@/pages/patients/FindProviderPage.vue'
 import ProviderResultsPage from '@/pages/patients/ProviderResultsPage.vue'
-import AccountPage from '@/pages/auth/AccountPage.vue'
-import AuthPage from '@/pages/auth/AuthPage.vue'
-import PatientsValuePage from '@/pages/patients/PatientsValuePage.vue'
-import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage.vue'
-import AboutPage from '@/pages/AboutPage.vue'
+import UserAppointmentsPage from '@/pages/appointments/UserAppointmentsPage.vue'
+
 import ClinicCreationPage from '@/pages/clinics/ClinicCreationPage.vue'
 import ClinicDashboardPage from '@/pages/clinics/ClinicDashboardPage.vue'
-import ClinicsValuePage from '@/pages/clinics/ClinicsValuePage.vue'
 
 import ErrorPage from '@/pages/error/ErrorPage.vue'
-import UserAppointmentsPage from '@/pages/appointments/UserAppointmentsPage.vue'
+import PrivacyPolicyView from '@/components/info/PrivacyPolicyView.vue'
 
 const AUTH_ROLES = ['admin', 'clinic', 'patient', 'any'] as const
 
@@ -38,18 +41,17 @@ const router = createRouter({
         },
         {
           path: 'patients',
-          component: PatientsValuePage,
+          component: PatientsPage,
         },
         {
           path: 'clinics',
-          component: ClinicsValuePage,
+          component: ClinicsPage,
         },
         {
           path: 'privacy-policy',
-          component: PrivacyPolicyPage,
+          component: PrivacyPolicyView,
         },
         {
-          // Route for the About page
           path: 'about',
           component: AboutPage,
         },
@@ -63,7 +65,6 @@ const router = createRouter({
           component: UserAppointmentsPage,
           meta: { auth: 'any' },
         },
-        // Clinics
         {
           path: 'clinic',
           meta: { auth: 'clinic' },

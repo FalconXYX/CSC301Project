@@ -1,0 +1,20 @@
+{
+  "problems": [
+    {
+      "title": "Patients must",
+      "items": [
+        "Compare dozens of clinics with little context",
+        "Navigate insurance, availability, and specialties manually",
+        "Book appointments that aren't always the right fit"
+      ]
+    },
+    {
+      "title": "Clinics have",
+      "items": [
+        "Time lost to back-and-forth scheduling",
+        "Mismatched bookings",
+        "Limited visibility beyond their immediate area"
+      ]
+    }
+  ]
+}

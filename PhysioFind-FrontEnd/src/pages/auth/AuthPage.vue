@@ -27,7 +27,7 @@ function onSignIn() {
 <style>
 #auth {
   display: grid;
-  grid-template-columns: auto minmax(var(--g-card-max-width), 1fr);
+  grid-template-columns: auto minmax(calc(var(--g-card-max-width) + 6rem), 1fr);
   align-items: center;
   height: 100dvh;
 

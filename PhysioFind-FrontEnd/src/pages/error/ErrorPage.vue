@@ -38,7 +38,7 @@ const errorDescription = computed(() => {
       <p class="error-description">{{ errorDescription }}</p>
     </div>
 
-    <RouterLink to="/" class="bordered">Return to Home</RouterLink>
+    <RouterLink to="/" class="bordered">Return Home</RouterLink>
   </main>
 </template>
 
@@ -47,20 +47,21 @@ const errorDescription = computed(() => {
   place-items: center;
   place-content: center;
   text-align: center;
-  gap: 0.75rem;
+  gap: 1.5rem;
 
   -webkit-user-drag: none;
 
   .error-code {
-    font-size: 5rem;
-    font-weight: 700;
+    font:
+      700 5rem/0.9 'Expose',
+      sans-serif;
     color: var(--c-primary);
   }
 
   .error-info {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
 
     .error-message {
       font-size: 1.25rem;
@@ -68,7 +69,7 @@ const errorDescription = computed(() => {
     }
 
     .error-description {
-      color: var(--c-text-secondary);
+      color: var(--c-secondary);
     }
   }
 }

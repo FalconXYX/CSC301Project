@@ -1,0 +1,23 @@
+{
+  "journey": [
+    {
+      "title": "Set up your clinic",
+      "body": "Create your profile with your services, specialties, availability, and accepted insurance."
+    },
+    {
+      "title": "Receive better-matched patients",
+      "body": "Patients are matched to your clinic based on real needs—not just location—so you get more relevant bookings."
+    },
+    {
+      "title": "Manage bookings with ease",
+      "body": "View appointments, update availability, and stay organized with a simple, centralized dashboard."
+    }
+  ],
+  "features": [
+    "Manage all bookings from one place",
+    "Update your availability in real time",
+    "Receive and track patient bookings effortlessly",
+    "Keep your services, specialties, and coverage up to date",
+    "Stay organized without the admin overhead"
+  ]
+}

@@ -11,8 +11,7 @@ const emit = defineEmits<{ signIn: [] }>()
 
 const authStore = useAuthStore()
 
-// Import the Privacy Policy page so it can be rendered inside a modal
-import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage.vue'
+import PrivacyPolicyView from '@/components/info/PrivacyPolicyView.vue'
 
 // State
 
@@ -164,20 +163,20 @@ function handleSubmit() {
 
       <template v-if="mode === 'signUp' && step === 2">
         <label>
-          First Name
+          <span class="label">First Name</span>
           <input v-model="firstName" type="text" class="field" placeholder="Jane" required />
         </label>
         <label>
-          Last Name
+          <span class="label">Last Name</span>
           <input v-model="lastName" type="text" class="field" placeholder="Doe" required />
         </label>
         <label>
-          Phone Number
-          <input v-model="phone" type="tel" class="field" placeholder="(416) 555-0123" />
+          <span class="label">Date of Birth</span>
+          <input v-model="dateOfBirth" type="date" class="field" required />
         </label>
         <label>
-          Date of Birth
-          <input v-model="dateOfBirth" type="date" class="field" />
+          <span class="label">Phone Number</span>
+          <input v-model="phone" type="tel" class="field" placeholder="(416) 555-0123" />
         </label>
       </template>
 
@@ -185,7 +184,7 @@ function handleSubmit() {
         <button
           v-if="mode === 'signUp' && step === 2"
           type="button"
-          class="auth-btn secondary"
+          class="auth-btn bordered secondary"
           @click="step = 1"
         >
           Back
@@ -203,7 +202,7 @@ function handleSubmit() {
       <template v-if="mode === 'signIn'">
         Don't have an account? <button class="link" @click="switchMode">Sign Up</button>
       </template>
-      <template v-else>
+      <template v-else-if="step === 1">
         Already have an account? <button class="link" @click="switchMode">Sign In</button>
       </template>
     </p>
@@ -213,7 +212,7 @@ function handleSubmit() {
     <button class="close-btn" popovertarget="privacy-popover" popovertargetaction="hide">
       &times;
     </button>
-    <PrivacyPolicyPage class="privacy-page" />
+    <PrivacyPolicyView class="privacy-page" />
   </div>
 </template>
 
@@ -257,6 +256,19 @@ function handleSubmit() {
     font-size: 0.8125rem;
     font-weight: 500;
     color: var(--c-text-secondary);
+
+    &:has(input[required]) {
+      .label::after {
+        content: '*';
+        position: relative;
+        top: 0.1em;
+        margin-left: 0.1rem;
+
+        color: var(--c-red);
+        font-size: 1.25em;
+        line-height: 0;
+      }
+    }
   }
 
   .field {
@@ -284,22 +296,7 @@ function handleSubmit() {
 
   .auth-btn {
     width: 100%;
-  }
-
-  .auth-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .auth-btn.primary {
-    background: var(--c-accent);
-    color: var(--c-bg);
-  }
-
-  .auth-btn.secondary {
-    background: var(--c-fill);
-    border: 1px solid var(--c-separator);
-    color: var(--c-text);
+    margin-top: 0.75rem;
   }
 
   .auth-btn:hover:not(:disabled) {

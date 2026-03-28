@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Dr. Sarah Johnson",
+    "specialty": "Physiotherapist",
+    "rating": 5,
+    "photo": "/images/people/sarah.jpg"
+  },
+  {
+    "name": "Dr. Miguel Pérez",
+    "specialty": "Psychologist",
+    "rating": 5,
+    "photo": "/images/people/miguel.jpg"
+  },
+  {
+    "name": "Dr. Michelle Harris",
+    "specialty": "Occupational Therapist",
+    "rating": 5,
+    "photo": "/images/people/michelle.jpg"
+  },
+  {
+    "name": "Dr. Emily Chen",
+    "specialty": "Chiropractor",
+    "rating": 4,
+    "photo": "/images/people/emily.jpg"
+  }
+]
