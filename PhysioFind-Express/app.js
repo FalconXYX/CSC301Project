@@ -32,6 +32,7 @@ var createAppointmentsRouter = require("./routes/appointments/createAppointment"
 var deleteAppointmentsRouter = require("./routes/appointments/deleteAppointment");
 var updateAppointmentsRouter = require("./routes/appointments/updateAppointment");
 var getAppointmentsRouter = require("./routes/appointments/getAppointment");
+var freeBusy = require("./routes/appointments/freeBusy");
 var signInRouter = require("./routes/auth/signIn");
 var signOutRouter = require("./routes/auth/signOut");
 var googleAuthUrlRouter = require("./routes/google/authUrl");
@@ -70,6 +71,7 @@ app.use("/appointments", createAppointmentsRouter);
 app.use("/appointments", deleteAppointmentsRouter);
 app.use("/appointments", updateAppointmentsRouter);
 app.use("/appointments", getAppointmentsRouter);
+app.use("/appointments/freeBusy", freeBusy);
 app.use("/updateclinic", updateclinicsRouter);
 app.use("/auth", signInRouter);
 app.use("/auth", signOutRouter);
