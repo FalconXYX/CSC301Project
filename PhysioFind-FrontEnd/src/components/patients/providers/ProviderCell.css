@@ -1,73 +1,52 @@
 .provider-cell {
-  background-color: var(--c-bg-secondary);
-  border-radius: 1.5rem;
   padding: 1rem;
+
+  border: 1.5px solid var(--c-separator);
+  border-radius: 0.75rem;
 
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 
   anchor-scope: --verified-badge;
 
+  transition: border-color 150ms;
+
+  &:hover {
+    border-color: var(--c-accent);
+    cursor: pointer;
+  }
+
   .provider-name {
-    font: 600 1.25rem/1.2 var(--f-body);
+    font:
+      600 1.25rem/0.9 'Satoshi',
+      sans-serif;
+    letter-spacing: 1%;
     text-wrap: pretty;
   }
 
   .provider-address {
-    font-size: 0.875rem;
+    font-size: 1rem;
     line-height: 1.3;
-    color: var(--c-text-secondary);
-
-    margin-bottom: 0.75rem;
+    color: var(--c-secondary);
 
     span {
       display: block;
     }
   }
 
-  .bottom-row {
-    margin-top: auto;
-
+  .services {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.25rem;
 
-    .services {
-      display: flex;
-      flex-flow: wrap row-reverse;
-      gap: 0.25rem;
-
-      .service {
-        background-color: var(--c-bg);
-        color: var(--c-text);
-        font-size: 0.75rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.5rem;
-      }
-    }
-
-    .details-btn {
-      background-color: var(--c-accent);
-      color: var(--c-bg);
-      font-weight: 600;
-      text-align: center;
-      padding: 0.75rem;
+    .service {
+      background-color: var(--c-separator);
+      color: var(--c-secondary);
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 0.25rem 0.5rem;
       border-radius: 0.5rem;
-
-      transition:
-        opacity 150ms ease,
-        scale 100ms ease;
-
-      &:hover {
-        opacity: 0.75;
-      }
-
-      &:active {
-        scale: 0.96;
-      }
     }
   }
 }

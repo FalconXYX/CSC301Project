@@ -17,12 +17,14 @@ body {
   width: 100%;
 }
 
-main {
-  flex: 1;
+@layer layout {
+  main {
+    flex: 1;
 
-  section {
-    padding-block: 5rem;
-    row-gap: 3rem;
+    &.content-lanes > section {
+      padding-block: 5rem;
+      row-gap: 3rem;
+    }
   }
 }
 </style>

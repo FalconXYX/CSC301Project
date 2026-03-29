@@ -28,7 +28,7 @@ function hideTooltip() {
 </script>
 
 <template>
-  <div class="provider-cell verified">
+  <button class="provider-cell verified" @click="$emit('showDetails', provider)">
     <h3 class="provider-name">
       {{ provider.name }}
       <span
@@ -40,17 +40,12 @@ function hideTooltip() {
       <div ref="tooltip" popover="auto" class="verified-tooltip">Verified partner clinic</div>
     </h3>
     <p class="provider-address">
-      <span v-for="line in addressLines" :key="line">{{ line }}</span>
+      <span v-for="line in addressLines.slice(0, 2)" :key="line">{{ line }}</span>
     </p>
-    <div class="bottom-row">
-      <div class="services">
-        <span v-for="service in provider.services" :key="service" class="service">{{
-          service
-        }}</span>
-      </div>
-      <button class="details-btn" @click="$emit('showDetails', provider)">See Details</button>
+    <div class="services">
+      <span v-for="service in provider.services" :key="service" class="service">{{ service }}</span>
     </div>
-  </div>
+  </button>
 </template>
 
 <style scoped>

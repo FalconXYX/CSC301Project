@@ -14,7 +14,7 @@ const addressLines = formatProviderAddress(provider.address, 'multi-line')
 </script>
 
 <template>
-  <div class="provider-cell">
+  <button class="provider-cell" @click="$emit('showDetails', provider)">
     <h3 class="provider-name">{{ provider.name }}</h3>
     <a :href="provider.mapsUrl" target="_blank" rel="noopener noreferrer" class="maps-link"
       >See on Google Maps&nbsp;<span class="material-symbols-outlined sm icon"
@@ -22,12 +22,9 @@ const addressLines = formatProviderAddress(provider.address, 'multi-line')
       ></a
     >
     <p class="provider-address">
-      <span v-for="line in addressLines" :key="line">{{ line }}</span>
+      <span v-for="line in addressLines.slice(0, 2)" :key="line">{{ line }}</span>
     </p>
-    <div class="bottom-row">
-      <button class="details-btn" @click="$emit('showDetails', provider)">See Details</button>
-    </div>
-  </div>
+  </button>
 </template>
 
 <style scoped>

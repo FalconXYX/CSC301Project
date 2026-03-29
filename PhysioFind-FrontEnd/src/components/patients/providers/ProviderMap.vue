@@ -46,7 +46,7 @@ onMounted(async () => {
           <div class="map-info-window">
             <strong>${clinic.name}</strong>
             <p>${clinic.address.line1}</p>
-            <a href="${clinic.type === 'google-maps' ? clinic.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${clinic.location.lat},${clinic.location.lng}`}" target="_blank" rel="noopener">View on Google Maps</a>
+            <a href="${clinic.type === 'google-maps' ? clinic.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${clinic?.location?.lat},${clinic?.location?.lng}`}" target="_blank" rel="noopener">View on Google Maps</a>
           </div>
         `)
         infoWindow.open({ map, anchor: marker })
@@ -61,15 +61,6 @@ onMounted(async () => {
 <template>
   <div ref="mapElement" class="provider-map" />
 </template>
-
-<style scoped>
-.provider-map {
-  width: 100%;
-  height: 480px;
-  border-radius: 0.75rem;
-  overflow: hidden;
-}
-</style>
 
 <style>
 /* @scope (.provider-map) { */
