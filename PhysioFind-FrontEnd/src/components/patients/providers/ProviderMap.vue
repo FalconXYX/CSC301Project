@@ -65,21 +65,25 @@ onMounted(async () => {
 </template>
 
 <style>
-/* @scope (.provider-map) { */
-.map-pin {
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  border: 1.5px solid white;
-  box-shadow: 0 0 0.25rem hsl(0 0 0 / 0.5);
-}
+.provider-map {
+  .map-pin {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 1.5px solid white;
+    box-shadow: 0 0 0.25rem hsl(0 0 0 / 0.5);
+  }
 
-.map-pin--google-maps {
-  background: hsl(0 0% 50%);
-}
+  .map-pin--google-maps {
+    background: hsl(0 0% 50%);
+  }
 
-.map-pin--verified {
-  background: var(--c-green);
+  .map-pin--verified {
+    background: var(--c-green);
+  }
+
+  .map-info-window {
+    z-index: 5;
+  }
 }
-/* } */
 </style>

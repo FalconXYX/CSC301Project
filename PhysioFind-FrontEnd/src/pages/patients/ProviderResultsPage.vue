@@ -1,16 +1,4 @@
 <script setup lang="ts">
-// Provider results page
-//
-// This page displays a map and a list of matched healthcare providers based on
-// the user's questionnaire responses. The script uses the route's query
-// parameters to trigger a search in the provider search store when a postal
-// code is present.
-
-// Vite's `<script setup>` automatically imports utilities like `useRoute`,
-// `computed` and `watch` if the project is configured with auto‑imports. We
-// intentionally mirror the upstream implementation from the repository to
-// preserve functionality while adjusting styles below.
-
 const route = useRoute()
 const store = useProviderSearchStore()
 
@@ -92,6 +80,7 @@ watch(
 @scope (#provider-results-page) {
   #matches {
     padding-block: calc(var(--g-navbar-height) + 0.75rem) 0.75rem;
+    height: calc(100dvh - var(--g-navbar-height));
 
     display: grid;
     grid-template-columns: 3fr 5fr;
@@ -112,11 +101,11 @@ watch(
     background: var(--c-bg-secondary);
     border-radius: 1.5rem;
 
-    overflow-y: auto;
-
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
+    overflow-y: auto;
 
     .results-list {
       display: flex;
