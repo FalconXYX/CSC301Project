@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PhysioFindLogo from '@/assets/physiofind.svg?component'
-import { problems } from '@/data/static/about-page.json'
+import { problems, solutions } from '@/data/static/about-page.json'
 </script>
 
 <template>
@@ -31,7 +31,15 @@ import { problems } from '@/data/static/about-page.json'
     </section>
     <section id="were-building">
       <h2 class="title">What We're Building</h2>
-      <p class="statement">PhysioFind is a smarter way to connect patients and providers.</p>
+      <p class="statement">
+        Instead of showing the nearest option, we focus on the best fit—matching patients and
+        clinics based on what actually matters.
+      </p>
+      <div class="solution-grid">
+        <div v-for="(solution, i) in solutions" :key="i" class="solution-item">
+          <p>{{ solution }}</p>
+        </div>
+      </div>
     </section>
     <section id="vision" class="full-with-lanes">
       <p class="statement">
@@ -122,9 +130,40 @@ import { problems } from '@/data/static/about-page.json'
     row-gap: 3rem;
 
     .statement {
+      max-width: 60ch;
+
       font-size: 1.5rem;
       line-height: 1.4;
       text-wrap: pretty;
+    }
+
+    .solution-grid {
+      background: var(--c-separator);
+      border: 1px solid var(--c-separator);
+      border-radius: 1.5rem;
+
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+
+      overflow: hidden;
+
+      .solution-item {
+        padding: 1.5rem;
+
+        background: var(--c-bg);
+
+        display: flex;
+        gap: 1.5rem;
+
+        font-size: 1.25rem;
+        font-weight: 500;
+
+        &::before {
+          content: '→';
+          color: var(--c-secondary);
+        }
+      }
     }
   }
 
