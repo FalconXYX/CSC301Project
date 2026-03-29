@@ -180,22 +180,20 @@ function handleSubmit() {
         </label>
       </template>
 
-      <div class="auth-buttons">
-        <button
-          v-if="mode === 'signUp' && step === 2"
-          type="button"
-          class="auth-btn bordered secondary"
-          @click="step = 1"
-        >
-          Back
-        </button>
-        <button type="submit" class="auth-btn bordered" :disabled="authStore.isLoading">
-          <template v-if="authStore.isLoading">Loading…</template>
-          <template v-else-if="mode === 'signIn'">Sign In</template>
-          <template v-else-if="step === 1">Continue</template>
-          <template v-else>Sign Up</template>
-        </button>
-      </div>
+      <button
+        v-if="mode === 'signUp' && step === 2"
+        type="button"
+        class="auth-btn bordered secondary"
+        @click="step = 1"
+      >
+        Back
+      </button>
+      <button type="submit" class="auth-btn bordered" :disabled="authStore.isLoading">
+        <template v-if="authStore.isLoading">Loading…</template>
+        <template v-else-if="mode === 'signIn'">Sign In</template>
+        <template v-else-if="step === 1">Continue</template>
+        <template v-else>Sign Up</template>
+      </button>
     </form>
 
     <p class="auth-switch" v-if="role !== 'clinic'">
@@ -244,6 +242,8 @@ function handleSubmit() {
   }
 
   .auth-form {
+    position: relative;
+
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -288,19 +288,8 @@ function handleSubmit() {
     border-color: var(--c-accent);
   }
 
-  .auth-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.25rem;
-  }
-
-  .auth-btn {
-    width: 100%;
+  .auth-btn:first-of-type {
     margin-top: 0.75rem;
-  }
-
-  .auth-btn:hover:not(:disabled) {
-    opacity: 0.85;
   }
 
   .auth-switch {

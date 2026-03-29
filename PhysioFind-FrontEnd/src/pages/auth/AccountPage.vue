@@ -1,52 +1,38 @@
 <script setup lang="ts">
-import AccountEditableCell from '@/components/auth/AccountEditableCell.vue'
-
-type CellInstance = InstanceType<typeof AccountEditableCell>
+import { toDateString } from '@/utils'
 
 const authStore = useAuthStore()
 const googleStore = useGoogleCalendarStore()
-const route = useRoute()
+
 const profile = computed(() => authStore.profile)
 
 const firstName = ref(profile.value?.first_name ?? '')
 const lastName = ref(profile.value?.last_name ?? '')
 const email = ref(profile.value?.email ?? '')
+const dateOfBirth = ref(toDateString(profile.value?.date_of_birth || ''))
 
-const firstNameCell = useTemplateRef<CellInstance>('firstNameCell')
-const lastNameCell = useTemplateRef<CellInstance>('lastNameCell')
-const emailCell = useTemplateRef<CellInstance>('emailCell')
-
-const anyEditing = computed(
+const hasChanges = computed(
   () =>
-    (firstNameCell.value?.isEditing ?? false) ||
-    (lastNameCell.value?.isEditing ?? false) ||
-    (emailCell.value?.isEditing ?? false),
+    firstName.value !== profile.value?.first_name ||
+    lastName.value !== profile.value?.last_name ||
+    email.value !== profile.value?.email ||
+    dateOfBirth.value !== toDateString(profile.value?.date_of_birth || ''),
 )
 
-const editsMade = computed(
-  () =>
-    (firstNameCell.value?.hasChanges ?? false) ||
-    (lastNameCell.value?.hasChanges ?? false) ||
-    (emailCell.value?.hasChanges ?? false),
-)
+// const googleStatus = computed(() => route.query.google as string | undefined)
 
 async function updateAccount() {
   await authStore.updateProfile({
     first_name: firstName.value,
     last_name: lastName.value,
     email: email.value,
+    date_of_birth: dateOfBirth.value ? toDateString(dateOfBirth.value) : undefined,
   })
 }
 
 async function signOut() {
   await authStore.signOut()
 }
-
-function deleteAccount() {
-  alert('Not implemented yet!')
-}
-
-const googleStatus = computed(() => route.query.google as string | undefined)
 
 onMounted(async () => {
   await googleStore.fetchCalendars()
@@ -58,228 +44,214 @@ watch(
     firstName.value = newProfile?.first_name ?? ''
     lastName.value = newProfile?.last_name ?? ''
     email.value = newProfile?.email ?? ''
+    dateOfBirth.value = newProfile?.date_of_birth ? toDateString(newProfile.date_of_birth) : ''
   },
   { immediate: true },
 )
 </script>
 
 <template>
-  <div id="account" v-if="profile">
-    <h1 class="title">Hi, {{ profile.first_name }}</h1>
-    <section class="account-settings" :key="profile.updated_at">
-      <h2 class="heading">Account Settings</h2>
-      <p class="subheading">
-        Here you can update your account information, change your password, and manage your
-        preferences.
-      </p>
-      <form @submit.prevent="updateAccount">
-        <AccountEditableCell
-          ref="firstNameCell"
-          title="First Name"
-          type="text"
-          v-model="firstName"
-        />
-        <AccountEditableCell ref="lastNameCell" title="Last Name" type="text" v-model="lastName" />
-        <AccountEditableCell ref="emailCell" title="Email" type="email" v-model="email" />
-        <button type="submit" :disabled="!editsMade || anyEditing || authStore.isLoading">
-          {{ authStore.isLoading ? 'Updating...' : 'Update Account' }}
-        </button>
-      </form>
-      <button type="button" class="secondary" @click="signOut">Sign Out</button>
-    </section>
-    <section class="google-calendar">
-      <h2 class="heading">Google Calendar</h2>
-      <p class="subheading">Connect your Google Calendar to automatically create events when you book appointments.</p>
-      <p v-if="googleStatus === 'connected'" class="status-message success">Google Calendar connected successfully.</p>
-      <p v-if="googleStatus === 'error'" class="status-message error">Failed to connect Google Calendar. Please try again.</p>
-      <template v-if="googleStore.isConnected">
-        <select
-          :value="googleStore.selectedCalendarId"
-          @change="googleStore.selectCalendar(($event.target as HTMLSelectElement).value)"
-          :disabled="googleStore.isLoading"
-        >
-          <option value="" disabled>Select a calendar</option>
-          <option v-for="cal in googleStore.calendars" :key="cal.id" :value="cal.id">
-            {{ cal.summary }}{{ cal.primary ? ' (Primary)' : '' }}
-          </option>
-        </select>
-        <button type="button" class="secondary" @click="googleStore.disconnect" :disabled="googleStore.isLoading">
-          Disconnect
-        </button>
-      </template>
-      <button v-else type="button" @click="googleStore.connect" :disabled="googleStore.isLoading">
-        {{ googleStore.isLoading ? 'Connecting...' : 'Connect Google Calendar' }}
-      </button>
-    </section>
-    <section class="danger-zone">
-      <h2 class="heading">Danger Zone</h2>
-      <p class="subheading">This action is irreversible. Please proceed with caution.</p>
-      <button type="button" @click="deleteAccount">Delete Account</button>
-    </section>
-  </div>
+  <main id="account-page" class="content-lanes">
+    <header v-if="profile">
+      <h2 class="title">Hello, {{ profile.first_name }}</h2>
+    </header>
+    <div v-if="profile" class="user-profile">
+      <section id="user-info">
+        <form @submit.prevent="updateAccount" class="profile-form">
+          <h3 class="title">Your Information</h3>
+          <label>
+            <span class="label">First Name</span>
+            <input v-model="firstName" type="text" required />
+          </label>
+          <label>
+            <span class="label">Last Name</span>
+            <input v-model="lastName" type="text" required />
+          </label>
+          <label>
+            <span class="label">Email</span>
+            <input v-model="email" type="email" required />
+          </label>
+          <label>
+            <span class="label">Date of Birth</span>
+            <input v-model.lazy="dateOfBirth" type="date" />
+          </label>
+          <div class="action-row">
+            <button type="submit" class="action-btn bordered" :disabled="!hasChanges">
+              Update Profile
+            </button>
+            <button type="button" class="action-btn bordered secondary" @click="signOut">
+              Sign Out
+            </button>
+          </div>
+        </form>
+      </section>
+      <section id="connections">
+        <h3 class="title">Connected Accounts</h3>
+        <ul class="connections-list">
+          <li class="connection-item">
+            <span class="label">Google Calendar</span>
+            <div class="status-box">
+              <span v-if="googleStore.isConnected" class="indicator connected">Connected</span>
+              <span v-else class="indicator not-connected">Not Connected</span>
+              <button class="connect-btn" @click="googleStore.connect">
+                {{ googleStore.calendars.length > 0 ? 'Manage' : 'Connect' }}
+              </button>
+            </div>
+          </li>
+          <!-- Future connections can be added here -->
+        </ul>
+      </section>
+    </div>
+    <template v-else>
+      <p class="loading">Loading your account...</p>
+    </template>
+  </main>
 </template>
 
-<style scoped>
-#account {
-  align-self: center;
-
-  max-width: var(--g-card-max-width);
-  width: 100%;
-  margin-inline: auto;
-
-  background-color: var(--c-bg-secondary);
-  border: 0.5px solid var(--c-separator);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 2px 2rem hsl(0 0% 0% / 0.08);
-
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-
-  h1 {
-    font-family: var(--f-serif);
-    font-size: 2rem;
-    font-weight: 700;
-
-    text-align: center;
+<style>
+@scope (#account-page) {
+  header {
+    padding-block: calc(5rem + var(--g-navbar-height)) 5rem;
   }
 
-  section {
-    --accent-color: var(--c-accent);
+  .label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--c-secondary);
+  }
 
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+  .user-profile {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5rem 3rem;
 
-    .heading {
-      font-size: 1.125rem;
-      font-weight: 600;
-    }
+    #user-info {
+      .profile-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
 
-    .subheading {
-      font-size: 0.875rem;
-      line-height: 1.4;
-      color: var(--c-text-secondary);
-    }
-
-    &.google-calendar {
-      select {
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-        border: 0.5px solid var(--c-separator);
-        background-color: var(--c-bg);
-        color: var(--c-text);
-        font-size: 0.9375rem;
-        margin-top: 0.25rem;
-      }
-
-      .status-message {
-        font-size: 0.875rem;
-        font-weight: 500;
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.5rem;
-
-        &.success {
-          background-color: oklch(from var(--c-green) l c h / 0.1);
-          color: var(--c-green);
+        label {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
         }
 
-        &.error {
-          background-color: oklch(from var(--c-red) l c h / 0.1);
-          color: var(--c-red);
+        input[type='text'],
+        input[type='email'],
+        input[type='date'] {
+          all: unset;
+
+          height: 2.5rem;
+          padding-inline: 1rem;
+
+          background: var(--c-fill);
+          border: 1px solid var(--c-separator);
+          border-radius: calc(1.25rem + 1px);
+
+          font-size: 1rem;
+          color: var(--c-primary);
+
+          display: flex;
+          align-items: center;
+
+          transition: border-color 0.15s;
+
+          cursor: text;
+        }
+
+        input[type='text']:focus,
+        input[type='email']:focus,
+        input[type='date']:focus {
+          border-color: var(--c-accent);
+        }
+
+        .action-row {
+          margin-block-start: 0.75rem;
+
+          display: flex;
+          gap: 0.75rem;
         }
       }
     }
 
-    &.danger-zone {
-      --accent-color: var(--c-red);
-
-      .heading {
-        color: var(--c-red);
-      }
-
-      .subheading {
-        color: oklch(from var(--c-red) l c h / 0.75);
-      }
-    }
-
-    form {
+    #connections {
       display: flex;
       flex-direction: column;
+      gap: 1.5rem;
 
-      font-size: 0.9375rem;
-
-      label {
+      .connections-list {
         display: flex;
-        gap: 0.5rem;
+        flex-direction: column;
+        gap: 1.5rem;
 
-        font-weight: 500;
-        padding-block: 0.75rem;
+        .connection-item {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
 
-        &:not(:last-of-type) {
-          border-bottom: 0.5px solid var(--c-separator);
-        }
+          .status-box {
+            padding: 0.5rem 1rem;
 
-        input {
-          appearance: none;
-          border: none;
-          flex: 1;
+            background: var(--c-fill);
+            border: 1px solid var(--c-separator);
+            border-radius: calc(1.25rem + 1px);
 
-          color: var(--c-text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+          }
 
-          outline: none;
+          .indicator {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
 
-          font-size: inherit;
-          text-align: end;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
 
-          &:not(:focus),
-          &:disabled {
-            color: var(--c-text-secondary);
+            &::before {
+              content: '';
+              width: 0.5rem;
+              height: 0.5rem;
+              border-radius: 50%;
+              background-color: currentColor;
+            }
+
+            &.connected {
+              color: var(--c-green);
+            }
+
+            &.not-connected {
+              color: var(--c-secondary);
+            }
+          }
+
+          .connect-btn {
+            font-weight: 500;
+            color: var(--c-accent);
+
+            transition: opacity 150ms;
+
+            &:hover {
+              opacity: 0.83;
+            }
           }
         }
       }
     }
+  }
 
-    button {
-      place-content: center;
-      padding: 0.67rem 0.75rem;
-      margin-top: 0.25rem;
+  .loading {
+    place-self: center;
+    padding-block: calc(5rem + var(--g-navbar-height)) 5rem;
 
-      background-color: var(--accent-color);
-      color: var(--c-bg);
-      border-radius: 0.5rem;
-
-      font-size: 0.9375rem;
-      font-weight: 600;
-      text-align: center;
-
-      transition:
-        opacity 150ms ease,
-        scale 150ms ease;
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-
-      &:not(:disabled):hover {
-        opacity: 0.83;
-      }
-
-      &:not(:disabled):active {
-        scale: 0.96;
-      }
-
-      &.secondary {
-        align-self: center;
-        width: fit-content;
-
-        background-color: transparent;
-        color: var(--accent-color);
-        padding: 0.25rem;
-      }
-    }
+    font-size: 1.25rem;
+    line-height: 1.4;
+    text-wrap: balance;
+    color: var(--c-secondary);
   }
 }
 </style>

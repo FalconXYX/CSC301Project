@@ -21,9 +21,13 @@ body {
   main {
     flex: 1;
 
-    &.content-lanes > section {
-      padding-block: 5rem;
-      row-gap: 3rem;
+    &.content-lanes {
+      align-content: start;
+
+      > :is(header, section) {
+        padding-block: 5rem;
+        row-gap: 3rem;
+      }
     }
   }
 }

@@ -49,3 +49,11 @@ export function removeEmptyFields<T extends object, K extends keyof T>(obj: T, k
     ]),
   ) as T
 }
+
+export function toDateString(date: Date | string): string {
+  if (typeof date === 'string') {
+    date = new Date(date)
+  }
+
+  return date.toISOString().slice(0, 10)
+}
