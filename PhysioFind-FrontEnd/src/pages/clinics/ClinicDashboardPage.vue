@@ -28,6 +28,11 @@ const specialtiesArray = computed(() =>
     .filter((s) => s.length > 0),
 )
 
+const servicesInPerson = ref(false)
+const servicesVirtual = ref(false)
+const insurancesList = ref<string[]>([])
+const hoursText = ref('')
+
 const isLoading = ref(false)
 
 async function startEditing() {
@@ -37,8 +42,39 @@ async function startEditing() {
   isEditing.value = true
 }
 
+function unpackServices(clinicData: ClinicRecord | undefined) {
+  let servicesArray: string[] = []
+  try {
+    servicesArray = JSON.parse((clinicData?.services_json as string) || '[]')
+  } catch {
+    // keep empty
+  }
+
+  servicesInPerson.value = servicesArray.includes('in_person')
+  servicesVirtual.value = servicesArray.includes('virtual')
+
+  insurancesList.value = []
+  hoursText.value = ''
+
+  servicesArray.forEach((item: string) => {
+    if (item.startsWith('insurance:')) {
+      insurancesList.value.push(item.replace('insurance:', ''))
+    } else if (item.startsWith('hours:')) {
+      hoursText.value = item.replace('hours:', '')
+    }
+  })
+}
+
 function cancelEditing() {
-  clinic.value = clinicBackup.value
+  if (clinicBackup.value != null) {
+    clinic.value = { ...clinicBackup.value }
+  }
+
+  specialtiesString.value = JSON.parse(
+    (clinicBackup.value?.specialties_json as string) || '[]',
+  ).join(', ')
+
+  unpackServices(clinicBackup.value)
   isEditing.value = false
 }
 
@@ -47,13 +83,21 @@ async function submitChanges() {
   isLoading.value = true
   isEditing.value = false
 
+  const services: string[] = []
+  if (servicesInPerson.value) services.push('in_person')
+  if (servicesVirtual.value) services.push('virtual')
+  if (hoursText.value) services.push(`hours:${hoursText.value}`)
+  insurancesList.value.forEach((ins) => services.push(`insurance:${ins}`))
+
   // Update clinic details via API
   const updatedClinic = await API.updateClinic(clinic.value.id, {
     ...clinic.value,
     specialties_json: JSON.stringify(specialtiesArray.value),
+    services_json: JSON.stringify(services),
     updated_at: new Date().toISOString(),
   })
   clinic.value = updatedClinic
+  clinicBackup.value = { ...updatedClinic }
 
   isLoading.value = false
 }
@@ -70,9 +114,13 @@ watch(
   async (newClinicId) => {
     if (newClinicId) {
       try {
-        clinic.value = await API.getClinic(newClinicId)
-        specialtiesString.value = JSON.parse(clinic.value.specialties_json as string).join(', ')
-        clinicBackup.value = { ...clinic.value }
+        const fetchedClinic = await API.getClinic(newClinicId)
+        clinic.value = fetchedClinic
+        specialtiesString.value = JSON.parse(fetchedClinic.specialties_json as string).join(', ')
+        clinicBackup.value = { ...fetchedClinic }
+
+        // Unpack services JSON
+        unpackServices(fetchedClinic)
       } catch (error) {
         console.error(error)
       }
@@ -177,6 +225,65 @@ watch(
           v-model="clinic.offers_direct_billing"
           :disabled
         />
+        <ClinicDashboardField
+          id="clinic--services-in-person"
+          label="In-Person Appointments"
+          type="checkbox"
+          v-model="servicesInPerson"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--services-virtual"
+          label="Virtual Appointments"
+          type="checkbox"
+          v-model="servicesVirtual"
+          :disabled
+        />
+
+        <h4>Extended Details</h4>
+        <ClinicDashboardField id="clinic--insurances" label="Insurances Accepted" :disabled="false">
+          <div style="display: flex; flex-direction: column; text-align: right; gap: 0.5rem">
+            <label
+              v-for="ins in ['Sun Life', 'Manulife', 'Canada Life', 'Blue Cross', 'Green Shield']"
+              :key="ins"
+              style="justify-content: flex-end; gap: 0.5rem; cursor: pointer"
+            >
+              <span>{{ ins }}</span>
+              <input
+                type="checkbox"
+                :value="ins"
+                v-model="insurancesList"
+                :disabled="disabled"
+                style="width: 1.125rem; height: 1.125rem; margin: 0.25rem 0"
+              />
+            </label>
+          </div>
+        </ClinicDashboardField>
+
+        <ClinicDashboardField
+          id="clinic--hours"
+          label="Opening Hours"
+          :disabled="false"
+          style="align-items: flex-start"
+        >
+          <textarea
+            style="
+              width: 50%;
+              min-height: 80px;
+              text-align: right;
+              padding: 0.5rem;
+              background: var(--c-bg);
+              border-radius: 0.25rem;
+              border: none;
+              color: var(--c-text-secondary);
+              resize: vertical;
+              margin-top: 0;
+            "
+            v-model="hoursText"
+            :disabled="disabled"
+            placeholder="e.g. Mon-Fri: 9am - 5pm"
+          ></textarea>
+        </ClinicDashboardField>
       </section>
       <footer>
         <p class="last-updated">Last updated: {{ formattedDate(clinic.updated_at) }}</p>

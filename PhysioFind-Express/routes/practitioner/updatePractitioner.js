@@ -10,7 +10,7 @@ router.put("/:id", async function (req, res, next) {
   try {
     const practitionerId = req.params.id;
     if (req.body.clinicId != null) {
-        throw new Error("Body contains unupdatable fields: clinicId")
+      throw new Error("Body contains unupdatable fields: clinicId");
     }
     const practitioner = await prisma.practitioners.update({
       where: { id: practitionerId },

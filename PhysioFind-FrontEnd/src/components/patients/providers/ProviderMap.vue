@@ -41,12 +41,14 @@ onMounted(async () => {
         title: clinic.name,
       })
 
+      const loclat = clinic.location.lat
+      const loclng = clinic.location.lng
       marker.addListener('gmp-click', () => {
         infoWindow.setContent(`
           <div class="map-info-window">
             <strong>${clinic.name}</strong>
             <p>${clinic.address.line1}</p>
-            <a href="${clinic.type === 'google-maps' ? clinic.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${clinic?.location?.lat},${clinic?.location?.lng}`}" target="_blank" rel="noopener">View on Google Maps</a>
+            <a href="${clinic.type === 'google-maps' ? clinic.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${loclat},${loclng}`}" target="_blank" rel="noopener">View on Google Maps</a>
           </div>
         `)
         infoWindow.open({ map, anchor: marker })

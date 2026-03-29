@@ -20,6 +20,10 @@ const form = reactive({
   email: '',
   website: '',
   offers_direct_billing: false,
+  services_in_person: true,
+  services_virtual: false,
+  insurances: [] as string[],
+  hours_text: '',
 })
 
 const touched = reactive({
@@ -108,6 +112,10 @@ function resetForm() {
   form.email = ''
   form.website = ''
   form.offers_direct_billing = false
+  form.services_in_person = true
+  form.services_virtual = false
+  form.insurances = []
+  form.hours_text = ''
 
   for (const field of Object.keys(touched) as Array<keyof typeof touched>) {
     touched[field] = false
@@ -131,6 +139,27 @@ async function createClinic() {
   isSubmitting.value = true
 
   try {
+    const services = []
+    if (form.services_in_person) services.push('in_person')
+    if (form.services_virtual) services.push('virtual')
+    if (form.hours_text.trim()) services.push(`hours:${form.hours_text.trim()}`)
+    form.insurances.forEach((ins) => services.push(`insurance:${ins}`))
+
+    let latitude = undefined
+    let longitude = undefined
+
+    try {
+      const location = await useGoogleMaps().geocodePostalCode(
+        normalizePostalCode(form.postal_code),
+      )
+      if (location) {
+        latitude = location.lat
+        longitude = location.lng
+      }
+    } catch (geocodeError) {
+      console.warn('Failed to geocode postal code during clinic creation:', geocodeError)
+    }
+
     const clinic = await API.createClinic({
       name: form.name.trim(),
       address_line1: form.address_line1.trim(),
@@ -138,10 +167,13 @@ async function createClinic() {
       city: form.city.trim(),
       province: normalizeProvinceCode(form.province),
       postal_code: normalizePostalCode(form.postal_code),
+      latitude,
+      longitude,
       phone: normalizeOptional(form.phone),
       email: normalizeOptional(form.email),
       website: normalizeOptional(form.website),
       offers_direct_billing: form.offers_direct_billing,
+      services_json: services,
     })
 
     await authStore.updateProfile({
@@ -327,6 +359,58 @@ async function createClinic() {
         <label class="checkbox-field">
           <input v-model="form.offers_direct_billing" type="checkbox" />
           <span>Offers direct billing</span>
+        </label>
+
+        <fieldset
+          class="field-group"
+          style="
+            padding: 1rem;
+            border: 1px solid var(--c-separator);
+            border-radius: 8px;
+            margin-top: 1rem;
+          "
+        >
+          <legend>Appointment Types</legend>
+          <label class="checkbox-field" style="margin-bottom: 0.5rem">
+            <input v-model="form.services_in_person" type="checkbox" />
+            <span>In-Person</span>
+          </label>
+          <label class="checkbox-field">
+            <input v-model="form.services_virtual" type="checkbox" />
+            <span>Virtual</span>
+          </label>
+        </fieldset>
+
+        <label class="input-field" style="margin-top: 1rem">
+          <span>Insurances Accepted (Check all that apply)</span>
+          <div
+            class="checkbox-group"
+            style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem"
+          >
+            <label
+              class="checkbox-field"
+              v-for="ins in ['Sun Life', 'Manulife', 'Canada Life', 'Blue Cross', 'Green Shield']"
+              :key="ins"
+            >
+              <input type="checkbox" :value="ins" v-model="form.insurances" />
+              <span>{{ ins }}</span>
+            </label>
+          </div>
+        </label>
+
+        <label class="input-field" style="margin-top: 1rem; margin-bottom: 1.5rem">
+          <span>Opening Hours (optional)</span>
+          <textarea
+            v-model="form.hours_text"
+            placeholder="e.g. Mon-Fri: 9am - 5pm"
+            rows="3"
+            style="
+              resize: vertical;
+              padding: 0.5rem;
+              border: 1px solid var(--c-separator);
+              border-radius: 4px;
+            "
+          ></textarea>
         </label>
 
         <button type="submit" :disabled="isSubmitting || !isFormValid">

@@ -16,7 +16,7 @@ withDefaults(
   },
 )
 
-const model = defineModel<string | boolean | null>({ required: true })
+const model = defineModel<string | boolean | null>({ required: false })
 </script>
 
 <template>

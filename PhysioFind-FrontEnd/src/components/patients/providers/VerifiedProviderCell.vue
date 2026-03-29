@@ -42,8 +42,27 @@ function hideTooltip() {
     <p class="provider-address">
       <span v-for="line in addressLines.slice(0, 2)" :key="line">{{ line }}</span>
     </p>
-    <div class="services">
-      <span v-for="service in provider.services" :key="service" class="service">{{ service }}</span>
+    <p
+      v-if="provider.hours"
+      class="provider-hours"
+      style="font-size: 0.85rem; color: var(--c-text-2); margin-top: 0.25rem"
+    >
+      🕒 {{ provider.hours }}
+    </p>
+    <div class="bottom-row">
+      <div class="services">
+        <span v-for="service in provider.services" :key="service" class="service">{{
+          service
+        }}</span>
+        <span
+          v-for="ins in provider.insurances"
+          :key="'ins-' + ins"
+          class="service"
+          style="background: var(--c-surface-1); border-color: var(--c-blue); color: var(--c-blue)"
+          >{{ ins }}</span
+        >
+      </div>
+      <button class="details-btn" @click="$emit('showDetails', provider)">See Details</button>
     </div>
   </button>
 </template>
