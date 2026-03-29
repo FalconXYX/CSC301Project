@@ -75,7 +75,7 @@ import { problems } from '@/data/static/about-page.json'
 
     .logo {
       height: 120%;
-      animation: pulse 4s ease 500ms infinite;
+      animation: pulse 3s ease 500ms infinite;
     }
   }
 
@@ -155,11 +155,11 @@ import { problems } from '@/data/static/about-page.json'
 
   @keyframes pulse {
     0%,
-    100% {
+    30% {
       transform: scale(1);
       opacity: 1;
     }
-    50% {
+    15% {
       transform: scale(1.08);
       opacity: 0.7;
     }

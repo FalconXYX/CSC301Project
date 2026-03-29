@@ -18,7 +18,7 @@ function onSignIn() {
 <template>
   <main id="auth">
     <div class="splash-wrapper">
-      <img src="/images/auth-splash.jpg" alt="Welcome to PhysioFind" class="splash-image" />
+      <img src="/images/auth-splash.jpg" alt="Welcome to PhysioFind" class="splash-image" preload />
     </div>
     <AuthView @sign-in="onSignIn" :mode :role id="auth-view" />
     <RouterLink :to="redirect || '/'" class="back-btn bordered secondary">Go Back</RouterLink>
