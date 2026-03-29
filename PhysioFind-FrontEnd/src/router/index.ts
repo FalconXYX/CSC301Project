@@ -129,7 +129,7 @@ router.beforeEach(async (to, from, next) => {
       next()
     }
   } else if (to.path === '/auth' && isAuthenticated) {
-    next('/')
+    next({ path: '/' })
   } else {
     next()
   }

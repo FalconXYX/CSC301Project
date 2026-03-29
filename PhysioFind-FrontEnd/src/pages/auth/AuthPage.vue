@@ -21,15 +21,18 @@ function onSignIn() {
       <img src="/images/auth-splash.jpg" alt="Welcome to PhysioFind" class="splash-image" />
     </div>
     <AuthView @sign-in="onSignIn" :mode :role id="auth-view" />
+    <RouterLink :to="redirect || '/'" class="back-btn bordered secondary">Go Back</RouterLink>
   </main>
 </template>
 
 <style>
 #auth {
+  position: relative;
+  height: 100dvh;
+
   display: grid;
   grid-template-columns: auto minmax(calc(var(--g-card-max-width) + 6rem), 1fr);
   align-items: center;
-  height: 100dvh;
 
   .splash-wrapper {
     position: relative;
@@ -61,6 +64,14 @@ function onSignIn() {
   #auth-view {
     padding: 3rem;
     max-width: 100%;
+  }
+
+  .back-btn {
+    position: absolute;
+    inset-block-start: 1.5rem;
+    inset-inline-start: 1.5rem;
+
+    z-index: 3;
   }
 }
 </style>
