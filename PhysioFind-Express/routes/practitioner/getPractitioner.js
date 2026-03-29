@@ -11,7 +11,7 @@ router.get("/:id", async function (req, res, next) {
     
     const practitionerId = req.params.id;
 
-    const practitioner = await prisma.practitioners.findFirst({ where: { id: practitionerId } });
+    const practitioner = await prisma.practitioners.findFirst({ where: { id: practitionerId }, include: { user: {select: { first_name: true, last_name: true } } } });
 
     res.json({ message: "Get practitioner by ID", practitionerId: practitionerId,  practitioner: practitioner });
   } catch (error) {

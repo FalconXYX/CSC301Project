@@ -1,5 +1,5 @@
 import * as API from '@/api'
-import type { AppointmentRequest } from '@/types/appointments'
+import type { AppointmentRequest, Busy } from '@/types/appointments'
 
 export const useAppointmentStore = defineStore('appointments', () => {
   const isFetching = ref(false)
@@ -10,6 +10,8 @@ export const useAppointmentStore = defineStore('appointments', () => {
   const appointments = ref<AppointmentRequest[]>([])
   const appointment = ref<AppointmentRequest | null>(null)
   const appointmentId = ref<string | null>(null)
+  const freeBusy = ref<Busy[] | null>(null)
+  const querried = ref(true)
 
   async function fetchAppointments() {
     isFetching.value = true
@@ -36,11 +38,23 @@ export const useAppointmentStore = defineStore('appointments', () => {
     isFetching.value = false
   }
 
-  async function createAppointment(clinicId: string, practitionerId: string, startTime: string, endTime: string, status: string) {
+  async function fetchFreeBusy(practitionerId: string, dateStart: string, dateEnd: string, excludeId?: string) {
+    isFetching.value = true
+    try {
+      freeBusy.value = await API.getFreeBusy(practitionerId, dateStart, dateEnd, excludeId)
+      querried.value = true
+    } catch {
+      freeBusy.value = null
+      querried.value = false
+    }
+    isFetching.value = false
+  }
+
+  async function createAppointment(clinicId: string, practitionerId: string, startTime: string, endTime: string, status: string, meetingType?: string) {
     isLoading.value = true
 
     try {
-      appointment.value = await API.createAppointment(clinicId, practitionerId, startTime, endTime, status)
+      appointment.value = await API.createAppointment(clinicId, practitionerId, startTime, endTime, status, meetingType)
     } catch {
 
     } finally {
@@ -60,13 +74,15 @@ export const useAppointmentStore = defineStore('appointments', () => {
     }
   }
 
-  async function deleteAppointment(appointmentId: string) {
+  async function deleteAppointment(appointmentId: string): Promise<boolean> {
     isDeleting.value = true
 
     try {
-      appointmentId = await API.deleteAppointment(appointmentId)
+      await API.deleteAppointment(appointmentId)
+      appointments.value = appointments.value.filter(a => a.id !== appointmentId)
+      return true
     } catch {
-
+      return false
     } finally {
       isDeleting.value = false
     }
@@ -81,8 +97,11 @@ export const useAppointmentStore = defineStore('appointments', () => {
     appointments,
     appointment,
     appointmentId,
+    freeBusy,
+    querried,
     fetchAppointments,
     fetchAppointmentById,
+    fetchFreeBusy,
     createAppointment,
     updateAppointment,
     deleteAppointment,

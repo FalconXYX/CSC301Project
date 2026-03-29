@@ -18,6 +18,7 @@ import ClinicsValuePage from '@/pages/clinics/ClinicsValuePage.vue'
 
 import ErrorPage from '@/pages/error/ErrorPage.vue'
 import UserAppointmentsPage from '@/pages/appointments/UserAppointmentsPage.vue'
+import BookingPage from '@/pages/appointments/BookingPage.vue'
 
 const AUTH_ROLES = ['admin', 'clinic', 'patient', 'any'] as const
 
@@ -62,6 +63,11 @@ const router = createRouter({
           path: 'appointments',
           component: UserAppointmentsPage,
           meta: { auth: 'any' },
+        },
+        {
+          path: 'booking',
+          name: 'booking',
+          component: BookingPage
         },
         // Clinics
         {
