@@ -1,8 +1,6 @@
 <template>
   <GlobalNav />
-  <main class="content-lanes">
-    <RouterView />
-  </main>
+  <RouterView />
   <GlobalFooter />
 </template>
 
@@ -10,7 +8,6 @@
 html,
 body {
   max-width: 100dvw;
-  overflow-x: hidden;
 }
 
 #app {
@@ -20,15 +17,18 @@ body {
   width: 100%;
 }
 
-main {
-  flex: 1;
+@layer layout {
+  main {
+    flex: 1;
 
-  > :first-child {
-    margin-top: var(--g-navbar-height);
+    &.content-lanes {
+      align-content: start;
+
+      > :is(header, section) {
+        padding-block: 5rem;
+        row-gap: 3rem;
+      }
+    }
   }
-
-  /* > :last-child {
-    padding-bottom: var(--g-footer-height);
-  } */
 }
 </style>

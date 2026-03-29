@@ -2,10 +2,20 @@
 import PhysioFindLogo from '@/assets/physiofind.svg?component'
 
 const authStore = useAuthStore()
+
+const scrolled = ref(false)
+
+const handleScroll = () => {
+  scrolled.value = window.scrollY > 24
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
-  <div id="global-nav" class="content-lanes">
+  <div id="global-nav" class="content-lanes" :class="{ scrolled }">
     <nav>
       <RouterLink to="/" class="home-btn">
         <PhysioFindLogo class="icon" />
@@ -38,10 +48,16 @@ const authStore = useAuthStore()
   height: var(--g-navbar-height);
   align-content: center;
 
-  background-color: oklch(from var(--c-bg) l c h / 0.92);
-  backdrop-filter: blur(0.375rem);
-
   z-index: 10;
+
+  transition:
+    background-color 300ms ease,
+    backdrop-filter 300ms ease;
+
+  &.scrolled {
+    background: oklch(from var(--c-bg) l c h / 0.92);
+    backdrop-filter: blur(0.375rem);
+  }
 
   nav {
     max-width: var(--g-max-width);

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(
-  defineProps<{ popover?: boolean; mode?: 'signIn' | 'signUp'; role?: 'patient' | 'clinic' }>(),
+  defineProps<{ mode?: 'signIn' | 'signUp'; role?: 'patient' | 'clinic' }>(),
   {
-    popover: false,
     mode: 'signIn',
     role: 'patient',
   },
@@ -12,8 +11,7 @@ const emit = defineEmits<{ signIn: [] }>()
 
 const authStore = useAuthStore()
 
-// Import the Privacy Policy page so it can be rendered inside a modal
-import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage.vue'
+import PrivacyPolicyView from '@/components/info/PrivacyPolicyView.vue'
 
 // State
 
@@ -127,107 +125,7 @@ function handleSubmit() {
 </script>
 
 <template>
-  <!-- Modal overlay for Privacy Policy -->
-  <div id="privacy-popover" popover="auto" ref="privacy-policy">
-    <button class="close-btn" popovertarget="privacy-popover" popovertargetaction="hide">
-      &times;
-    </button>
-    <PrivacyPolicyPage class="privacy-page" />
-  </div>
-
-  <div v-if="popover" class="auth-overlay">
-    <div class="auth-card">
-      <h2>
-        {{ mode === 'signIn' ? 'Sign In' : 'Sign Up' }}
-      </h2>
-
-      <p v-if="errorMessage" class="auth-error">{{ errorMessage }}</p>
-
-      <form @submit.prevent="handleSubmit" class="auth-form">
-        <!-- Step 1: credentials (always visible) -->
-        <template v-if="mode === 'signIn' || step === 1">
-          <label>
-            Email
-            <input
-              v-model="email"
-              type="email"
-              class="field"
-              placeholder="you@example.com"
-              required
-            />
-          </label>
-          <label>
-            Password
-            <input
-              v-model="password"
-              type="password"
-              class="field"
-              placeholder="••••••••"
-              required
-            />
-          </label>
-
-          <label v-if="mode === 'signUp'" class="privacy-checkbox">
-            <input v-model="acceptPolicy" type="checkbox" required />
-            <span>
-              I accept the
-              <button type="button" class="privacy-link link" popovertarget="privacy-popover">
-                Privacy Policy
-              </button>
-            </span>
-          </label>
-        </template>
-
-        <!-- Step 2: profile info (sign-up only) -->
-        <template v-if="mode === 'signUp' && step === 2">
-          <label>
-            First Name
-            <input v-model="firstName" type="text" class="field" placeholder="Jane" required />
-          </label>
-          <label>
-            Last Name
-            <input v-model="lastName" type="text" class="field" placeholder="Doe" required />
-          </label>
-          <label>
-            Phone Number
-            <input v-model="phone" type="tel" class="field" placeholder="(416) 555-0123" />
-          </label>
-          <label>
-            Date of Birth
-            <input v-model="dateOfBirth" type="date" class="field" />
-          </label>
-        </template>
-
-        <div class="auth-actions">
-          <button
-            v-if="mode === 'signUp' && step === 2"
-            type="button"
-            class="auth-btn secondary"
-            @click="step = 1"
-          >
-            Back
-          </button>
-          <button type="submit" class="auth-btn primary" :disabled="authStore.isLoading">
-            <template v-if="authStore.isLoading">Loading…</template>
-            <template v-else-if="mode === 'signIn'">Sign In</template>
-            <template v-else-if="step === 1">Continue</template>
-            <template v-else>Sign Up</template>
-          </button>
-        </div>
-      </form>
-
-      <p class="auth-switch" v-if="role !== 'clinic'">
-        <template v-if="mode === 'signIn'">
-          Don't have an account? <button class="link" @click="switchMode">Sign Up</button>
-        </template>
-        <template v-else>
-          Already have an account? <button class="link" @click="switchMode">Sign In</button>
-        </template>
-      </p>
-    </div>
-  </div>
-
-  <div v-else id="auth-view" popover="auto" class="auth-card">
+  <div id="auth-view">
     <h2>
       {{ mode === 'signIn' ? 'Sign In' : 'Sign Up' }}
       <i v-if="mode === 'signUp' && role === 'clinic'">as Clinic</i>
@@ -265,209 +163,170 @@ function handleSubmit() {
 
       <template v-if="mode === 'signUp' && step === 2">
         <label>
-          First Name
+          <span class="label">First Name</span>
           <input v-model="firstName" type="text" class="field" placeholder="Jane" required />
         </label>
         <label>
-          Last Name
+          <span class="label">Last Name</span>
           <input v-model="lastName" type="text" class="field" placeholder="Doe" required />
         </label>
         <label>
-          Phone Number
-          <input v-model="phone" type="tel" class="field" placeholder="(416) 555-0123" />
+          <span class="label">Date of Birth</span>
+          <input v-model="dateOfBirth" type="date" class="field" required />
         </label>
         <label>
-          Date of Birth
-          <input v-model="dateOfBirth" type="date" class="field" />
+          <span class="label">Phone Number</span>
+          <input v-model="phone" type="tel" class="field" placeholder="(416) 555-0123" />
         </label>
       </template>
 
-      <div class="auth-actions">
-        <button
-          v-if="mode === 'signUp' && step === 2"
-          type="button"
-          class="auth-btn secondary"
-          @click="step = 1"
-        >
-          Back
-        </button>
-        <button type="submit" class="auth-btn primary" :disabled="authStore.isLoading">
-          <template v-if="authStore.isLoading">Loading…</template>
-          <template v-else-if="mode === 'signIn'">Sign In</template>
-          <template v-else-if="step === 1">Continue</template>
-          <template v-else>Sign Up</template>
-        </button>
-      </div>
+      <button
+        v-if="mode === 'signUp' && step === 2"
+        type="button"
+        class="auth-btn bordered secondary"
+        @click="step = 1"
+      >
+        Back
+      </button>
+      <button type="submit" class="auth-btn bordered" :disabled="authStore.isLoading">
+        <template v-if="authStore.isLoading">Loading…</template>
+        <template v-else-if="mode === 'signIn'">Sign In</template>
+        <template v-else-if="step === 1">Continue</template>
+        <template v-else>Sign Up</template>
+      </button>
     </form>
 
     <p class="auth-switch" v-if="role !== 'clinic'">
       <template v-if="mode === 'signIn'">
         Don't have an account? <button class="link" @click="switchMode">Sign Up</button>
       </template>
-      <template v-else>
+      <template v-else-if="step === 1">
         Already have an account? <button class="link" @click="switchMode">Sign In</button>
       </template>
     </p>
   </div>
+
+  <div id="privacy-popover" popover="auto" ref="privacy-policy">
+    <button class="close-btn" popovertarget="privacy-popover" popovertargetaction="hide">
+      &times;
+    </button>
+    <PrivacyPolicyView class="privacy-page" />
+  </div>
 </template>
 
 <style scoped>
-.auth-overlay {
-  position: fixed;
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: oklch(0% 0 0 / 0.42);
-  backdrop-filter: blur(0.25rem);
-  z-index: 100;
-}
-
-.auth-card {
-  max-width: var(--g-card-max-width);
-  width: 100%;
-
-  background-color: var(--c-bg-secondary);
-  border: 0.5px solid var(--c-separator);
-  border-radius: 1.5rem;
-  box-shadow: 0 2px 2rem hsl(0 0% 0% / 0.08);
-  padding: 2rem;
-
+#auth-view {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-}
+  gap: 1rem;
 
-/* Popover centering */
-#auth-view[popover] {
-  margin: auto;
-}
+  h2 {
+    margin-bottom: 0.75rem;
+    font:
+      700 2rem/0.9 'Expose',
+      sans-serif;
 
-h2 {
-  font-family: var(--f-serif);
-  font-size: 1.5rem;
+    i {
+      font: italic 0.75em/1 var(--f-body);
+      color: var(--c-text-secondary);
+    }
+  }
 
-  i {
-    font: italic 0.75em/1 var(--f-body);
+  .auth-error {
+    background: oklch(55% 0.2 25 / 0.15);
+    color: oklch(55% 0.2 25);
+    border-radius: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  .auth-form {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--c-text-secondary);
+
+    &:has(input[required]) {
+      .label::after {
+        content: '*';
+        position: relative;
+        top: 0.1em;
+        margin-left: 0.1rem;
+
+        color: var(--c-red);
+        font-size: 1.25em;
+        line-height: 0;
+      }
+    }
+  }
+
+  .field {
+    all: unset;
+    background: var(--c-fill);
+    border: 1px solid var(--c-separator);
+    border-radius: 100px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: var(--c-text);
+    font-family: var(--f-body);
+    transition: border-color 0.15s;
+    cursor: text;
+  }
+
+  .field:focus {
+    border-color: var(--c-accent);
+  }
+
+  .auth-btn:first-of-type {
+    margin-top: 0.75rem;
+  }
+
+  .auth-switch {
+    font-size: 0.875rem;
+    color: var(--c-text-secondary);
+    text-align: center;
+  }
+
+  .link {
+    all: unset;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    color: var(--c-text);
+    font-weight: 500;
+  }
+
+  .privacy-checkbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
     color: var(--c-text-secondary);
   }
-}
 
-.auth-error {
-  background: oklch(55% 0.2 25 / 0.15);
-  color: oklch(55% 0.2 25);
-  border-radius: 0.5rem;
-  padding: 0.625rem 0.75rem;
-  font-size: 0.8125rem;
-  line-height: 1.4;
-}
+  .privacy-checkbox input[type='checkbox'] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--c-accent);
+  }
 
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.875rem;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--c-text-secondary);
-}
-
-.field {
-  all: unset;
-  background: var(--c-fill);
-  border: 1px solid var(--c-separator);
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  color: var(--c-text);
-  font-family: var(--f-body);
-  transition: border-color 0.15s;
-}
-
-.field:focus {
-  border-color: var(--c-accent);
-}
-
-.auth-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-}
-
-.auth-btn {
-  all: unset;
-  cursor: pointer;
-  user-select: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-align: center;
-  transition: opacity 0.15s;
-  flex: 1;
-}
-
-.auth-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.auth-btn.primary {
-  background: var(--c-accent);
-  color: var(--c-bg);
-}
-
-.auth-btn.secondary {
-  background: var(--c-fill);
-  border: 1px solid var(--c-separator);
-  color: var(--c-text);
-}
-
-.auth-btn:hover:not(:disabled) {
-  opacity: 0.85;
-}
-
-.auth-switch {
-  font-size: 0.8125rem;
-  color: var(--c-text-secondary);
-  text-align: center;
-}
-
-.link {
-  all: unset;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  color: var(--c-text);
-  font-weight: 500;
-}
-
-.privacy-checkbox {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8125rem;
-  color: var(--c-text-secondary);
-}
-
-.privacy-checkbox input[type='checkbox'] {
-  width: 1rem;
-  height: 1rem;
-  accent-color: var(--c-accent);
-}
-
-.privacy-link {
-  color: var(--c-text);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  .privacy-link {
+    color: var(--c-text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 }
 
 /* Modal styles for privacy policy */

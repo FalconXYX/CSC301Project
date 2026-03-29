@@ -14,13 +14,17 @@ function onFormSubmit(answers: QuestionnaireAnswers) {
 </script>
 
 <template>
-  <section id="questionnaire">
-    <FindProviderForm :questions="questions" @submit="onFormSubmit" />
-  </section>
+  <main class="content-lanes">
+    <section id="questionnaire">
+      <FindProviderForm :questions="questions" @submit="onFormSubmit" />
+    </section>
+  </main>
 </template>
 
 <style scoped>
 #questionnaire {
+  padding-top: var(--g-navbar-height);
+
   display: grid;
   place-items: stretch;
 }

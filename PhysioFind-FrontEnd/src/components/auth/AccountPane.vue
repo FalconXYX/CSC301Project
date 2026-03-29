@@ -50,9 +50,9 @@ watch(
           <RouterLink v-else to="/clinic/create" class="link-cell"> Create Clinic </RouterLink>
         </div>
         <div class="group-cell">
-          <RouterLink to="/account" class="link-cell">My Account</RouterLink>
           <RouterLink to="/appointments" class="link-cell">My Appointments</RouterLink>
-          <button class="link-cell danger" @click="auth.signOut">Logout</button>
+          <RouterLink to="/account" class="link-cell">My Account</RouterLink>
+          <button class="link-cell danger" @click="auth.signOut">Sign Out</button>
         </div>
       </template>
       <template v-else>
@@ -62,9 +62,9 @@ watch(
         </div>
         <div class="group-cell">
           <p class="group-cell--title">Are you a clinic?</p>
-          <RouterLink to="/auth?mode=sign-up&role=clinic" class="link-cell"
-            >Register Clinic</RouterLink
-          >
+          <RouterLink to="/auth?mode=sign-up&role=clinic" class="link-cell">
+            Register Clinic
+          </RouterLink>
         </div>
       </template>
     </div>

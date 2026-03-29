@@ -42,10 +42,10 @@ async function startEditing() {
   isEditing.value = true
 }
 
-function unpackServices(clinicData: any) {
+function unpackServices(clinicData: ClinicRecord | undefined) {
   let servicesArray: string[] = []
   try {
-    servicesArray = JSON.parse(clinicData?.services_json || '[]')
+    servicesArray = JSON.parse((clinicData?.services_json as string) || '[]')
   } catch {
     // keep empty
   }
@@ -66,10 +66,14 @@ function unpackServices(clinicData: any) {
 }
 
 function cancelEditing() {
-  clinic.value = { ...clinicBackup.value } as any
+  if (clinicBackup.value != null) {
+    clinic.value = { ...clinicBackup.value }
+  }
+
   specialtiesString.value = JSON.parse(
     (clinicBackup.value?.specialties_json as string) || '[]',
   ).join(', ')
+
   unpackServices(clinicBackup.value)
   isEditing.value = false
 }
@@ -127,169 +131,171 @@ watch(
 </script>
 
 <template>
-  <form id="clinic-dashboard" v-if="clinic" @submit.prevent="submitChanges">
-    <header>
-      <h1 class="title">Your Clinic</h1>
-      <div class="actions">
-        <button v-if="isEditing" type="button" @click="cancelEditing" class="edit-btn secondary">
-          Cancel
-        </button>
-        <button v-if="isEditing" type="submit" class="edit-btn active" :disabled="isLoading">
-          Save
-        </button>
-        <button v-else type="button" @click="startEditing" class="edit-btn">Edit</button>
-      </div>
-    </header>
-    <section class="clinic-info">
-      <h2>Profile</h2>
-
-      <ClinicDashboardField id="clinic--name" label="Name" v-model="clinic.name" :disabled />
-      <ClinicDashboardField
-        id="clinic--email"
-        label="Email"
-        type="email"
-        v-model="clinic.email"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--phone"
-        label="Phone Number"
-        type="tel"
-        v-model="clinic.phone"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--website"
-        label="Website"
-        type="url"
-        v-model="clinic.website"
-        :disabled
-      />
-
-      <h3>Location</h3>
-      <ClinicDashboardField
-        id="clinic--address-line1"
-        label="Address Line 1"
-        v-model="clinic.address_line1"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--address-line2"
-        label="Address Line 2"
-        v-model="clinic.address_line2"
-        :disabled
-      />
-      <ClinicDashboardField id="clinic--city" label="City" v-model="clinic.city" :disabled />
-      <ClinicDashboardField
-        id="clinic--province"
-        label="Province"
-        v-model="clinic.province"
-        :disabled
-      />
-
-      <h3>Additional Information</h3>
-      <ClinicDashboardField
-        id="clinic--specialties"
-        label="Specialties"
-        v-model="specialtiesString"
-        :disabled
-      />
-    </section>
-    <section class="clinic-bookings">
-      <h2>Booking & Billing</h2>
-
-      <ClinicDashboardField
-        id="clinic--booking-provider"
-        label="Booking Provider"
-        v-model="clinic.booking_provider"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--booking-link"
-        label="Booking URL"
-        type="url"
-        v-model="clinic.booking_url"
-        :disabled
-      />
-
-      <h3>Offerings</h3>
-      <ClinicDashboardField
-        id="clinic--direct-billing"
-        label="Offer Direct Billing"
-        type="checkbox"
-        v-model="clinic.offers_direct_billing"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--services-in-person"
-        label="In-Person Appointments"
-        type="checkbox"
-        v-model="servicesInPerson"
-        :disabled
-      />
-      <ClinicDashboardField
-        id="clinic--services-virtual"
-        label="Virtual Appointments"
-        type="checkbox"
-        v-model="servicesVirtual"
-        :disabled
-      />
-
-      <h3 style="margin-top: 1.5rem">Extended Details</h3>
-      <ClinicDashboardField id="clinic--insurances" label="Insurances Accepted" :disabled="false">
-        <div style="display: flex; flex-direction: column; text-align: right; gap: 0.5rem">
-          <label
-            v-for="ins in ['Sun Life', 'Manulife', 'Canada Life', 'Blue Cross', 'Green Shield']"
-            :key="ins"
-            style="justify-content: flex-end; gap: 0.5rem; cursor: pointer"
-          >
-            <span>{{ ins }}</span>
-            <input
-              type="checkbox"
-              :value="ins"
-              v-model="insurancesList"
-              :disabled="disabled"
-              style="width: 1.125rem; height: 1.125rem; margin: 0.25rem 0"
-            />
-          </label>
+  <main class="content-lanes">
+    <form id="clinic-dashboard" v-if="clinic" @submit.prevent="submitChanges">
+      <header>
+        <h2 class="title">Your Clinic</h2>
+        <div class="actions">
+          <button v-if="isEditing" type="button" @click="cancelEditing" class="edit-btn secondary">
+            Cancel
+          </button>
+          <button v-if="isEditing" type="submit" class="edit-btn active" :disabled="isLoading">
+            Save
+          </button>
+          <button v-else type="button" @click="startEditing" class="edit-btn">Edit</button>
         </div>
-      </ClinicDashboardField>
+      </header>
+      <section class="clinic-info">
+        <h3>Profile</h3>
 
-      <ClinicDashboardField
-        id="clinic--hours"
-        label="Opening Hours"
-        :disabled="false"
-        style="align-items: flex-start"
-      >
-        <textarea
-          style="
-            width: 50%;
-            min-height: 80px;
-            text-align: right;
-            padding: 0.5rem;
-            background: var(--c-bg);
-            border-radius: 0.25rem;
-            border: none;
-            color: var(--c-text-secondary);
-            resize: vertical;
-            margin-top: 0;
-          "
-          v-model="hoursText"
-          :disabled="disabled"
-          placeholder="e.g. Mon-Fri: 9am - 5pm"
-        ></textarea>
-      </ClinicDashboardField>
-    </section>
-    <footer>
-      <p class="last-updated">Last updated: {{ formattedDate(clinic.updated_at) }}</p>
-      <p class="created-at">Created at: {{ formattedDate(clinic.created_at) }}</p>
-    </footer>
-  </form>
+        <ClinicDashboardField id="clinic--name" label="Name" v-model="clinic.name" :disabled />
+        <ClinicDashboardField
+          id="clinic--email"
+          label="Email"
+          type="email"
+          v-model="clinic.email"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--phone"
+          label="Phone Number"
+          type="tel"
+          v-model="clinic.phone"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--website"
+          label="Website"
+          type="url"
+          v-model="clinic.website"
+          :disabled
+        />
+
+        <h4>Location</h4>
+        <ClinicDashboardField
+          id="clinic--address-line1"
+          label="Address Line 1"
+          v-model="clinic.address_line1"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--address-line2"
+          label="Address Line 2"
+          v-model="clinic.address_line2"
+          :disabled
+        />
+        <ClinicDashboardField id="clinic--city" label="City" v-model="clinic.city" :disabled />
+        <ClinicDashboardField
+          id="clinic--province"
+          label="Province"
+          v-model="clinic.province"
+          :disabled
+        />
+
+        <h4>Additional Information</h4>
+        <ClinicDashboardField
+          id="clinic--specialties"
+          label="Specialties"
+          v-model="specialtiesString"
+          :disabled
+        />
+      </section>
+      <section class="clinic-bookings">
+        <h3>Booking & Billing</h3>
+
+        <ClinicDashboardField
+          id="clinic--booking-provider"
+          label="Booking Provider"
+          v-model="clinic.booking_provider"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--booking-link"
+          label="Booking URL"
+          type="url"
+          v-model="clinic.booking_url"
+          :disabled
+        />
+
+        <h4>Offerings</h4>
+        <ClinicDashboardField
+          id="clinic--direct-billing"
+          label="Offer Direct Billing"
+          type="checkbox"
+          v-model="clinic.offers_direct_billing"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--services-in-person"
+          label="In-Person Appointments"
+          type="checkbox"
+          v-model="servicesInPerson"
+          :disabled
+        />
+        <ClinicDashboardField
+          id="clinic--services-virtual"
+          label="Virtual Appointments"
+          type="checkbox"
+          v-model="servicesVirtual"
+          :disabled
+        />
+
+        <h4>Extended Details</h4>
+        <ClinicDashboardField id="clinic--insurances" label="Insurances Accepted" :disabled="false">
+          <div style="display: flex; flex-direction: column; text-align: right; gap: 0.5rem">
+            <label
+              v-for="ins in ['Sun Life', 'Manulife', 'Canada Life', 'Blue Cross', 'Green Shield']"
+              :key="ins"
+              style="justify-content: flex-end; gap: 0.5rem; cursor: pointer"
+            >
+              <span>{{ ins }}</span>
+              <input
+                type="checkbox"
+                :value="ins"
+                v-model="insurancesList"
+                :disabled="disabled"
+                style="width: 1.125rem; height: 1.125rem; margin: 0.25rem 0"
+              />
+            </label>
+          </div>
+        </ClinicDashboardField>
+
+        <ClinicDashboardField
+          id="clinic--hours"
+          label="Opening Hours"
+          :disabled="false"
+          style="align-items: flex-start"
+        >
+          <textarea
+            style="
+              width: 50%;
+              min-height: 80px;
+              text-align: right;
+              padding: 0.5rem;
+              background: var(--c-bg);
+              border-radius: 0.25rem;
+              border: none;
+              color: var(--c-text-secondary);
+              resize: vertical;
+              margin-top: 0;
+            "
+            v-model="hoursText"
+            :disabled="disabled"
+            placeholder="e.g. Mon-Fri: 9am - 5pm"
+          ></textarea>
+        </ClinicDashboardField>
+      </section>
+      <footer>
+        <p class="last-updated">Last updated: {{ formattedDate(clinic.updated_at) }}</p>
+        <p class="created-at">Created at: {{ formattedDate(clinic.created_at) }}</p>
+      </footer>
+    </form>
+  </main>
 </template>
 
 <style>
 #clinic-dashboard {
-  padding-block: 1.5rem;
+  padding-block-start: calc(var(--g-navbar-height) + 5rem);
   height: fit-content;
 
   display: grid;
@@ -306,13 +312,6 @@ watch(
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-
-    .title {
-      font-size: 1.75rem;
-      font-weight: 600;
-
-      white-space: nowrap;
-    }
 
     .actions {
       height: 100%;
@@ -361,7 +360,7 @@ watch(
   }
 
   section {
-    padding: 1.125rem;
+    padding: 1.5rem;
 
     background: var(--c-bg-secondary);
     border-radius: 1.125rem;
@@ -369,16 +368,15 @@ watch(
 
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-
-    h2 {
-      margin-block: 0 0.25rem;
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
+    gap: 0.375rem;
 
     h3 {
-      margin-block: 0.5rem 0.125rem;
+      margin-block: 0 0.5rem;
+    }
+
+    h4 {
+      margin-block: 0.75rem 0.125rem;
+
       font-size: 0.875rem;
       font-weight: 500;
       color: var(--c-text-secondary);
