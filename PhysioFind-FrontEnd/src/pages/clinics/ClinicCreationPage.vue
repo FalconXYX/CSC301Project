@@ -9,6 +9,14 @@ const provinceCodePattern = /^[A-Z]{2}$/
 const phonePattern = /^(\+?1[-.\s]?)?(\(?\d{3}\)?[-.\s]?)\d{3}[-.\s]?\d{4}$/
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+const SPECIALTIES = {
+  physiotherapy: 'Physiotherapy',
+  massage_therapy: 'Massage Therapy',
+  chiropractic_therapy: 'Chiropractic Therapy',
+  occupational_therapy: 'Occupational Therapy',
+  sports_injury_therapy: 'Sports Injury Therapy',
+}
+
 const form = reactive({
   name: '',
   address_line1: '',
@@ -24,6 +32,7 @@ const form = reactive({
   services_virtual: false,
   insurances: [] as string[],
   hours_text: '',
+  specialties: [] as string[],
 })
 
 const touched = reactive({
@@ -116,6 +125,7 @@ function resetForm() {
   form.services_virtual = false
   form.insurances = []
   form.hours_text = ''
+  form.specialties = []
 
   for (const field of Object.keys(touched) as Array<keyof typeof touched>) {
     touched[field] = false
@@ -144,7 +154,7 @@ async function createClinic() {
     if (form.services_virtual) services.push('virtual')
     if (form.hours_text.trim()) services.push(`hours:${form.hours_text.trim()}`)
     form.insurances.forEach((ins) => services.push(`insurance:${ins}`))
-
+    form.specialties.forEach((specialty) => services.push(`specialty:${specialty}`))
     let latitude = undefined
     let longitude = undefined
 
@@ -194,198 +204,210 @@ async function createClinic() {
 </script>
 
 <template>
-  <div id="clinic-creation">
-    <h1 class="title">Create Clinic</h1>
+  <main id="clinic-creation-page" class="content-lanes">
+    <section id="clinic-creation">
+      <h1 class="title">Create Clinic</h1>
 
-    <section class="clinic-section">
-      <h2 class="heading">Clinic Information</h2>
-      <p class="subheading">
-        Add your clinic details so your profile is ready for provider and patient experiences.
-      </p>
+      <section class="clinic-section">
+        <h2 class="heading">Clinic Information</h2>
+        <p class="subheading">
+          Add your clinic details so your profile is ready for provider and patient experiences.
+        </p>
 
-      <form @submit.prevent="createClinic" novalidate>
-        <label>
-          <span>Clinic Name <span class="required">*</span></span>
-          <input
-            v-model="form.name"
-            type="text"
-            class="field"
-            :class="{ invalid: touched.name && !!validationErrors.name }"
-            placeholder="PhysioFind Downtown"
-            autocomplete="organization"
-            @blur="markTouched('name')"
-          />
-          <span v-if="touched.name && validationErrors.name" class="field-error">
-            {{ validationErrors.name }}
-          </span>
-        </label>
-
-        <label>
-          <span>Address Line 1 <span class="required">*</span></span>
-          <input
-            v-model="form.address_line1"
-            type="text"
-            class="field"
-            :class="{ invalid: touched.address_line1 && !!validationErrors.address_line1 }"
-            placeholder="123 King St W"
-            autocomplete="address-line1"
-            @blur="markTouched('address_line1')"
-          />
-          <span v-if="touched.address_line1 && validationErrors.address_line1" class="field-error">
-            {{ validationErrors.address_line1 }}
-          </span>
-        </label>
-
-        <label>
-          Address Line 2
-          <input
-            v-model="form.address_line2"
-            type="text"
-            class="field"
-            placeholder="Suite 400"
-            autocomplete="address-line2"
-          />
-        </label>
-
-        <div class="field-row">
+        <form @submit.prevent="createClinic" novalidate>
           <label>
-            <span>City <span class="required">*</span></span>
+            <span>Clinic Name <span class="required">*</span></span>
             <input
-              v-model="form.city"
+              v-model="form.name"
               type="text"
               class="field"
-              :class="{ invalid: touched.city && !!validationErrors.city }"
-              placeholder="Toronto"
-              autocomplete="address-level2"
-              @blur="markTouched('city')"
+              :class="{ invalid: touched.name && !!validationErrors.name }"
+              placeholder="PhysioFind Downtown"
+              autocomplete="organization"
+              @blur="markTouched('name')"
             />
-            <span v-if="touched.city && validationErrors.city" class="field-error">
-              {{ validationErrors.city }}
+            <span v-if="touched.name && validationErrors.name" class="field-error">
+              {{ validationErrors.name }}
             </span>
           </label>
 
           <label>
-            <span>Province <span class="required">*</span></span>
+            <span>Address Line 1 <span class="required">*</span></span>
             <input
-              v-model="form.province"
+              v-model="form.address_line1"
               type="text"
-              maxlength="2"
               class="field"
-              :class="{ invalid: touched.province && !!validationErrors.province }"
-              placeholder="ON"
-              autocomplete="address-level1"
-              @blur="
-                () => {
-                  form.province = normalizeProvinceCode(form.province)
-                  markTouched('province')
-                }
-              "
+              :class="{ invalid: touched.address_line1 && !!validationErrors.address_line1 }"
+              placeholder="123 King St W"
+              autocomplete="address-line1"
+              @blur="markTouched('address_line1')"
             />
-            <span v-if="touched.province && validationErrors.province" class="field-error">
-              {{ validationErrors.province }}
+            <span
+              v-if="touched.address_line1 && validationErrors.address_line1"
+              class="field-error"
+            >
+              {{ validationErrors.address_line1 }}
             </span>
           </label>
 
           <label>
-            <span>Postal Code <span class="required">*</span></span>
+            Address Line 2
             <input
-              v-model="form.postal_code"
+              v-model="form.address_line2"
               type="text"
               class="field"
-              :class="{ invalid: touched.postal_code && !!validationErrors.postal_code }"
-              placeholder="M5V 3A8"
-              autocomplete="postal-code"
-              @blur="
-                () => {
-                  form.postal_code = normalizePostalCode(form.postal_code)
-                  markTouched('postal_code')
-                }
-              "
+              placeholder="Suite 400"
+              autocomplete="address-line2"
             />
-            <span v-if="touched.postal_code && validationErrors.postal_code" class="field-error">
-              {{ validationErrors.postal_code }}
+          </label>
+
+          <div class="field-row">
+            <label>
+              <span>City <span class="required">*</span></span>
+              <input
+                v-model="form.city"
+                type="text"
+                class="field"
+                :class="{ invalid: touched.city && !!validationErrors.city }"
+                placeholder="Toronto"
+                autocomplete="address-level2"
+                @blur="markTouched('city')"
+              />
+              <span v-if="touched.city && validationErrors.city" class="field-error">
+                {{ validationErrors.city }}
+              </span>
+            </label>
+
+            <label>
+              <span>Province <span class="required">*</span></span>
+              <input
+                v-model="form.province"
+                type="text"
+                maxlength="2"
+                class="field"
+                :class="{ invalid: touched.province && !!validationErrors.province }"
+                placeholder="ON"
+                autocomplete="address-level1"
+                @blur="
+                  () => {
+                    form.province = normalizeProvinceCode(form.province)
+                    markTouched('province')
+                  }
+                "
+              />
+              <span v-if="touched.province && validationErrors.province" class="field-error">
+                {{ validationErrors.province }}
+              </span>
+            </label>
+
+            <label>
+              <span>Postal Code <span class="required">*</span></span>
+              <input
+                v-model="form.postal_code"
+                type="text"
+                class="field"
+                :class="{ invalid: touched.postal_code && !!validationErrors.postal_code }"
+                placeholder="M5V 3A8"
+                autocomplete="postal-code"
+                @blur="
+                  () => {
+                    form.postal_code = normalizePostalCode(form.postal_code)
+                    markTouched('postal_code')
+                  }
+                "
+              />
+              <span v-if="touched.postal_code && validationErrors.postal_code" class="field-error">
+                {{ validationErrors.postal_code }}
+              </span>
+            </label>
+          </div>
+
+          <label>
+            Phone
+            <input
+              v-model="form.phone"
+              type="tel"
+              class="field"
+              :class="{ invalid: touched.phone && !!validationErrors.phone }"
+              placeholder="(416) 555-0100"
+              autocomplete="tel"
+              @blur="markTouched('phone')"
+            />
+            <span v-if="touched.phone && validationErrors.phone" class="field-error">
+              {{ validationErrors.phone }}
             </span>
           </label>
-        </div>
 
-        <label>
-          Phone
-          <input
-            v-model="form.phone"
-            type="tel"
-            class="field"
-            :class="{ invalid: touched.phone && !!validationErrors.phone }"
-            placeholder="(416) 555-0100"
-            autocomplete="tel"
-            @blur="markTouched('phone')"
-          />
-          <span v-if="touched.phone && validationErrors.phone" class="field-error">
-            {{ validationErrors.phone }}
-          </span>
-        </label>
-
-        <label>
-          Email
-          <input
-            v-model="form.email"
-            type="email"
-            class="field"
-            :class="{ invalid: touched.email && !!validationErrors.email }"
-            placeholder="contact@clinic.ca"
-            autocomplete="email"
-            @blur="markTouched('email')"
-          />
-          <span v-if="touched.email && validationErrors.email" class="field-error">
-            {{ validationErrors.email }}
-          </span>
-        </label>
-
-        <label>
-          Website
-          <input
-            v-model="form.website"
-            type="url"
-            class="field"
-            :class="{ invalid: touched.website && !!validationErrors.website }"
-            placeholder="https://clinic.ca"
-            autocomplete="url"
-            @blur="markTouched('website')"
-          />
-          <span v-if="touched.website && validationErrors.website" class="field-error">
-            {{ validationErrors.website }}
-          </span>
-        </label>
-
-        <label class="checkbox-field">
-          <input v-model="form.offers_direct_billing" type="checkbox" />
-          <span>Offers direct billing</span>
-        </label>
-
-        <fieldset
-          class="field-group"
-          style="
-            padding: 1rem;
-            border: 1px solid var(--c-separator);
-            border-radius: 8px;
-            margin-top: 1rem;
-          "
-        >
-          <legend>Appointment Types</legend>
-          <label class="checkbox-field" style="margin-bottom: 0.5rem">
-            <input v-model="form.services_in_person" type="checkbox" />
-            <span>In-Person</span>
+          <label>
+            Email
+            <input
+              v-model="form.email"
+              type="email"
+              class="field"
+              :class="{ invalid: touched.email && !!validationErrors.email }"
+              placeholder="contact@clinic.ca"
+              autocomplete="email"
+              @blur="markTouched('email')"
+            />
+            <span v-if="touched.email && validationErrors.email" class="field-error">
+              {{ validationErrors.email }}
+            </span>
           </label>
+
+          <label>
+            Website
+            <input
+              v-model="form.website"
+              type="url"
+              class="field"
+              :class="{ invalid: touched.website && !!validationErrors.website }"
+              placeholder="https://clinic.ca"
+              autocomplete="url"
+              @blur="markTouched('website')"
+            />
+            <span v-if="touched.website && validationErrors.website" class="field-error">
+              {{ validationErrors.website }}
+            </span>
+          </label>
+
           <label class="checkbox-field">
-            <input v-model="form.services_virtual" type="checkbox" />
-            <span>Virtual</span>
+            <input v-model="form.offers_direct_billing" type="checkbox" />
+            <span>Offers direct billing</span>
           </label>
-        </fieldset>
 
-        <label class="input-field" style="margin-top: 1rem">
-          <span>Insurances Accepted (Check all that apply)</span>
-          <div
-            class="checkbox-group"
-            style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem"
+          <ClinicDashboardField
+            id="services-offered"
+            label="Services Offered"
+            :disabled="false"
+            class="field-group"
+          >
+            <label v-for="(label, value) in SPECIALTIES" :key="value" class="checkbox-field">
+              <input v-model="form.specialties" type="checkbox" :value="value" />
+              <span>{{ label }}</span>
+            </label>
+          </ClinicDashboardField>
+
+          <ClinicDashboardField
+            id="appointment-types"
+            label="Appointment Types"
+            :disabled="false"
+            class="field-group"
+          >
+            <label class="checkbox-field">
+              <input v-model="form.services_in_person" type="checkbox" value="in_person" />
+              <span>In-Person</span>
+            </label>
+            <label class="checkbox-field">
+              <input v-model="form.services_virtual" type="checkbox" value="virtual" />
+              <span>Virtual</span>
+            </label>
+          </ClinicDashboardField>
+
+          <ClinicDashboardField
+            id="insurance-providers"
+            label="Insurance Providers"
+            :disabled="false"
+            class="field-group"
           >
             <label
               class="checkbox-field"
@@ -395,196 +417,211 @@ async function createClinic() {
               <input type="checkbox" :value="ins" v-model="form.insurances" />
               <span>{{ ins }}</span>
             </label>
-          </div>
-        </label>
+          </ClinicDashboardField>
 
-        <label class="input-field" style="margin-top: 1rem; margin-bottom: 1.5rem">
-          <span>Opening Hours (optional)</span>
-          <textarea
-            v-model="form.hours_text"
-            placeholder="e.g. Mon-Fri: 9am - 5pm"
-            rows="3"
-            style="
-              resize: vertical;
-              padding: 0.5rem;
-              border: 1px solid var(--c-separator);
-              border-radius: 4px;
-            "
-          ></textarea>
-        </label>
+          <ClinicDashboardField
+            id="opening-hours"
+            label="Opening Hours"
+            :disabled="false"
+            class="field-group"
+          >
+            <textarea
+              v-model="form.hours_text"
+              placeholder="e.g. Mon-Fri: 9am - 5pm"
+              rows="3"
+              style="
+                width: 100%;
+                resize: vertical;
+                padding: 0.5rem;
+                border: 1px solid var(--c-separator);
+                border-radius: 4px;
+              "
+            />
+          </ClinicDashboardField>
 
-        <button type="submit" :disabled="isSubmitting || !isFormValid">
-          {{ isSubmitting ? 'Creating...' : 'Create Clinic' }}
-        </button>
-      </form>
+          <button type="submit" :disabled="isSubmitting || !isFormValid">
+            {{ isSubmitting ? 'Creating...' : 'Create Clinic' }}
+          </button>
+        </form>
+      </section>
     </section>
-  </div>
+  </main>
 </template>
 
 <style>
-#clinic-creation {
-  align-self: center;
+@scope (#clinic-creation-page) {
+  #clinic-creation {
+    max-width: min(42rem, 100%);
+    width: 100%;
+    margin-block: calc(var(--g-navbar-height) + 3rem) 3rem;
+    margin-inline: auto;
 
-  max-width: min(42rem, 100%);
-  width: 100%;
-  margin-inline: auto;
+    background-color: var(--c-bg-secondary);
+    border: 0.5px solid var(--c-separator);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 2rem hsl(0 0% 0% / 0.08);
 
-  background-color: var(--c-bg-secondary);
-  border: 0.5px solid var(--c-separator);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 2px 2rem hsl(0 0% 0% / 0.08);
-
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-
-  h1 {
-    font-family: var(--f-serif);
-    font-size: 2rem;
-    font-weight: 700;
-
-    text-align: center;
-  }
-
-  section {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 1.5rem;
 
-    .heading {
-      font-size: 1.125rem;
-      font-weight: 600;
+    h1 {
+      font-family: var(--f-serif);
+      font-size: 2rem;
+      font-weight: 700;
+
+      text-align: center;
     }
 
-    .subheading {
-      font-size: 0.875rem;
-      line-height: 1.4;
-      color: var(--c-text-secondary);
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.875rem;
-
-      margin-top: 0.5rem;
-    }
-
-    label {
+    section {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      color: var(--c-text-secondary);
-    }
 
-    .field-row {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.75rem;
-    }
-
-    .required {
-      color: var(--c-red);
-    }
-
-    .field {
-      all: unset;
-      background: var(--c-fill);
-      border: 1px solid var(--c-separator);
-      border-radius: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.875rem;
-      color: var(--c-text);
-      font-family: var(--f-body);
-      transition: border-color 0.15s;
-    }
-
-    .field:focus {
-      border-color: var(--c-accent);
-    }
-
-    .field.invalid {
-      border-color: var(--c-red);
-    }
-
-    .field-error {
-      font-size: 0.75rem;
-      color: var(--c-red);
-      line-height: 1.33;
-    }
-
-    .checkbox-field {
-      flex-direction: row;
-      align-items: center;
-      gap: 0.5rem;
-
-      color: var(--c-text);
-
-      input[type='checkbox'] {
-        width: 1rem;
-        height: 1rem;
-        accent-color: var(--c-accent);
-      }
-    }
-
-    .form-alert {
-      border-radius: 0.5rem;
-      padding: 0.625rem 0.75rem;
-      font-size: 0.8125rem;
-      line-height: 1.4;
-
-      &.error {
-        background: oklch(55% 0.2 25 / 0.15);
-        color: oklch(55% 0.2 25);
+      .heading {
+        font-size: 1.125rem;
+        font-weight: 600;
       }
 
-      &.success {
-        background: oklch(from var(--c-green) l c h / 0.15);
-        color: var(--c-green);
-      }
-    }
-
-    button {
-      place-content: center;
-      padding: 0.67rem 0.75rem;
-      margin-top: 0.25rem;
-
-      background-color: var(--c-accent);
-      color: var(--c-bg);
-      border-radius: 0.5rem;
-
-      font-size: 0.9375rem;
-      font-weight: 600;
-      text-align: center;
-
-      transition:
-        opacity 150ms ease,
-        scale 150ms ease;
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
+      .subheading {
+        font-size: 0.875rem;
+        line-height: 1.4;
+        color: var(--c-text-secondary);
       }
 
-      &:not(:disabled):hover {
-        opacity: 0.83;
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.875rem;
+
+        margin-top: 0.5rem;
       }
 
-      &:not(:disabled):active {
-        scale: 0.96;
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--c-text-secondary);
+      }
+
+      .field-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+
+      .required {
+        color: var(--c-red);
+      }
+
+      .field {
+        all: unset;
+        background: var(--c-fill);
+        border: 1px solid var(--c-separator);
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        color: var(--c-text);
+        font-family: var(--f-body);
+        transition: border-color 0.15s;
+
+        &:focus {
+          border-color: var(--c-accent);
+        }
+
+        &.invalid {
+          border-color: var(--c-red);
+        }
+      }
+
+      .field-group {
+        margin-top: 0.75rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 0.5rem;
+      }
+
+      .field-error {
+        font-size: 0.75rem;
+        color: var(--c-red);
+        line-height: 1.33;
+      }
+
+      .checkbox-field {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+
+        color: var(--c-text);
+
+        input[type='checkbox'] {
+          width: 1rem;
+          height: 1rem;
+          accent-color: var(--c-accent);
+        }
+      }
+
+      .form-alert {
+        border-radius: 0.5rem;
+        padding: 0.625rem 0.75rem;
+        font-size: 0.8125rem;
+        line-height: 1.4;
+
+        &.error {
+          background: oklch(55% 0.2 25 / 0.15);
+          color: oklch(55% 0.2 25);
+        }
+
+        &.success {
+          background: oklch(from var(--c-green) l c h / 0.15);
+          color: var(--c-green);
+        }
+      }
+
+      button {
+        place-content: center;
+        padding: 0.67rem 0.75rem;
+        margin-top: 0.25rem;
+
+        background-color: var(--c-accent);
+        color: var(--c-bg);
+        border-radius: 0.5rem;
+
+        font-size: 0.9375rem;
+        font-weight: 600;
+        text-align: center;
+
+        transition:
+          opacity 150ms ease,
+          scale 150ms ease;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        &:not(:disabled):hover {
+          opacity: 0.83;
+        }
+
+        &:not(:disabled):active {
+          scale: 0.96;
+        }
       }
     }
   }
-}
 
-@media (width <= 44rem) {
-  #clinic-creation {
-    .clinic-section {
-      .field-row {
-        grid-template-columns: 1fr;
+  @media (width <= 44rem) {
+    #clinic-creation {
+      .clinic-section {
+        .field-row {
+          grid-template-columns: 1fr;
+        }
       }
     }
   }
