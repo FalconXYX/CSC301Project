@@ -1,7 +1,7 @@
-import { authenticatedFetch } from './client'
+import { authenticatedFetch, apiBaseUrl } from './client'
 
 export async function getGoogleAuthUrl(): Promise<string> {
-  const response = await authenticatedFetch('/api/google/auth-url')
+  const response = await authenticatedFetch(`${apiBaseUrl}/google/auth-url`)
 
   if (response.status !== 200) {
     throw new Error('Failed to get Google auth URL')
@@ -12,7 +12,7 @@ export async function getGoogleAuthUrl(): Promise<string> {
 }
 
 export async function getGoogleCalendars(): Promise<{ id: string; summary: string; primary: boolean }[]> {
-  const response = await authenticatedFetch('/api/google/calendars')
+  const response = await authenticatedFetch(`${apiBaseUrl}/google/calendars`)
 
   if (response.status !== 200) {
     throw new Error('Failed to fetch calendars')
@@ -23,7 +23,7 @@ export async function getGoogleCalendars(): Promise<{ id: string; summary: strin
 }
 
 export async function selectGoogleCalendar(calendarId: string): Promise<void> {
-  const response = await authenticatedFetch('/api/google/calendar', {
+  const response = await authenticatedFetch(`${apiBaseUrl}/google/calendar`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ calendarId }),
@@ -35,7 +35,7 @@ export async function selectGoogleCalendar(calendarId: string): Promise<void> {
 }
 
 export async function disconnectGoogleCalendar(): Promise<void> {
-  const response = await authenticatedFetch('/api/google/disconnect', { method: 'DELETE' })
+  const response = await authenticatedFetch(`${apiBaseUrl}/google/disconnect`, { method: 'DELETE' })
 
   if (response.status !== 200) {
     throw new Error('Failed to disconnect Google Calendar')
