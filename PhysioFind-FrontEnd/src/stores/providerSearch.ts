@@ -23,6 +23,7 @@ export const useProviderSearchStore = defineStore('providerSearch', () => {
       }
 
       const newClinics = await searchClinics(preferences)
+      console.log('Search Results from Backend:', newClinics)
       const formattedVerifiedClinics = newClinics.map((c) => {
         const rawServices = Array.isArray(c.services_json) ? c.services_json : ['General Care']
         const cleanServices = rawServices.filter(

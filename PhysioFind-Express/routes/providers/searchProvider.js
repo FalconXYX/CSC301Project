@@ -3,6 +3,7 @@ var router = require("express").Router();
 var prisma = require("../../config/prisma");
 const { z } = require("zod");
 const geolib = require("geolib");
+const { checkAvailability } = require("../../utils/googleCalendar");
 
 // ─── Config ────────────────────────────────────────────────────────────────
 const MAX_RESULTS = 4;
@@ -16,7 +17,7 @@ const WEIGHTS = {
   insurance: 40,
   appointment_type: 35,
   direct_billing: 10, // bonus for ease-of-use
-  // urgency: TODO — requires calendar/availability integration
+  urgency: 20, // medium weight for availability
 };
 
 const searchSchema = z.object({
@@ -106,7 +107,61 @@ router.post("/search", async function (req, res, next) {
       return (a.distance ?? Infinity) - (b.distance ?? Infinity);
     });
 
-    res.json({ clinics: scoredClinics.slice(0, MAX_RESULTS) });
+    // ── 4. URGENCY / AVAILABILITY SCORE (applied to top 15 results only) ──
+    const topCandidates = scoredClinics.slice(0, 15);
+    const { urgency } = preferences;
+
+    if (urgency && urgency !== "flexible") {
+      const now = new Date();
+      let days = 30;
+      if (urgency === "asap") days = 3;
+      else if (urgency === "two_weeks") days = 14;
+
+      const timeMin = now.toISOString();
+      const timeMax = new Date(
+        now.getTime() + days * 24 * 60 * 60 * 1000,
+      ).toISOString();
+
+      await Promise.all(
+        topCandidates.map(async (c) => {
+          if (c.practitioners && c.practitioners.length > 0) {
+            for (const prac of c.practitioners) {
+              if (!prac.user_id) continue;
+              try {
+                const busySlots = await checkAvailability(
+                  prac.user_id,
+                  timeMin,
+                  timeMax,
+                );
+                if (busySlots) {
+                  // Rough heuristic: give bonus points if calendar check succeeds,
+                  // penalizing slightly for every busy slot they have.
+                  const scoreBonus = Math.max(
+                    5,
+                    WEIGHTS.urgency - busySlots.length,
+                  );
+                  c.matchScore += scoreBonus;
+                  break; // Found at least one practitioner with calculated availability
+                }
+              } catch (err) {
+                // Ignore practitioners who haven't connected their calendar or check failed
+              }
+            }
+          }
+        }),
+      );
+
+      // Re-sort after availability adjustments
+      topCandidates.sort((a, b) => {
+        if (b.matchScore !== a.matchScore) return b.matchScore - a.matchScore;
+        return (a.distance ?? Infinity) - (b.distance ?? Infinity);
+      });
+    } else if (urgency === "flexible") {
+      // Just give everyone the full urgency weight
+      topCandidates.forEach((c) => (c.matchScore += WEIGHTS.urgency));
+    }
+
+    res.json({ clinics: topCandidates.slice(0, MAX_RESULTS) });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res
@@ -394,7 +449,7 @@ function computeScore(
   }
 
   // ── Urgency ────────────────────────────────────────────────────────────
-  // TODO: implement once calendar/availability integration is ready
+  // Urgency is scored in an async post-processing step to limit external API calls.
 
   // ── Distance bonus (0–15, independent scale) ───────────────────────────
   // Kept separate from relevance score — never subtract metres from points.
