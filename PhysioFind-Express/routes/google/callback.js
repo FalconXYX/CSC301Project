@@ -9,11 +9,15 @@ var { encrypt } = require('../../utils/encrypt')
  * Handles the OAuth callback from Google, exchanges code for tokens and stores them
  */
 router.get('/callback', async function (req, res, next) {
+  const frontendUrl = process.env.GOOGLE_REDIRECT_URI.includes('localhost')
+    ? 'http://localhost:5173'
+    : 'https://falconxyx.github.io/CSC301Project'
+
   try {
     const { code, state } = req.query
 
     if (!code) {
-      return res.redirect('http://localhost:5173/account?google=error')
+      return res.redirect(`${frontendUrl}/#/account?google=error`)
     }
 
     const userId = state
@@ -29,7 +33,7 @@ router.get('/callback', async function (req, res, next) {
       },
     })
 
-    res.redirect('http://localhost:5173/account?google=connected')
+    res.redirect(`${frontendUrl}/#/account?google=connected`)
   } catch (error) {
     next(error)
   }
