@@ -10,6 +10,7 @@ const props = withDefaults(
 const emit = defineEmits<{ signIn: [] }>()
 
 const authStore = useAuthStore()
+const toaster = useToaster()
 
 import PrivacyPolicyView from '@/components/info/PrivacyPolicyView.vue'
 
@@ -26,15 +27,12 @@ const phone = ref('')
 const dateOfBirth = ref('')
 const acceptPolicy = ref(false)
 
-const errorMessage = ref<string | null>(null)
-
 // Helpers
 
 function switchMode() {
   mode.value = mode.value === 'signIn' ? 'signUp' : 'signIn'
   step.value = 1
 
-  errorMessage.value = null
   authStore.error = null
 }
 
@@ -45,24 +43,21 @@ function resetForm() {
   lastName.value = ''
   phone.value = ''
   dateOfBirth.value = ''
-  errorMessage.value = null
   acceptPolicy.value = false
 }
 
 // Actions
 
 async function handleSignIn() {
-  errorMessage.value = null
-
   if (!email.value || !password.value) {
-    errorMessage.value = 'Please enter your email and password.'
+    toaster.error('Please enter your email and password.')
     return
   }
 
   await authStore.signIn(email.value, password.value)
 
   if (authStore.error) {
-    errorMessage.value = authStore.error
+    toaster.error(authStore.error)
     return
   }
 
@@ -71,15 +66,13 @@ async function handleSignIn() {
 }
 
 function handleSignUpContinue() {
-  errorMessage.value = null
-
   if (!email.value || !password.value) {
-    errorMessage.value = 'Please enter your email and password.'
+    toaster.error('Please enter your email and password.')
     return
   }
 
   if (!acceptPolicy.value) {
-    errorMessage.value = 'You must accept the Privacy Policy to continue.'
+    toaster.info('You must accept the Privacy Policy to continue.')
     return
   }
 
@@ -87,10 +80,8 @@ function handleSignUpContinue() {
 }
 
 async function handleSignUp() {
-  errorMessage.value = null
-
   if (!firstName.value || !lastName.value) {
-    errorMessage.value = 'Please enter your first and last name.'
+    toaster.error('Please enter your first and last name.')
     return
   }
 
@@ -105,7 +96,7 @@ async function handleSignUp() {
   await authStore.signUp(email.value, password.value, newUserProfile)
 
   if (authStore.error) {
-    errorMessage.value = authStore.error
+    toaster.error(authStore.error)
     return
   }
 
@@ -130,8 +121,6 @@ function handleSubmit() {
       {{ mode === 'signIn' ? 'Sign In' : 'Sign Up' }}
       <i v-if="mode === 'signUp' && role === 'clinic'">as Clinic</i>
     </h2>
-
-    <p v-if="errorMessage" class="auth-error">{{ errorMessage }}</p>
 
     <form @submit.prevent="handleSubmit" class="auth-form">
       <template v-if="mode === 'signIn' || step === 1">
@@ -230,15 +219,6 @@ function handleSubmit() {
       font: italic 0.75em/1 var(--f-body);
       color: var(--c-text-secondary);
     }
-  }
-
-  .auth-error {
-    background: oklch(55% 0.2 25 / 0.15);
-    color: oklch(55% 0.2 25);
-    border-radius: 0.5rem;
-    padding: 0.625rem 0.75rem;
-    font-size: 0.8125rem;
-    line-height: 1.4;
   }
 
   .auth-form {

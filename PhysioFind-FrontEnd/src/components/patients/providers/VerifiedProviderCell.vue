@@ -62,7 +62,6 @@ function hideTooltip() {
           >{{ ins }}</span
         >
       </div>
-      <button class="details-btn" @click="$emit('showDetails', provider)">See Details</button>
     </div>
   </button>
 </template>
