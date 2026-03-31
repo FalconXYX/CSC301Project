@@ -11,12 +11,14 @@ router.post("/", async function (req, res, next) {
   );
 
   let authUser = null;
+  const saltRounds = 12;
+  const hashedPassword = await bcrypt.hash(req.body.password_hash, saltRounds);
 
   try {
     // 1. Try to sign up the user in Supabase Auth
     let { data, error } = await supabase.auth.signUp({
       email: req.body.email,
-      password: req.body.password_hash,
+      password: hashedPassword,
     });
 
     if (error) {
@@ -34,7 +36,7 @@ router.post("/", async function (req, res, next) {
         const { data: signInData, error: signInError } =
           await supabase.auth.signInWithPassword({
             email: req.body.email,
-            password: req.body.password_hash,
+            password: hashedPassword,
           });
 
         // If login failed, they just provided a bad password to an actual existing account
@@ -75,7 +77,7 @@ router.post("/", async function (req, res, next) {
     const safeData = {
       id: authUser.id,
       email: req.body.email,
-      password_hash: req.body.password_hash,
+      password_hash: hashedPassword,
       role: req.body.role || "patient",
       first_name: req.body.first_name || null,
       last_name: req.body.last_name || null,
