@@ -75,7 +75,7 @@ router.post("/", async function (req, res, next) {
     const safeData = {
       id: authUser.id,
       email: req.body.email,
-      password_hash: req.body.password_hash,
+      password_hash: "00000000000",
       role: req.body.role || "patient",
       first_name: req.body.first_name || null,
       last_name: req.body.last_name || null,
