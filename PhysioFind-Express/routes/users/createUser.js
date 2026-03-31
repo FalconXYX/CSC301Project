@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var prisma = require("../../config/prisma");
+var bcrypt = require('bcrypt');
 
 const { createClient } = require("@supabase/supabase-js");
 
