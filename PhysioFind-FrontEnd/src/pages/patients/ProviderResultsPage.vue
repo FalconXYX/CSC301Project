@@ -4,9 +4,10 @@ const store = useProviderSearchStore()
 
 const preferencesStr = computed(() => route.query.preferences as string | undefined)
 
+const selectedClinic = ref<Clinic | null>(null)
+
 function showProviderDetails(provider: Clinic) {
-  // Logic to show clinic details
-  alert(`Provider: ${provider.name}`)
+  selectedClinic.value = provider
 }
 
 watch(
@@ -54,24 +55,36 @@ watch(
         <div v-else class="results-list">
           <template v-for="clinic in store.clinics" :key="clinic.id">
             <VerifiedProviderCell
+              v-if="clinic.type === 'verified'"
               :provider="clinic"
               @show-details="showProviderDetails"
-              v-if="clinic.type === 'verified'"
+              :class="{ selected: selectedClinic === clinic }"
             />
             <GoogleMapsProviderCell
+              v-else-if="clinic.type === 'google-maps'"
               :provider="clinic"
               @show-details="showProviderDetails"
-              v-else-if="clinic.type === 'google-maps'"
+              :class="{ selected: selectedClinic === clinic }"
             />
           </template>
         </div>
       </section>
-      <ProviderMap
-        v-if="store.center"
-        :clinics="store.clinics"
-        :center="store.center"
-        class="provider-map"
-      />
+      <Transition name="detail-map" mode="out-in">
+        <KeepAlive include="ProviderMap">
+          <ProviderDetail
+            v-if="selectedClinic"
+            :provider="selectedClinic"
+            :key="selectedClinic.id"
+            @close="selectedClinic = null"
+          />
+          <ProviderMap
+            v-else-if="store.center"
+            :clinics="store.clinics"
+            :center="store.center"
+            class="provider-map"
+          />
+        </KeepAlive>
+      </Transition>
     </section>
   </main>
 </template>
@@ -130,9 +143,26 @@ watch(
   }
 
   .provider-map {
-    border: 1px solid var(--c-separator);
+    border: 0.5px solid var(--c-separator);
     border-radius: 1.5rem;
-    box-shadow: 0 2px 3rem oklch(0 0 0 / 0.12);
+    box-shadow: 0 2px 3rem oklch(0 0 0 / 0.08);
+  }
+
+  /* Transitions */
+
+  .detail-map-enter-active,
+  .detail-map-leave-active {
+    transition:
+      filter 250ms ease,
+      opacity 250ms ease,
+      scale 250ms ease;
+  }
+
+  .detail-map-enter-from,
+  .detail-map-leave-to {
+    filter: blur(4px);
+    opacity: 0;
+    scale: 0.98;
   }
 }
 </style>

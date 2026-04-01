@@ -17,12 +17,24 @@
     cursor: pointer;
   }
 
+  &.selected {
+    border-color: var(--c-accent);
+
+    .provider-name > .text {
+      text-decoration: underline;
+    }
+  }
+
   .provider-name {
     font:
       600 1.25rem/0.9 'Satoshi',
       sans-serif;
     letter-spacing: 1%;
     text-wrap: pretty;
+
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
   }
 
   .provider-address {

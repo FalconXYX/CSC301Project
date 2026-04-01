@@ -30,13 +30,14 @@ function hideTooltip() {
 <template>
   <button class="provider-cell verified" @click="$emit('showDetails', provider)">
     <h3 class="provider-name">
-      {{ provider.name }}
+      <span class="text">{{ provider.name }}</span>
       <span
         class="material-symbols-outlined verified-badge"
         @mouseenter="showTooltip"
         @mouseleave="hideTooltip"
-        >verified</span
       >
+        verified
+      </span>
       <div ref="tooltip" popover="auto" class="verified-tooltip">Verified partner clinic</div>
     </h3>
     <p class="provider-address">
@@ -51,16 +52,17 @@ function hideTooltip() {
     </p>
     <div class="bottom-row">
       <div class="services">
-        <span v-for="service in provider.services" :key="service" class="service">{{
-          service
-        }}</span>
+        <span v-for="service in provider.services" :key="service" class="service">
+          {{ service }}
+        </span>
         <span
           v-for="ins in provider.insurances"
           :key="'ins-' + ins"
           class="service"
           style="background: var(--c-surface-1); border-color: var(--c-blue); color: var(--c-blue)"
-          >{{ ins }}</span
         >
+          {{ ins }}
+        </span>
       </div>
     </div>
   </button>
