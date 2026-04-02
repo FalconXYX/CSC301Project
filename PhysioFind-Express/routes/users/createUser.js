@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var prisma = require("../../config/prisma");
-var bcrypt = require('bcrypt');
+var bcrypt = require("bcrypt");
 
 const { createClient } = require("@supabase/supabase-js");
 
@@ -42,12 +42,9 @@ router.post("/", async function (req, res, next) {
 
         // If login failed, they just provided a bad password to an actual existing account
         if (signInError) {
-          return res
-            .status(400)
-            .json({
-              error:
-                "Email already registered. If this is you, please sign in.",
-            });
+          return res.status(400).json({
+            error: "Email already registered. If this is you, please sign in.",
+          });
         }
 
         // We successfully grabbed the ghost account!
@@ -78,7 +75,7 @@ router.post("/", async function (req, res, next) {
     const safeData = {
       id: authUser.id,
       email: req.body.email,
-      password_hash: hashedPassword,
+      password_hash: "00000000000",
       role: req.body.role || "patient",
       first_name: req.body.first_name || null,
       last_name: req.body.last_name || null,

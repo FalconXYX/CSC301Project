@@ -66,17 +66,17 @@ export async function updateClinic(
   return data.clinic
 }
 
-export async function searchClinics(preferences: any): Promise<ClinicRecord[]> {
+export async function searchClinics(preferences: unknown): Promise<ClinicRecord[]> {
   const response = await fetch(`${apiBaseUrl}/clinics/search`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(preferences),
-  });
+  })
 
   if (response.status !== 200) {
-    throw new Error('Failed to search clinics');
+    throw new Error('Failed to search clinics')
   }
 
-  const data = await response.json();
-  return data.clinics || [];
+  const data = await response.json()
+  return data.clinics || []
 }

@@ -15,7 +15,9 @@ const addressLines = formatProviderAddress(provider.address, 'multi-line')
 
 <template>
   <button class="provider-cell" @click="$emit('showDetails', provider)">
-    <h3 class="provider-name">{{ provider.name }}</h3>
+    <h3 class="provider-name">
+      <span class="text">{{ provider.name }}</span>
+    </h3>
     <a :href="provider.mapsUrl" target="_blank" rel="noopener noreferrer" class="maps-link">
       See on Google Maps&nbsp;<span class="material-symbols-outlined sm icon">arrow_outward</span>
     </a>

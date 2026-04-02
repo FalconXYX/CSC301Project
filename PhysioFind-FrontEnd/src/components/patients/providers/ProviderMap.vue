@@ -7,42 +7,57 @@ const { clinics, center } = defineProps<{
 const mapElement = useTemplateRef('mapElement')
 const { mapsLib, markerLib } = useGoogleMaps()
 
-onMounted(async () => {
-  const [{ InfoWindow, Map }, { AdvancedMarkerElement }] = await Promise.all([mapsLib, markerLib])
+const map = shallowRef<google.maps.Map | null>(null)
 
-  const map = new Map(mapElement.value!, {
-    center: center,
+onMounted(async () => {
+  const { Map } = await mapsLib
+  map.value = new Map(mapElement.value!, {
+    center,
     zoom: 13,
     mapId: import.meta.env.VITE_GOOGLE_MAPS_MAP_ID ?? 'DEMO_MAP_ID',
     disableDefaultUI: true,
     zoomControl: true,
     colorScheme: google.maps.ColorScheme.FOLLOW_SYSTEM,
   })
+})
 
-  const infoWindow = new InfoWindow()
+onActivated(async () => {
+  await nextTick()
+  if (map.value) {
+    google.maps.event.trigger(map.value, 'resize')
+    triggerRef(map) // force watchEffect to re-add markers to the reattached overlay layer
+  }
+})
+
+watchEffect((onCleanup) => {
+  const currentMap = map.value
+  if (!currentMap) return
+
+  // Read clinics synchronously so watchEffect tracks it, then snapshot for async use
+  const snapshot = clinics.map((c) => c)
+
+  let cancelled = false
   const markers: google.maps.marker.AdvancedMarkerElement[] = []
 
-  // Reactively re-render markers when clinics change
-  watchEffect(() => {
-    markers.forEach((m) => (m.map = null))
-    markers.length = 0
+  Promise.all([mapsLib, markerLib]).then(([{ InfoWindow }, { AdvancedMarkerElement }]) => {
+    if (cancelled) return
 
-    for (const clinic of clinics) {
+    const infoWindow = new InfoWindow()
+
+    for (const clinic of snapshot) {
       if (!clinic.location) continue
 
       const pin = document.createElement('div')
-      pin.classList.add('map-pin')
-      pin.classList.add(`map-pin--${clinic.type}`)
+      pin.classList.add('map-pin', `map-pin--${clinic.type}`)
 
       const marker = new AdvancedMarkerElement({
-        map,
+        map: currentMap,
         position: clinic.location,
         content: pin,
         title: clinic.name,
       })
 
-      const loclat = clinic.location.lat
-      const loclng = clinic.location.lng
+      const { lat: loclat, lng: loclng } = clinic.location
       marker.addListener('gmp-click', () => {
         infoWindow.setContent(`
           <div class="map-info-window">
@@ -51,11 +66,16 @@ onMounted(async () => {
             <a href="${clinic.type === 'google-maps' ? clinic.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${loclat},${loclng}`}" target="_blank" rel="noopener">View on Google Maps</a>
           </div>
         `)
-        infoWindow.open({ map, anchor: marker })
+        infoWindow.open({ map: currentMap, anchor: marker })
       })
 
       markers.push(marker)
     }
+  })
+
+  onCleanup(() => {
+    cancelled = true
+    markers.forEach((m) => (m.map = null))
   })
 })
 </script>
