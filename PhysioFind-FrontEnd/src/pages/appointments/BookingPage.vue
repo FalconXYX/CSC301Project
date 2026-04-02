@@ -139,7 +139,7 @@ watch(appointmentDate, async (newDate) => {
 
 <template>
   <main id="booking-page" class="content-lanes">
-    <section class="container1">
+    <div class="container1">
       <div id="child">
         <h2>{{ editMode ? 'Edit appointment with' : 'Book an appointment with' }} {{ name }}</h2>
         <div class="field-group">
@@ -148,7 +148,11 @@ watch(appointmentDate, async (newDate) => {
         </div>
         <div class="field-group">
           <label>Select preferred appointment time</label>
-          <select v-model="currentTimeslot" :disabled="!appointmentStore.querried">
+          <select
+            :value="currentTimeslot"
+            @change="currentTimeslot = ($event.target as HTMLSelectElement).value"
+            :disabled="!appointmentStore.querried"
+          >
             <option value="" disabled>Select a time slot</option>
             <option v-for="timeslot in timeslots" :key="timeslot" :value="timeslot">
               {{ formatTimeslot(timeslot) }}
@@ -191,9 +195,9 @@ watch(appointmentDate, async (newDate) => {
           </button>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section v-if="showSuccessModal" class="modal-overlay">
+    <div v-if="showSuccessModal" class="modal-overlay">
       <div class="modal">
         <h2>{{ editMode ? 'Appointment Updated!' : 'Appointment Booked!' }}</h2>
         <p>Your appointment has been successfully {{ editMode ? 'updated' : 'scheduled' }}.</p>
@@ -202,7 +206,7 @@ watch(appointmentDate, async (newDate) => {
           <button type="button" @click="router.push('/appointments')">My Appointments</button>
         </div>
       </div>
-    </section>
+    </div>
   </main>
 </template>
 
