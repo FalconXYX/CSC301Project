@@ -11,6 +11,8 @@ const lastName = ref(profile.value?.last_name ?? '')
 const email = ref(profile.value?.email ?? '')
 const dateOfBirth = ref(toDateString(profile.value?.date_of_birth || ''))
 
+const selectedCalendarId = ref(profile.value?.google_calendar_id ?? '')
+
 const hasChanges = computed(
   () =>
     firstName.value !== profile.value?.first_name ||
@@ -18,8 +20,6 @@ const hasChanges = computed(
     email.value !== profile.value?.email ||
     dateOfBirth.value !== toDateString(profile.value?.date_of_birth || ''),
 )
-
-// const googleStatus = computed(() => route.query.google as string | undefined)
 
 async function updateAccount() {
   await authStore.updateProfile({
@@ -45,6 +45,16 @@ watch(
     lastName.value = newProfile?.last_name ?? ''
     email.value = newProfile?.email ?? ''
     dateOfBirth.value = newProfile?.date_of_birth ? toDateString(newProfile.date_of_birth) : ''
+  },
+  { immediate: true },
+)
+
+watch(
+  selectedCalendarId,
+  async (newCalendarId) => {
+    if (newCalendarId) {
+      await authStore.updateProfile({ google_calendar_id: newCalendarId })
+    }
   },
   { immediate: true },
 )
@@ -93,9 +103,19 @@ watch(
             <div class="status-box">
               <span v-if="googleStore.isConnected" class="indicator connected">Connected</span>
               <span v-else class="indicator not-connected">Not Connected</span>
-              <button class="connect-btn" @click="googleStore.connect">
-                {{ googleStore.calendars.length > 0 ? 'Manage' : 'Connect' }}
-              </button>
+              <div v-if="googleStore.calendars.length > 0" class="calendar-select">
+                <select v-model="selectedCalendarId">
+                  <option disabled selected value="">Select Calendar</option>
+                  <option
+                    v-for="calendar in googleStore.calendars"
+                    :key="calendar.id"
+                    :value="calendar.id"
+                  >
+                    {{ calendar.summary }}
+                  </option>
+                </select>
+              </div>
+              <button v-else class="connect-btn" @click="googleStore.connect">Connect</button>
             </div>
           </li>
           <!-- Future connections can be added here -->
@@ -226,6 +246,40 @@ watch(
 
             &.not-connected {
               color: var(--c-secondary);
+            }
+          }
+
+          .calendar-select {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+
+            font-size: 0.875rem;
+
+            &::after {
+              content: '\203A';
+              display: inline-block;
+              font-size: 1em;
+              color: var(--c-secondary);
+            }
+
+            select {
+              margin: 0;
+              background: none;
+              border: none;
+              outline: none;
+              appearance: none;
+
+              font-size: 1em;
+              text-align-last: right;
+              text-transform: none;
+
+              transition: opacity 150ms ease;
+
+              &:hover {
+                opacity: 0.75;
+                cursor: pointer;
+              }
             }
           }
 

@@ -8,6 +8,7 @@ export interface UserProfile {
   date_of_birth: string | null
   clinic_id: string | null
   clinic_role: string | null
+  google_calendar_id: string | null
   created_at: string
   updated_at: string
 }
