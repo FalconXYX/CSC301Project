@@ -139,7 +139,7 @@ watch(appointmentDate, async (newDate) => {
 
 <template>
   <main id="booking-page" class="content-lanes">
-    <div class="container1">
+    <section class="container1">
       <div id="child">
         <h2>{{ editMode ? 'Edit appointment with' : 'Book an appointment with' }} {{ name }}</h2>
         <div class="field-group">
@@ -195,9 +195,9 @@ watch(appointmentDate, async (newDate) => {
           </button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div v-if="showSuccessModal" class="modal-overlay">
+    <section v-if="showSuccessModal" class="modal-overlay">
       <div class="modal">
         <h2>{{ editMode ? 'Appointment Updated!' : 'Appointment Booked!' }}</h2>
         <p>Your appointment has been successfully {{ editMode ? 'updated' : 'scheduled' }}.</p>
@@ -206,7 +206,7 @@ watch(appointmentDate, async (newDate) => {
           <button type="button" @click="router.push('/appointments')">My Appointments</button>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 </template>
 

@@ -123,8 +123,10 @@ onMounted(async () => {
 
 <template>
   <main id="user-appointments-page" class="content-lanes">
-    <div class="deleted-banner" v-if="showDeletedBanner">Appointment successfully deleted.</div>
-    <div class="container1" v-if="profile">
+    <section class="deleted-banner" v-if="showDeletedBanner">
+      Appointment successfully deleted.
+    </section>
+    <section class="container1" v-if="profile">
       <div id="child">
         <h1 class="title">Here are your upcoming appointments, {{ profile.first_name }}</h1>
         <div
@@ -168,9 +170,9 @@ onMounted(async () => {
         </div>
         <h2 v-if="!hasAppointments">No upcoming appointments</h2>
       </div>
-    </div>
+    </section>
 
-    <div v-if="confirmDeleteId" class="modal-overlay">
+    <section v-if="confirmDeleteId" class="modal-overlay">
       <div class="confirm-modal">
         <p>Are you sure you want to delete this appointment?</p>
         <div class="buttons-row">
@@ -180,7 +182,7 @@ onMounted(async () => {
           </button>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 </template>
 
