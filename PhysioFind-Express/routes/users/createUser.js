@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 var prisma = require("../../config/prisma");
-var bcrypt = require("bcrypt");
 
 const { createClient } = require("@supabase/supabase-js");
 
@@ -12,14 +11,12 @@ router.post("/", async function (req, res, next) {
   );
 
   let authUser = null;
-  const saltRounds = 12;
-  const hashedPassword = await bcrypt.hash(req.body.password_hash, saltRounds);
 
   try {
     // 1. Try to sign up the user in Supabase Auth
     let { data, error } = await supabase.auth.signUp({
       email: req.body.email,
-      password: hashedPassword,
+      password: req.body.password_hash,
     });
 
     if (error) {
@@ -37,14 +34,17 @@ router.post("/", async function (req, res, next) {
         const { data: signInData, error: signInError } =
           await supabase.auth.signInWithPassword({
             email: req.body.email,
-            password: hashedPassword,
+            password: req.body.password_hash,
           });
 
         // If login failed, they just provided a bad password to an actual existing account
         if (signInError) {
-          return res.status(400).json({
-            error: "Email already registered. If this is you, please sign in.",
-          });
+          return res
+            .status(400)
+            .json({
+              error:
+                "Email already registered. If this is you, please sign in.",
+            });
         }
 
         // We successfully grabbed the ghost account!

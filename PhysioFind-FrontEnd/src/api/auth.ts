@@ -11,7 +11,7 @@ export async function createUser(
 ): Promise<UserProfile> {
   const payload: CreateUserPayload = {
     email,
-    password_hash: password,
+    password_hash: hashPassword(password),
     ...removeEmptyFields(profile, ['date_of_birth', 'phone', 'clinic_id', 'clinic_role']),
   }
 
@@ -64,4 +64,11 @@ export async function signIn(
 
 export async function signOut(): Promise<void> {
   await authenticatedFetch(`${apiBaseUrl}/auth/signOut`, { method: 'POST' })
+}
+
+// MARK: Helper functions
+
+function hashPassword(password: string): string {
+  // TODO: Implement proper password hashing
+  return password
 }
